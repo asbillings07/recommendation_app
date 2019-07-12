@@ -1,0 +1,14 @@
+{
+  "development": {
+    "database": "rec-db.db",
+    "dialect": "postgres"
+  },
+  "test": {
+    "database": "rec-db.db",
+    "dialect": "postgres"
+  },
+  "production": {
+    "database": "rec-db.db",
+    "dialect": "postgres"
+  }
+}
