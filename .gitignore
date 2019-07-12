@@ -3,3 +3,4 @@ package-lock.json
 nodemon.json
 .env
 .db
+notes
