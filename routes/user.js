@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { authenticateUser } = require('../services/authenticateUser');
 const { validateUser } = require('../services/validationChain');
-const { getUser, createUser } = require('../services/dbServices');
+const { getUser, createUser } = require('../services/userFunctions');
 
 // User Routes
 //GET /api/users 200 - Returns the currently authenticated user

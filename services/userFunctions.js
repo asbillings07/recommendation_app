@@ -21,11 +21,22 @@ const getUser = user => {
   };
 };
 // updates user
-const updateUser = user => {
-  // create update user function
+const updateUser = async currentUser => {
+  const user = await User.findOne({
+    where: {
+      email: currentUser.email,
+    },
+  });
+  user.update({
+    firstName: user.firstName,
+    lastName: user.lastName,
+    email: user.email,
+    password: user.password,
+  });
 };
 
 module.exports = {
   createUser,
   getUser,
+  updateUser,
 };
