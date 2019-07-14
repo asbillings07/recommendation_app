@@ -3,11 +3,11 @@ module.exports = (sequelize, DataTypes) => {
   const SavedRec = sequelize.define(
     'SavedRec',
     {
-      userid: {
+      userId: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
-      recid: {
+      recId: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
@@ -15,7 +15,18 @@ module.exports = (sequelize, DataTypes) => {
     {}
   );
   SavedRec.associate = models => {
-    // associations can be defined here
+    SavedRec.hasMany(models.Recommendation, {
+      foreignKey: {
+        fieldName: 'recId',
+        allowNull: false,
+      },
+    });
+    SavedRec.belongsTo(models.User, {
+      foreignKey: {
+        fieldName: 'userId',
+        allowNull: false,
+      },
+    });
   };
   return SavedRec;
 };

@@ -7,8 +7,6 @@ module.exports = (sequelize, DataTypes) => {
     },
     {}
   );
-  Category.associate = models => {
-    // associations can be defined here
-  };
+  Category.associate = models => {};
   return Category;
 };
