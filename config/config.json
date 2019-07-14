@@ -1,14 +1,11 @@
 {
   "development": {
-    "database": "rec-db.db",
-    "dialect": "postgres"
+    "use_env_variable": "DATABASE_URL"
   },
   "test": {
-    "database": "rec-db.db",
-    "dialect": "postgres"
+    "use_env_variable": "DATABASE_URL"
   },
   "production": {
-    "database": "rec-db.db",
-    "dialect": "postgres"
+    "use_env_variable": "DATABASE_URL"
   }
 }

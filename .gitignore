@@ -4,3 +4,4 @@ nodemon.json
 .env
 .db
 notes
+test
