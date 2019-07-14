@@ -11,6 +11,7 @@ class CategoryList extends Component {
         })
         return (
             <div>
+                <h5>Browse Categories</h5>
                 {allCategories}
             </div>
         )

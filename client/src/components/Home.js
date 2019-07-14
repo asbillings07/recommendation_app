@@ -1,5 +1,8 @@
 import React, { Component } from 'react'
 import CategoryList from './CategoryList';
+import CategoryTopTen from './CategoryTopTen';
+import SearchBar from './SearchBar';
+import '../css/home.css';
 
 // Pulls in mock json data
 let mockData = require("../data/mockCategory.json")
@@ -14,12 +17,14 @@ class Home extends Component {
     render() {
 
         return (
-            <div>
+            <div className="container">
                 <h1>Welcome Home</h1>
-                <h2>Search Bar</h2>
-                <CategoryList
-                    categories={this.state.data} />
-                <h4>Category deets</h4>
+                <SearchBar />
+                <div className=" home-page-catergory-holder">
+                    <CategoryList
+                        categories={this.state.data} />
+                    <CategoryTopTen />
+                </div>
             </div>
         )
     }

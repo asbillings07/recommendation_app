@@ -1,0 +1,9 @@
+.home-page-catergory-holder {
+    border: 1px solid blue;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: baseline;
+
+}
