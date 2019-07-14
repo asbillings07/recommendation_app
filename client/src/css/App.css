@@ -1,0 +1,13 @@
+* {
+  box-sizing: border-box;
+}
+/* body { padding-top: 70px; } */
+
+html,
+body {
+  height: 100%;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  background-color: rgb(217, 219, 218);
+}
