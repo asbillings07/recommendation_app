@@ -9,7 +9,6 @@ function App() {
       <Route path="/" component={Navigation} />
       <div className="App">
         <header className="App-header">
-          <h1>Recommendation App</h1>
 
         </header>
       </div>
