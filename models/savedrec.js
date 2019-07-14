@@ -22,6 +22,7 @@ module.exports = (sequelize, DataTypes) => {
       },
     });
     SavedRec.belongsTo(models.User, {
+      as: 'userSavedRecs',
       foreignKey: {
         fieldName: 'userId',
         allowNull: false,

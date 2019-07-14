@@ -11,13 +11,13 @@ module.exports = (sequelize, DataTypes) => {
       title: DataTypes.STRING,
       description: DataTypes.STRING,
       location: DataTypes.STRING,
-      lastvisited: DataTypes.STRING,
+      lastvisited: DataTypes.DATE,
     },
     {}
   );
   Recommendation.associate = models => {
     Recommendation.belongsTo(models.User, {
-      as: 'user',
+      as: 'userRecs',
       foreignKey: {
         fieldName: 'userId',
         allowNull: false,

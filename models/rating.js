@@ -18,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
   );
   Rating.associate = models => {
     Rating.belongsTo(models.User, {
-      as: 'user',
+      as: 'userRating',
       foreignKey: {
         fieldName: 'userId',
         allowNull: false,
