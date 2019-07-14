@@ -2,7 +2,12 @@ const express = require('express');
 const router = express.Router();
 const { authenticateUser } = require('../services/authenticateUser');
 const { validateUser } = require('../services/validationChain');
-const { getUser, createUser } = require('../services/userFunctions');
+const {
+  getUser,
+  createUser,
+  updateUser,
+  deleteUser,
+} = require('../services/userFunctions');
 
 // User Routes
 //GET /api/users 200 - Returns the currently authenticated user
@@ -19,8 +24,21 @@ router.post('/users', validateUser, (req, res) => {
   res
     .location('/')
     .status(201)
-    .json({ message: 'User Created' });
+    .json({ message: 'User Created Successfully!' });
 });
-//PUT /api/users 201 - Creates a user, sets the Location header to "/", and returns 'User updated successfully'
-router.put('/users', (req, res) => {});
+//POST /api/users 201 - Creates a user, sets the Location header to "/", and returns 'User updated successfully'
+router.post('/users', authenticateUser, validateUser, (req, res) => {
+  const user = req.currentUser;
+  updateUser(user);
+  res.status(201).json({ message: 'User Updated Successfully!' });
+});
+// DELETE (Careful, this deletes users from the DB) /api/users 204 - deletes a user, sets the location to '/', and returns no content
+router.delete('/users', authenticateUser, (req, res) => {
+  const user = req.currentUser;
+  deleteUser(user);
+  res
+    .status(204)
+    .location('/')
+    .end();
+});
 module.exports = router;

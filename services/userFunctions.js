@@ -10,6 +10,7 @@ const createUser = async user => {
     email: user.email,
     password: user.password,
   });
+  return user;
 };
 // gets user
 const getUser = user => {
@@ -27,16 +28,33 @@ const updateUser = async currentUser => {
       email: currentUser.email,
     },
   });
-  user.update({
-    firstName: user.firstName,
-    lastName: user.lastName,
-    email: user.email,
-    password: user.password,
+  if (user) {
+    await user.update({
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      password: user.password,
+    });
+  } else {
+    throw Error('User does not exist in database');
+  }
+};
+
+// deletes a user
+const deleteUser = async currentUser => {
+  const user = await User.findOne({
+    where: {
+      id: currentUser.id,
+    },
   });
+  if (user) {
+    user.destroy();
+  }
 };
 
 module.exports = {
   createUser,
   getUser,
   updateUser,
+  deleteUser,
 };
