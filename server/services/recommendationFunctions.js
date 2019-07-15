@@ -1,0 +1,1 @@
+const { Recommendation } = require('../models');

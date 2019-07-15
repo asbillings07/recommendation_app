@@ -5,7 +5,6 @@ const { validateUser } = require('../services/validationChain');
 const {
   getUser,
   createUser,
-  updateUser,
   deleteUser,
 } = require('../services/userFunctions');
 
@@ -25,12 +24,6 @@ router.post('/users', validateUser, (req, res) => {
     .location('/')
     .status(201)
     .json({ message: 'User Created Successfully!' });
-});
-//POST /api/users 201 - Creates a user, sets the Location header to "/", and returns 'User updated successfully'
-router.post('/users', authenticateUser, validateUser, (req, res) => {
-  const user = req.currentUser;
-  updateUser(user);
-  res.status(201).json({ message: 'User Updated Successfully!' });
 });
 // DELETE (Careful, this deletes users from the DB) /api/users 204 - deletes a user, sets the location to '/', and returns no content
 router.delete('/users', authenticateUser, (req, res) => {
