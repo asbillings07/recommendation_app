@@ -1,4 +1,35 @@
 const express = require('express');
 const router = express.Router();
+const {
+  createCategory,
+  getCategories,
+  getCategory,
+} = require('../services/categoryFunctions');
+const { validateCategory } = require('../services/validationChain');
+
+//GET /category 200 - Returns a list of categories (including the recommendations that belong to each category)
+router.get('/category', async (req, res) => {
+  const categories = await getCategories();
+  res.status(200).json({ categories: categories });
+});
+//GET /category/:id 200 - Returns a category (including the recommendations that belong to that category) for the provided category id
+router.get('/category/:id', async (req, res) => {
+  const id = +req.params.id;
+  if (id) {
+    const category = await getCategory(id);
+    res.status(200).json({ categories: category });
+  } else {
+    res.status(404).json({
+      error: '404 Not Fount',
+      message: 'Category not found at selected route',
+    });
+  }
+});
+//POST /category 201 - Creates a category, sets the Location header to the URI for the category, and returns no content
+router.post('/category', validateCategory, (req, res) => {
+  const category = req.body;
+  createCategory(category);
+  res.status(201).end();
+});
 
 module.exports = router;
