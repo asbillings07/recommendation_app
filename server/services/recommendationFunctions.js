@@ -2,8 +2,10 @@ const { Recommendation } = require('../models');
 
 // create recommendation
 
-// get Recommendation
+// get all Recommendations
 
-// Update Recommendation
+// get one Recommendation
+
+// Update one Recommendation
 
 // Delete Recommendation
