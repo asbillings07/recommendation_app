@@ -7,6 +7,13 @@ module.exports = (sequelize, DataTypes) => {
     },
     {}
   );
-  Category.associate = models => {};
+  Category.associate = models => {
+    Category.hasMany(models.Recommendation, {
+      foreignKey: {
+        fieldName: 'categoryId',
+        allowNull: false,
+      },
+    });
+  };
   return Category;
 };

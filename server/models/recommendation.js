@@ -31,6 +31,12 @@ module.exports = (sequelize, DataTypes) => {
         onDelete: 'CASADE',
       },
     });
+    Recommendation.belongsTo(models.Category, {
+      foreignKey: {
+        fieldName: 'categoryId',
+        allowNull: false,
+      },
+    });
   };
   return Recommendation;
 };
