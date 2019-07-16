@@ -17,14 +17,13 @@ module.exports = (sequelize, DataTypes) => {
   SavedRec.associate = models => {
     SavedRec.hasMany(models.Recommendation, {
       foreignKey: {
-        fieldName: 'recId',
-        allowNull: false,
+        field: 'recId',
       },
     });
     SavedRec.belongsTo(models.User, {
       as: 'userSavedRecs',
       foreignKey: {
-        fieldName: 'userId',
+        field: 'userId',
         allowNull: false,
       },
     });

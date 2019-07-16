@@ -1,28 +1,18 @@
 const { User } = require('../models');
 const bcrypt = require('bcryptjs');
 
-function asyncHandler(cb) {
-  return async () => {
-    try {
-      await cb();
-    } catch (err) {
-      console.log(err);
-    }
-  };
-}
-
 // creates user
-const createUser = asyncHandler(async user => {
+const createUser = async user => {
   user.password = bcrypt.hashSync(user.password);
-  await User.create({
+  User.create({
     firstName: user.firstName,
     lastName: user.lastName,
     email: user.email,
     password: user.password,
   });
-  return user;
-});
+};
 // gets user
+
 const getUser = user => {
   return {
     id: user.id,
@@ -33,16 +23,15 @@ const getUser = user => {
 };
 
 // deletes a user
-const deleteUser = asyncHandler(async currentUser => {
-  const user = await User.findOne({
+const deleteUser = currentUser => {
+  User.findOne({
     where: {
       id: currentUser.id,
     },
-  });
-  if (user) {
+  }).then(user => {
     user.destroy();
-  }
-});
+  });
+};
 
 module.exports = {
   createUser,

@@ -12,26 +12,40 @@ const {
 //GET /api/users 200 - Returns the currently authenticated user
 router.get('/users', authenticateUser, (req, res) => {
   const user = req.currentUser;
+  const users = getUser(user);
   res.status(200).json({
-    user: getUser(user),
+    users,
   });
 });
 //POST /api/users 201 - Creates a user, sets the Location header to "/", and returns 'User created succesfully'
-router.post('/users', validateUser, (req, res) => {
+router.post('/users', validateUser, async (req, res) => {
   const user = req.body;
-  createUser(user);
-  res
-    .location('/')
-    .status(201)
-    .json({ message: 'User Created Successfully!' });
+  const users = await createUser(user);
+  if (users) {
+    res
+      .location('/')
+      .status(201)
+      .json({ message: 'User Created Successfully!' });
+  } else {
+    res.status(400).json({
+      error: 'something went wrong',
+    });
+    console.log(error);
+  }
 });
 // DELETE (Careful, this deletes users from the DB) /api/users 204 - deletes a user, sets the location to '/', and returns no content
-router.delete('/users', authenticateUser, (req, res) => {
+router.delete('/users', authenticateUser, async (req, res) => {
   const user = req.currentUser;
-  deleteUser(user);
-  res
-    .status(204)
-    .location('/')
-    .end();
+  const users = await deleteUser(user);
+  if (users) {
+    res
+      .status(204)
+      .location('/')
+      .end();
+  } else {
+    res.status(400).json({
+      error: error,
+    });
+  }
 });
 module.exports = router;

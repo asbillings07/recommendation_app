@@ -9,15 +9,15 @@ const { validateCategory } = require('../services/validationChain');
 
 //GET /category 200 - Returns a list of categories (including the recommendations that belong to each category)
 router.get('/category', async (req, res) => {
-  const categories = await getCategories();
-  res.status(200).json({ categories: categories });
+  const category = await getCategories();
+  res.status(200).json({ category });
 });
 //GET /category/:id 200 - Returns a category (including the recommendations that belong to that category) for the provided category id
 router.get('/category/:id', async (req, res) => {
   const id = +req.params.id;
   if (id) {
     const category = await getCategory(id);
-    res.status(200).json({ categories: category });
+    res.status(200).json({ category });
   } else {
     res.status(404).json({
       error: '404 Not Fount',

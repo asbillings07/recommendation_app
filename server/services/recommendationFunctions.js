@@ -12,7 +12,7 @@ const verifyUser = async id => {
 
 const createRec = async (user, rec) => {
   const recs = await Recommendation.create({
-    categoryId: '',
+    categoryId: '1',
     userId: user.id,
     title: rec.title,
     description: rec.description,

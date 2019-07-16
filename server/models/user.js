@@ -12,7 +12,6 @@ module.exports = (sequelize, DataTypes) => {
   );
   User.associate = models => {
     User.hasMany(models.Recommendation, {
-      as: 'userRecs',
       foreignKey: {
         fieldName: 'userId',
         allowNull: false,
