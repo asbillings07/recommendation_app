@@ -28,6 +28,13 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: {
         fieldName: 'recId',
         allowNull: false,
+        onDelete: 'CASADE',
+      },
+    });
+    Recommendation.belongsTo(models.Category, {
+      foreignKey: {
+        fieldName: 'categoryId',
+        allowNull: false,
       },
     });
   };

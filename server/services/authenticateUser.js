@@ -12,7 +12,7 @@ function asyncHandler(cb) {
   };
 }
 
-const authenticateUser = async (req, res, next) => {
+const authenticateUser = asyncHandler(async (req, res, next) => {
   // parse user's creds from the auth header
   const credentials = auth(req);
 
@@ -39,6 +39,6 @@ const authenticateUser = async (req, res, next) => {
     message = 'Auth header not found';
     res.status(401).json({ message: 'Access Denied', error: message });
   }
-};
+});
 
 exports.authenticateUser = authenticateUser;
