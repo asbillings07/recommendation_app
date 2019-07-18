@@ -2,45 +2,40 @@ const { Category, User, Recommendation } = require('../models');
 
 // create category
 
-const createCategory = async cate => {
-  const category = await Category.create({
-    title: cate.title,
+const createCategory = category =>
+  Category.create({
+    title: category.title,
   });
-  return category;
-};
 
 // get category
 
-const getCategories = async () => {
-  const categories = await Category.findAll({
-    // include: [
-    //   {
-    //     model: Recommendation,
-    //     // include: [
-    //     //   {
-    //     //     model: User,
-    //     //     as: 'userRecs',
-    //     //     attributes: {
-    //     //       exclude: ['createdAt', 'updatedAt'],
-    //     //     },
-    //     //   },
-    //     // ],
-    //     attributes: {
-    //       exclude: ['createdAt', 'updatedAt'],
-    //     },
-    //   },
-    // ],
+const getCategories = () =>
+  Category.findAll({
+    include: [
+      {
+        model: Recommendation,
+        include: [
+          {
+            model: User,
+            attributes: {
+              exclude: ['createdAt', 'updatedAt'],
+            },
+          },
+        ],
+        attributes: {
+          exclude: ['createdAt', 'updatedAt'],
+        },
+      },
+    ],
     attributes: {
       exclude: ['createdAt', 'updatedAt'],
     },
   });
-  return categories;
-};
 
 // get one category
 
-const getCategory = async id => {
-  const category = await Category.findAll({
+const getCategory = id =>
+  Category.findAll({
     where: {
       id,
     },
@@ -53,8 +48,6 @@ const getCategory = async id => {
       },
     ],
   });
-  return category;
-};
 
 module.exports = {
   createCategory,

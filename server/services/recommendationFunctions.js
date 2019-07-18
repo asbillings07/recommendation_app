@@ -1,35 +1,31 @@
 const { Recommendation, User } = require('../models');
 
-const verifyUser = async id => {
-  await Recommendation.findOne({
+const verifyUser = id =>
+  Recommendation.findOne({
     where: {
       id,
     },
   });
-};
 
 // create recommendation
 
-const createRec = async (user, rec) => {
-  const recs = await Recommendation.create({
-    categoryId: '1',
-    userId: user.id,
+const createRec = (user, rec) =>
+  Recommendation.create({
+    categoryId: rec.categoryId,
+    userid: user.id,
     title: rec.title,
     description: rec.description,
     location: rec.location,
     lastvisited: rec.lastvisited,
   });
-  return recs;
-};
 
 // get all Recommendations
 
-const getAllRecs = async () => {
-  const recs = await Recommendation.findAll({
+const getAllRecs = () =>
+  Recommendation.findAll({
     include: [
       {
         model: User,
-        as: 'user',
         attributes: {
           exclude: ['createdAt', 'updatedAt'],
         },
@@ -39,19 +35,16 @@ const getAllRecs = async () => {
       exclude: ['createdAt', 'updatedAt'],
     },
   });
-  return recs;
-};
 
 // get one Recommendation
-const getRec = async id => {
-  const rec = await Recommendation.findAll({
+const getRec = id =>
+  Recommendation.findAll({
     where: {
       id,
     },
     include: [
       {
         model: User,
-        as: 'user',
         attributes: {
           exclude: ['createdAt', 'updatedAt'],
         },
@@ -61,33 +54,28 @@ const getRec = async id => {
       exclude: ['createdAt', 'updatedAt'],
     },
   });
-  return rec;
-};
 
 // Update one Recommendation
-const updateRecs = async id => {
-  const recs = await Recommendation.findByPk(id);
-  if (recs) {
-    recs.update({
-      title: rec.title,
-      description: rec.description,
-      location: rec.location,
-      lastvisited: rec.lastvisited,
-    });
-  } else {
-    console.log(err);
-  }
-};
+const updateRecs = (id, body) =>
+  Recommendation.findByPk(id).then(rec =>
+    rec.update({
+      categoryId: body.categoryId,
+      title: body.title,
+      description: body.description,
+      location: body.location,
+      lastvisited: body.lastvisited,
+    })
+  );
 
 // Delete Recommendation
-const deleteRecs = async id => {
-  const rec = await Recommendation.findByPk(id);
-  if (rec) {
-    rec.destroy();
-  } else {
-    console.log(err);
-  }
-};
+const deleteRecs = id =>
+  Recommendation.findByPk(id).then(rec => {
+    if (rec) {
+      return rec.destroy();
+    } else {
+      throw new Error('Recommendation Not found');
+    }
+  });
 
 module.exports = {
   getAllRecs,

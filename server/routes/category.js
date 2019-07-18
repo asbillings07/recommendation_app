@@ -26,9 +26,9 @@ router.get('/category/:id', async (req, res) => {
   }
 });
 //POST /category 201 - Creates a category, sets the Location header to the URI for the category, and returns no content
-router.post('/category', validateCategory, (req, res) => {
+router.post('/category', validateCategory, async (req, res) => {
   const category = req.body;
-  createCategory(category);
+  await createCategory(category);
   res.status(201).end();
 });
 
