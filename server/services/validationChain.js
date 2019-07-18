@@ -12,6 +12,12 @@ const errorHanlder = async (req, res, next) => {
     next();
   }
 };
+
+const validateCategory = [
+  check('title')
+    .exists({ checkNull: true, checkFalsy: true })
+    .withMessage('Please provide a title for the category.'),
+];
 // checks firstName, lastName, email, and password for the user
 const validateUser = [
   check('firstName')
@@ -60,4 +66,5 @@ validateRecommendation = [
 module.exports = {
   validateUser,
   validateRecommendation,
+  validateCategory,
 };

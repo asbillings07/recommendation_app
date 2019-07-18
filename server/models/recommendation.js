@@ -4,7 +4,7 @@ module.exports = (sequelize, DataTypes) => {
     'Recommendation',
     {
       categoryId: DataTypes.INTEGER,
-      userId: {
+      userid: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
@@ -17,24 +17,18 @@ module.exports = (sequelize, DataTypes) => {
   );
   Recommendation.associate = models => {
     Recommendation.belongsTo(models.User, {
-      as: 'userRecs',
-      foreignKey: {
-        fieldName: 'userId',
-        allowNull: false,
-      },
+      foreignKey: 'userid',
     });
     Recommendation.hasMany(models.Rating, {
       as: 'rating',
       foreignKey: {
-        fieldName: 'recId',
-        allowNull: false,
+        field: 'recid',
         onDelete: 'CASADE',
       },
     });
     Recommendation.belongsTo(models.Category, {
       foreignKey: {
-        fieldName: 'categoryId',
-        allowNull: false,
+        field: 'categoryId',
       },
     });
   };
