@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const { authenticateUser } = require('../services/authenticateUser');
 const { validateRecommendation } = require('../services/validationChain');
-const { Recommendation } = require('../models');
 const {
   getAllRecs,
   createRec,
@@ -11,7 +10,7 @@ const {
   getRec,
   verifyUser,
 } = require('../services/recommendationFunctions');
-// middleware error hanlder
+// HOF try/catch error handling
 function asyncHandler(cb) {
   return async (req, res, next) => {
     try {
@@ -97,7 +96,7 @@ router.put(
     }
   })
 );
-//DELETE - recs/:id status: 204 - deletes a recommendation. Careful, this can not be undone. Deletes a recommendation and returns no content
+//DELETE - recs/:id status: 204 - deletes a recommendation if user owns it. Careful, this can not be undone. Deletes a recommendation and returns no content
 router.delete(
   '/recs/:id',
   authenticateUser,

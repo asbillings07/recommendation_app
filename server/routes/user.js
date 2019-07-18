@@ -9,6 +9,7 @@ const {
   updateUser,
 } = require('../services/userFunctions');
 
+// HOF try/catch error handling
 function asyncHandler(cb) {
   return async (req, res, next) => {
     try {
@@ -37,27 +38,22 @@ router.post(
   validateUser,
   asyncHandler(async (req, res) => {
     const user = req.body;
-    const users = await createUser(user);
-    if (users) {
-      res
-        .location('/')
-        .status(201)
-        .json({ message: 'User Created Successfully!' });
-    } else {
-      res.status(400).json({
-        error: 'something went wrong',
+    await createUser(user);
+    res
+      .location('/')
+      .status(201)
+      .json({
+        message: `Account for ${user.firstName} Created Successfully!`,
       });
-      console.log(error);
-    }
   })
 );
 
-// PUT /api/users
+// PUT /api/users - updates user and returns no content
 router.put('/users', authenticateUser, validateUser, async (req, res) => {
   const currentUserId = req.currentUser.id;
   const body = req.body;
-  const user = await updateUser(currentUserId, body);
-  res.status(201).json(user);
+  await updateUser(currentUserId, body);
+  res.status(204).end();
 });
 // DELETE (Careful, this deletes users from the DB) /api/users 204 - deletes a user, sets the location to '/', and returns no content
 router.delete(
@@ -65,17 +61,11 @@ router.delete(
   authenticateUser,
   asyncHandler(async (req, res) => {
     const user = req.currentUser;
-    const users = await deleteUser(user);
-    if (users) {
-      res
-        .status(204)
-        .location('/')
-        .end();
-    } else {
-      res.status(400).json({
-        error: error,
-      });
-    }
+    await deleteUser(user);
+    res
+      .status(204)
+      .location('/')
+      .end();
   })
 );
 module.exports = router;

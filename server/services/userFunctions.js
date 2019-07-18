@@ -1,7 +1,7 @@
 const { User } = require('../models');
 const bcrypt = require('bcryptjs');
 
-// creates user
+// creates user and hashes password
 const createUser = user => {
   user.password = bcrypt.hashSync(user.password);
 
@@ -23,7 +23,7 @@ const getUser = user => {
     password: user.password,
   };
 };
-// update user
+// Finds authed user by id then updates user and hashes password if needed
 const updateUser = (id, body) => {
   body.password = bcrypt.hashSync(body.password);
   User.findOne({ where: { id } }).then(user =>
@@ -35,15 +35,13 @@ const updateUser = (id, body) => {
     })
   );
 };
-// deletes a user
+// finds an authed user id then deletes a user
 const deleteUser = currentUser =>
   User.findOne({
     where: {
       id: currentUser.id,
     },
-  }).then(user => {
-    user.destroy();
-  });
+  }).then(user => user.destroy());
 
 module.exports = {
   createUser,
