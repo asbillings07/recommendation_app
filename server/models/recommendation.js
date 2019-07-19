@@ -21,6 +21,7 @@ module.exports = (sequelize, DataTypes) => {
     });
     Recommendation.hasMany(models.Rating, {
       as: 'rating',
+      onDelete: 'CASCADE',
       foreignKey: {
         field: 'recid',
       },

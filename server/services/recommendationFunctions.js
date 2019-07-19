@@ -63,6 +63,9 @@ const getRec = id =>
       {
         model: Rating,
         as: 'rating',
+        attributes: {
+          exclude: ['createdAt', 'updatedAt'],
+        },
       },
     ],
     attributes: {

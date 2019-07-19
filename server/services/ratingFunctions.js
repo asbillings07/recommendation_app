@@ -1,4 +1,4 @@
-const { Rating } = require('../models');
+const { Rating, User } = require('../models');
 
 // verifies user by checking the rating where the recommendation id is equal to the param id
 const verifyUser = id =>
@@ -7,6 +7,8 @@ const verifyUser = id =>
       recid: id,
     },
   });
+// get all ratings for the authed user
+const getRatings = id => Rating.findAll({ where: { userid: id } });
 // creates a rating on a given recommendation
 const createRating = (id, user, body) =>
   Rating.create({
@@ -23,12 +25,14 @@ const updateRating = (id, body) =>
       comment: body.comment,
     })
   );
+// deletes a rating along with their comments.
 const deleteRating = id =>
-  Rating.findOne({ where: { recid: id } }).then(rating => rating.destroy());
+  Rating.findOne({ where: { id } }).then(rating => rating.destroy());
 
 module.exports = {
   createRating,
   verifyUser,
   updateRating,
   deleteRating,
+  getRatings,
 };
