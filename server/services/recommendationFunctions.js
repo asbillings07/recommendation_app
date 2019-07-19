@@ -1,5 +1,6 @@
 const { Recommendation, User, Rating } = require('../models');
 
+// verifies user by checking the recommendation where the recommendation id is equal to the param id
 const verifyUser = id =>
   Recommendation.findOne({
     where: {
@@ -19,7 +20,7 @@ const createRec = (user, rec) =>
     lastvisited: rec.lastvisited,
   });
 
-// get all Recommendations
+// get all Recommendations including User and Rating
 
 const getAllRecs = () =>
   Recommendation.findAll({
@@ -45,7 +46,7 @@ const getAllRecs = () =>
     },
   });
 
-// get one Recommendation
+// get one Recommendation with id and include User and Ratings
 const getRec = id =>
   Recommendation.findAll({
     where: {
@@ -73,7 +74,7 @@ const getRec = id =>
     },
   });
 
-// Update one Recommendation
+// Update one Recommendation by Id
 const updateRecs = (id, body) =>
   Recommendation.findByPk(id).then(rec =>
     rec.update({
@@ -85,7 +86,7 @@ const updateRecs = (id, body) =>
     })
   );
 
-// Delete Recommendation
+// Delete Recommendation by Id
 const deleteRecs = id =>
   Recommendation.findByPk(id).then(rec => {
     if (rec) {

@@ -17,7 +17,7 @@ const createRating = (id, user, body) =>
     userid: user.id,
     comment: body.comment,
   });
-// updates rating on a given recommendation
+// updates rating on a given recommendation for user
 const updateRating = (id, body) =>
   Rating.findOne({ where: { recid: id } }).then(rating =>
     rating.update({
@@ -25,7 +25,7 @@ const updateRating = (id, body) =>
       comment: body.comment,
     })
   );
-// deletes a rating along with their comments.
+// deletes a rating along with their comments for user.
 const deleteRating = id =>
   Rating.findOne({ where: { recid: id } }).then(rating => rating.destroy());
 
