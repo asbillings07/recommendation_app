@@ -20,7 +20,7 @@ function asyncHandler(cb) {
     }
   };
 }
-
+// POST /rating/recs/:id status: 204 - creating a new rating for a given recommendation
 router.post(
   '/rating/recs/:id',
   authenticateUser,
@@ -33,7 +33,7 @@ router.post(
     res.status(204).end();
   })
 );
-
+// PUT /rating/recs/:id - status: 204 - updates a rating for an existing recommendaion if the user owns the rating.
 router.put('/rating/recs/:id', (req, res) => {});
 
 module.exports = router;

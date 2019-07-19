@@ -6,7 +6,7 @@ const verifyUser = id =>
       id,
     },
   });
-
+// creates a rating on a given recommendation
 const createRating = (id, user, body) =>
   Rating.create({
     rate: body.rate,
@@ -14,9 +14,9 @@ const createRating = (id, user, body) =>
     userid: user.id,
     comment: body.comment,
   });
-
-const updateRating = (id, user, body) => 
-Rating.findOne({ where: { recid: id} }).then( rating => )
+// updates rating on a given recommendation
+// const updateRating = (id, user, body) =>
+// Rating.findOne({ where: { recid: id} }).then( rating =>
 
 module.exports = {
   createRating,
