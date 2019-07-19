@@ -27,7 +27,7 @@ const updateRating = (id, body) =>
   );
 // deletes a rating along with their comments.
 const deleteRating = id =>
-  Rating.findOne({ where: { id } }).then(rating => rating.destroy());
+  Rating.findOne({ where: { recid: id } }).then(rating => rating.destroy());
 
 module.exports = {
   createRating,
