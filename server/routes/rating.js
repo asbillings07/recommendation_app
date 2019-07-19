@@ -2,6 +2,7 @@ const { authenticateUser } = require('../services/authenticateUser');
 const express = require('express');
 const router = express.Router();
 const { validateRating } = require('../services/validationChain');
+const asyncHandler = require('../services/asyncErrorHanlder');
 const {
   createRating,
   verifyUser,
@@ -10,22 +11,6 @@ const {
   getRatings,
 } = require('../services/ratingFunctions');
 
-// HOF try/catch error handling
-function asyncHandler(cb) {
-  return async (req, res, next) => {
-    try {
-      await cb(req, res, next);
-    } catch (err) {
-      if (err === 'SequelizeDatabaseError') {
-        res.status(err.status).json({ error: err.message });
-        console.log(err);
-      } else {
-        res.json({ error: err });
-        console.log(err);
-      }
-    }
-  };
-}
 // GET /rating status 200 - gets all ratings for user
 router.get('/rating', authenticateUser, async (req, res) => {
   const userId = req.currentUser.id;
@@ -50,7 +35,7 @@ router.put(
   '/rating/recs/:id',
   authenticateUser,
   validateRating,
-  async (req, res) => {
+  asyncHandler(async (req, res) => {
     const body = req.body;
     const id = +req.params.id;
     const user = req.currentUser;
@@ -64,22 +49,26 @@ router.put(
         message: 'You can not edit ratings or comments that you do not own',
       });
     }
-  }
+  })
 );
 // DELETE /rating/recs/:id - status: 204 - deletes a rating for an existing recommendaion if the user owns the rating - returns no content.
-router.delete('/rating/recs/:id', authenticateUser, async (req, res) => {
-  const id = +req.params.id;
-  const user = req.currentUser;
-  const authedUser = await verifyUser(id);
-  if (authedUser.userid === user.id) {
-    await deleteRating(id);
-    res.status(204).end();
-  } else {
-    res.status(403).json({
-      error: '403 Forbidden',
-      message: 'You can not delete ratings or comments that you do not own',
-    });
-  }
-});
+router.delete(
+  '/rating/recs/:id',
+  authenticateUser,
+  asyncHandler(async (req, res) => {
+    const id = +req.params.id;
+    const user = req.currentUser;
+    const authedUser = await verifyUser(id);
+    if (authedUser.userid === user.id) {
+      await deleteRating(id);
+      res.status(204).end();
+    } else {
+      res.status(403).json({
+        error: '403 Forbidden',
+        message: 'You can not delete ratings or comments that you do not own',
+      });
+    }
+  })
+);
 
 module.exports = router;

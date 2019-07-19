@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { authenticateUser } = require('../services/authenticateUser');
 const { validateRecommendation } = require('../services/validationChain');
+const asyncHandler = require('../services/asyncErrorHanlder');
 const {
   getAllRecs,
   createRec,
@@ -10,22 +11,7 @@ const {
   getRec,
   verifyUser,
 } = require('../services/recommendationFunctions');
-// HOF try/catch error handling
-function asyncHandler(cb) {
-  return async (req, res, next) => {
-    try {
-      await cb(req, res, next);
-    } catch (err) {
-      if (err === 'SequelizeDatabaseError') {
-        res.status(err.status).json({ error: err.message });
-        console.log(err);
-      } else {
-        res.json({ error: err });
-        console.log(err);
-      }
-    }
-  };
-}
+
 // GET /recs status: 200 - Returns a list of recommendations (including the user that owns each recommendation)
 router.get(
   '/recs',
