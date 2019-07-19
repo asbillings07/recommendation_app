@@ -2,6 +2,20 @@ const express = require('express');
 // required to show HTTP requests in console
 const morgan = require('morgan');
 
+/**
+ * To Use Passport 
+ * Require Passport 
+ * Require Session
+ * app.use(passport.initialize())
+
+// Restore Session
+app.use(passport.session())
+ * 1. Install Strategy
+ * 2. Create application with OAUTH provider
+ * 3. Configure Strategy
+ * 4. Create routes for logging in with provider
+ */
+
 const app = express();
 
 app.use(morgan('dev'));
