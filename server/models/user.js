@@ -30,6 +30,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
     });
+    User.belongsToMany(models.Recommendation, { through: 'SavedRec' });
   };
   return User;
 };

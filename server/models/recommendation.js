@@ -31,6 +31,7 @@ module.exports = (sequelize, DataTypes) => {
         field: 'categoryId',
       },
     });
+    Recommendation.belongsToMany(models.User, { through: 'SavedRec' });
   };
   return Recommendation;
 };

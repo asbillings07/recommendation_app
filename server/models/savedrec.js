@@ -6,26 +6,22 @@ module.exports = (sequelize, DataTypes) => {
       userid: {
         type: DataTypes.INTEGER,
         allowNull: false,
+        references: {
+          model: 'Users',
+          key: 'id',
+        },
       },
       recid: {
         type: DataTypes.INTEGER,
         allowNull: false,
+        references: {
+          model: 'Recommendation',
+          key: 'id',
+        },
       },
     },
     {}
   );
-  SavedRec.associate = models => {
-    //   SavedRec.hasMany(models.Recommendation, {
-    //     foreignKey: {
-    //       field: 'recid',
-    //     },
-    //   });
-    //   SavedRec.belongsTo(models.User, {
-    //     foreignKey: {
-    //       field: 'userid',
-    //       allowNull: false,
-    //     },
-    //   });
-  };
+
   return SavedRec;
 };
