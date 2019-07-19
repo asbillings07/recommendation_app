@@ -49,7 +49,7 @@ const validateUser = [
   errorHanlder,
 ];
 // checks to make sure title, desc, and location on the recommendation route are not blank
-validateRecommendation = [
+const validateRecommendation = [
   check('title')
     .exists({ checkNull: true, checkFalsy: true })
     .withMessage('Please include a title in your recommendation'),
@@ -63,8 +63,18 @@ validateRecommendation = [
     ),
   errorHanlder,
 ];
+const validateRating = [
+  check('rate')
+    .exists({ checkNull: true, checkFalsy: true })
+    .withMessage('Please provide a rating'),
+  check('comment')
+    .exists({ checkNull: true, checkFalsy: true })
+    .withMessage('Please provide a comment'),
+  errorHanlder,
+];
 module.exports = {
   validateUser,
   validateRecommendation,
   validateCategory,
+  validateRating,
 };

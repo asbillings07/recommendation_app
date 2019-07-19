@@ -18,8 +18,10 @@ function asyncHandler(cb) {
     } catch (err) {
       if (err === 'SequelizeDatabaseError') {
         res.status(err.status).json({ error: err.message });
+        console.log(err);
       } else {
         res.json({ error: err });
+        console.log(err);
       }
     }
   };
@@ -76,6 +78,7 @@ router.post(
     }
   })
 );
+
 //PUT /recs/:id status: 204 - Updates a recommendation if the user owns it, and returns no content
 router.put(
   '/recs/:id',

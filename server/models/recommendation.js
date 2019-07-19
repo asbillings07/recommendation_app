@@ -23,7 +23,6 @@ module.exports = (sequelize, DataTypes) => {
       as: 'rating',
       foreignKey: {
         field: 'recid',
-        onDelete: 'CASADE',
       },
     });
     Recommendation.belongsTo(models.Category, {

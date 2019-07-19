@@ -1,4 +1,4 @@
-const { Recommendation, User } = require('../models');
+const { Recommendation, User, Rating } = require('../models');
 
 const verifyUser = id =>
   Recommendation.findOne({
@@ -26,6 +26,15 @@ const getAllRecs = () =>
     include: [
       {
         model: User,
+        include: [
+          {
+            model: Rating,
+            as: 'userRating',
+            attributes: {
+              exclude: ['createdAt', 'updatedAt'],
+            },
+          },
+        ],
         attributes: {
           exclude: ['createdAt', 'updatedAt'],
         },
@@ -48,6 +57,12 @@ const getRec = id =>
         attributes: {
           exclude: ['createdAt', 'updatedAt'],
         },
+      },
+    ],
+    include: [
+      {
+        model: Rating,
+        as: 'rating',
       },
     ],
     attributes: {
