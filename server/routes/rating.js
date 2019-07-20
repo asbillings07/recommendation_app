@@ -9,6 +9,7 @@ const {
   updateRating,
   deleteRating,
   getRatings,
+  getRating,
 } = require('../services/ratingFunctions');
 
 // GET /rating status 200 - gets all ratings for user
@@ -26,8 +27,17 @@ router.post(
     const body = req.body;
     const id = +req.params.id;
     const user = req.currentUser;
-    await createRating(id, user, body);
-    res.status(204).end();
+    const rating = await verifyUser(id);
+    console.log(rating);
+    if (rating.userid !== user.id) {
+      await createRating(id, user, body);
+      res.status(204).end();
+    } else {
+      res.status(403).json({
+        message:
+          'You can not rate or comment on the same recommendation twice. Give someone else a turn.',
+      });
+    }
   })
 );
 // PUT /rating/recs/:id - status: 204 - updates a rating for an existing recommendaion if the user owns the rating - returns no content.
@@ -58,8 +68,8 @@ router.delete(
   asyncHandler(async (req, res) => {
     const id = +req.params.id;
     const user = req.currentUser;
-    const authedUser = await verifyUser(id);
-    if (authedUser.userid === user.id) {
+    const rating = await verifyUser(id);
+    if (rating.userid === user.id) {
       await deleteRating(id);
       res.status(204).end();
     } else {
