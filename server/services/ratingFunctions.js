@@ -7,6 +7,7 @@ const verifyUser = id =>
       recid: id,
     },
   });
+const getRating = id => Rating.findOne({ where: { userid: id } });
 // get all ratings for the authed user
 const getRatings = id => Rating.findAll({ where: { userid: id } });
 // creates a rating on a given recommendation
@@ -35,4 +36,5 @@ module.exports = {
   updateRating,
   deleteRating,
   getRatings,
+  getRating,
 };
