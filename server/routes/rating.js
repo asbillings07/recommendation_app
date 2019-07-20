@@ -9,7 +9,6 @@ const {
   updateRating,
   deleteRating,
   getRatings,
-  getRating,
 } = require('../services/ratingFunctions');
 
 // GET /rating status 200 - gets all ratings for user
