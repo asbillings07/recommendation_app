@@ -27,7 +27,7 @@ const userRoute = require('./routes/user');
 const recommendationRoute = require('./routes/recommendation');
 const categoryRoute = require('./routes/category');
 const ratingRoute = require('./routes/rating');
-const passportRoute = require('./routes/passportUser');
+const passportRoute = require('./routes/passportRoutes/passportRegisterUser');
 
 //api routes
 app.use('/api', userRoute);
