@@ -1,6 +1,6 @@
 const express = require('express');
-// required to show HTTP requests in console
 const morgan = require('morgan');
+const cors = require('cors');
 
 /**
  * To Use Passport 
@@ -17,21 +17,24 @@ app.use(passport.session())
  */
 
 const app = express();
-
+// required to show HTTP requests in console
 app.use(morgan('dev'));
 app.use(express.json());
+app.use(cors());
 
 //route requires
 const userRoute = require('./routes/user');
 const recommendationRoute = require('./routes/recommendation');
 const categoryRoute = require('./routes/category');
 const ratingRoute = require('./routes/rating');
+const passportRoute = require('./routes/passportUser');
 
 //api routes
 app.use('/api', userRoute);
 app.use('/api', recommendationRoute);
 app.use('/api', categoryRoute);
 app.use('/api', ratingRoute);
+app.use('/api', passportRoute);
 
 app.get('/', (req, res, next) => {
   res.json({
