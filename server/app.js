@@ -1,6 +1,9 @@
 const express = require('express');
 // required to show HTTP requests in console
 const morgan = require('morgan');
+const session = require('express-session');
+const Sequelize = require('sequelize');
+const passport = require('passport');
 
 const app = express();
 
@@ -12,12 +15,25 @@ const userRoute = require('./routes/user');
 const recommendationRoute = require('./routes/recommendation');
 const categoryRoute = require('./routes/category');
 const ratingRoute = require('./routes/rating');
+const passportAuth = require('./routes/passportAuth');
 
+// session options
+const sessionOptions = {
+  secret: 'this is a secret',
+  resave: true,
+  saveUninitialized: true,
+  store: new Sequelize(),
+};
 //api routes
 app.use('/api', userRoute);
 app.use('/api', recommendationRoute);
 app.use('/api', categoryRoute);
 app.use('/api', ratingRoute);
+app.use('/api', passportAuth);
+// require session and passport
+app.use(session(sessionOptions));
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.get('/', (req, res, next) => {
   res.json({
