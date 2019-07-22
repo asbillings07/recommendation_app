@@ -24,6 +24,7 @@ if (config.use_env_variable) {
     config
   );
 }
+
 // let's us know if our DB connection is good or not
 sequelize
   .authenticate()

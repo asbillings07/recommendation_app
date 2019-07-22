@@ -1,39 +1,101 @@
 const express = require('express');
 // required to show HTTP requests in console
 const morgan = require('morgan');
-const session = require('express-session');
+const expressSession = require('express-session');
 const Sequelize = require('sequelize');
 const passport = require('passport');
+const cookieParser = require('cookie-parser');
+const SessionStore = require('express-session-sequelize')(expressSession.Store);
+require('dotenv').config();
+const GitHubStrategy = require('passport-github').Strategy;
+const FacebookStrategy = require('passport-facebook').Strategy;
+const { User } = require('./models');
 
 const app = express();
 
 app.use(morgan('dev'));
 app.use(express.json());
-
+app.use(cookieParser());
+//create new instance of DB
+const myDatabase = new Sequelize('postgres', 'aaronbillings', 'password', {
+  host: 'localhost',
+  dialect: 'postgres',
+});
+// creating to store sessions for passport
+const sequelizeSessionStore = new SessionStore({
+  db: myDatabase,
+});
 //route requires
 const userRoute = require('./routes/user');
 const recommendationRoute = require('./routes/recommendation');
 const categoryRoute = require('./routes/category');
 const ratingRoute = require('./routes/rating');
-const passportAuth = require('./routes/passportAuth');
+const githubAuth = require('./routes/githubAuth');
+const fbAuth = require('./routes/fbAuth');
+
+// Github Strategy
+
+passport.use(
+  new GitHubStrategy(
+    {
+      clientID: process.env.GITHUB_CLIENT_ID,
+      clientSecret: process.env.GITHUB_CLIENT_SECRET,
+      callbackURL: 'http://localhost:5000/auth/github/return',
+    },
+    (accessToken, refreshToken, profile, done) => {
+      if (profile.emails[0]) {
+        User.findOneAndUpdate(
+          { email: profile.emails[0].value },
+          {
+            name: profile.displayName,
+            email: profile.emails[0].value,
+            photo: profile.photos[0].value,
+          },
+          {
+            upsert: true,
+          },
+          done
+        );
+      } else {
+        const noEmailError = new Error(
+          'Your email privacy settings previent you from signing into bookworm'
+        );
+        done(noEmailError, null);
+      }
+    }
+  )
+);
+
+// Facebook Strategy
 
 // session options
 const sessionOptions = {
   secret: 'this is a secret',
-  resave: true,
-  saveUninitialized: true,
-  store: new Sequelize(),
+  resave: false,
+  saveUninitialized: false,
+  store: sequelizeSessionStore,
 };
 //api routes
 app.use('/api', userRoute);
 app.use('/api', recommendationRoute);
 app.use('/api', categoryRoute);
 app.use('/api', ratingRoute);
-app.use('/api', passportAuth);
+app.use('/api', githubAuth);
+app.use('/api', fbAuth);
 // require session and passport
-app.use(session(sessionOptions));
+app.use(expressSession(sessionOptions));
 app.use(passport.initialize());
 app.use(passport.session());
+
+// serialize and deserialize user
+passport.serializeUser((user, done) => {
+  done(null, user.id);
+});
+passport.deserializeUser((userid, done) => {
+  User.findByPk(userid, (err, user) => {
+    done(err, user);
+  });
+});
 
 app.get('/', (req, res, next) => {
   res.json({
