@@ -30,43 +30,55 @@ const userRoute = require('./routes/user');
 const recommendationRoute = require('./routes/recommendation');
 const categoryRoute = require('./routes/category');
 const ratingRoute = require('./routes/rating');
-const githubAuth = require('./routes/githubAuth');
-const fbAuth = require('./routes/fbAuth');
+const passportAuth = require('./routes/passportAuth');
+
+// callback function
+const generateOrFindUser = (accessToken, refreshToken, profile, done) => {
+  if (profile.emails[0]) {
+    User.findOneAndUpdate(
+      { email: profile.emails[0].value },
+      {
+        name: profile.displayName,
+        email: profile.emails[0].value,
+        photo: profile.photos[0].value,
+      },
+      {
+        upsert: true,
+      },
+      done
+    );
+  } else {
+    const noEmailError = new Error(
+      'Your email privacy settings previent you from signing into bookworm'
+    );
+    done(noEmailError, null);
+  }
+};
 
 // Github Strategy
-
 passport.use(
   new GitHubStrategy(
     {
       clientID: process.env.GITHUB_CLIENT_ID,
       clientSecret: process.env.GITHUB_CLIENT_SECRET,
-      callbackURL: 'http://localhost:5000/auth/github/return',
+      callbackURL: 'http://localhost:5000/api/auth/github/return',
     },
-    (accessToken, refreshToken, profile, done) => {
-      if (profile.emails[0]) {
-        User.findOneAndUpdate(
-          { email: profile.emails[0].value },
-          {
-            name: profile.displayName,
-            email: profile.emails[0].value,
-            photo: profile.photos[0].value,
-          },
-          {
-            upsert: true,
-          },
-          done
-        );
-      } else {
-        const noEmailError = new Error(
-          'Your email privacy settings previent you from signing into bookworm'
-        );
-        done(noEmailError, null);
-      }
-    }
+    generateOrFindUser
   )
 );
 
 // Facebook Strategy
+passport.use(
+  new FacebookStrategy(
+    {
+      clientID: process.env.FACEBOOK_APP_ID,
+      clientSecret: process.env.FACEBOOK_APP_SECRET,
+      callbackURL: 'http://localhost:5000/api/auth/facebook/return',
+      profileFields: ['id', 'displayName', 'photos', 'email'],
+    },
+    generateOrFindUser
+  )
+);
 
 // session options
 const sessionOptions = {
@@ -80,8 +92,8 @@ app.use('/api', userRoute);
 app.use('/api', recommendationRoute);
 app.use('/api', categoryRoute);
 app.use('/api', ratingRoute);
-app.use('/api', githubAuth);
-app.use('/api', fbAuth);
+app.use('/api', passportAuth);
+
 // require session and passport
 app.use(expressSession(sessionOptions));
 app.use(passport.initialize());
