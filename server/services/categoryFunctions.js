@@ -23,23 +23,6 @@ const getCategories = () =>
             },
           },
         ],
-        include: [
-          {
-            model: User,
-            include: [
-              {
-                model: Rating,
-                as: 'userRating',
-                attributes: {
-                  exclude: ['createdAt', 'updatedAt'],
-                },
-              },
-            ],
-            attributes: {
-              exclude: ['createdAt', 'updatedAt'],
-            },
-          },
-        ],
         attributes: {
           exclude: ['createdAt', 'updatedAt'],
         },
