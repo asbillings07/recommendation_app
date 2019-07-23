@@ -17,10 +17,15 @@ app.use(morgan('dev'));
 app.use(express.json());
 app.use(cookieParser());
 //create new instance of DB
-const myDatabase = new Sequelize('postgres', 'aaronbillings', 'password', {
-  host: 'localhost',
-  dialect: 'postgres',
-});
+const myDatabase = new Sequelize(
+  'recommendation_app',
+  'aaronbillings',
+  'password',
+  {
+    host: 'localhost',
+    dialect: 'postgres',
+  }
+);
 // creating to store sessions for passport
 const sequelizeSessionStore = new SessionStore({
   db: myDatabase,
@@ -35,18 +40,19 @@ const passportAuth = require('./routes/passportAuth');
 // callback function
 const generateOrFindUser = (accessToken, refreshToken, profile, done) => {
   if (profile.emails[0]) {
-    User.findOneAndUpdate(
-      { email: profile.emails[0].value },
-      {
-        name: profile.displayName,
-        email: profile.emails[0].value,
-        photo: profile.photos[0].value,
-      },
-      {
-        upsert: true,
-      },
-      done
-    );
+    User.findOne({ where: { email: profile.emails[0].value } })
+      .then(user => {
+        user
+          .create({
+            firstName: profile.displayName.firstName,
+            lastName: profile.displayName.lastName,
+            photo: profile.photos[0].value,
+          })
+          .then((err, user) => {
+            return done(err, user);
+          });
+      })
+      .catch(err => console.log(err));
   } else {
     const noEmailError = new Error(
       'Your email privacy settings previent you from signing into bookworm'

@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { authenticateUser } = require('../services/authenticateUser');
+
 const { validateUser } = require('../services/validationChain');
 const {
   getUser,

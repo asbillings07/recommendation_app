@@ -18,7 +18,7 @@ router.get(
   passport.authenticate('github', { failureRedirect: '/' }),
   (req, res) => {
     // success Auth, redirect profile page
-    res.location('/');
+    res.redirect('/api/category');
   }
 );
 
@@ -42,7 +42,7 @@ router.get(
   passport.authenticate('facebook', { failureRedirect: '/' }),
   (req, res) => {
     // success Auth, redirect profile page
-    res.location('/');
+    res.redirect('/api/category');
   }
 );
 

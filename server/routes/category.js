@@ -26,7 +26,7 @@ router.get(
       res.status(200).json({ category });
     } else {
       res.status(404).json({
-        error: '404 Not Fount',
+        error: '404 Not Found',
         message: 'Category not found at selected route',
       });
     }
