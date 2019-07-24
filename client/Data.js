@@ -53,6 +53,40 @@ export default class Data {
     }
   }
 
+  // Update User
+  async updateUser(email, password, user) {
+    const response = await this.api('/users', 'PUT', user, true, {
+      email,
+      password,
+    });
+    if (response.status === 201) {
+      return [];
+    } else if (response.status === 403 || response.status === 400) {
+      return response.json().then(data => {
+        return data.errors;
+      });
+    } else {
+      throw new Error();
+    }
+  }
+
+  // Delete User
+  async deleteUser(email, password) {
+    const response = await this.api('/users', 'DELETE', null, true, {
+      email,
+      password,
+    });
+    if (response.status === 204) {
+      return [];
+    } else if (response.status === 400 || response.status === 403) {
+      return response.json().then(data => {
+        return data.errors;
+      });
+    } else {
+      throw new Error();
+    }
+  }
+
   // create recommendation
   async createRecommendation(email, password, info) {
     const response = await this.api('/recs', 'POST', info, true, {
