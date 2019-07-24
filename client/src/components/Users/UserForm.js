@@ -20,8 +20,8 @@ const UserForm = props => {
       <ErrorsDisplay errors={errors} />
       <Form onSubmit={handleSubmit}>
         {elements()}
-        <Button variant="primary" type="submit" onClick={submitButtonText}>
-          Submit
+        <Button variant="primary" type="submit">
+          {submitButtonText}
         </Button>
         <Button variant="secondary" onClick={handleCancel}>
           Cancel
