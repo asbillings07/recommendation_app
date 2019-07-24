@@ -2,6 +2,11 @@ import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import { Consumer } from './Context';
 
+/**
+ * A component that checks if user is Authorized if not redirects them to signin.
+ *
+ */
+
 export default ({ component: Component, ...rest }) => {
   return (
     <Consumer>

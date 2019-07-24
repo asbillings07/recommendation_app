@@ -1,22 +1,24 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Route, Swtich } from 'react-router-dom';
+import withContext from './Context';
 import Home from './components/Home';
 import Navigation from './components/Navigation';
+
 import './css/App.css';
-function App() {
+
+const App = () => {
+  const NavigationWithContext = withContext(Navigation);
+  const HomeWithContext = withContext(Home);
   return (
     <Router>
-      <Route path="/" component={Navigation} />
-      <div className="App">
-        <header className="App-header">
+      <NavigationWithContext />
+      <Swtich>
+        {/* <Route path="/" component={} /> */}
 
-        </header>
-      </div>
-      <div>
-        <Route exact path="/home" component={Home} />
-      </div>
+        <Route exact path="/home" component={HomeWithContext} />
+      </Swtich>
     </Router>
   );
-}
+};
 
 export default App;
