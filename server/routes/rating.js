@@ -17,7 +17,7 @@ router.get('/rating', authenticateUser, async (req, res) => {
   const ratings = await getRatings(userId);
   res.status(200).json(ratings);
 });
-// POST /rating/recs/:id status: 204 - creating a new rating for a given recommendation
+// POST /rating/recs/:id status: 201 - creating a new rating for a given recommendation
 router.post(
   '/rating/recs/:id',
   authenticateUser,
@@ -30,7 +30,7 @@ router.post(
     console.log(rating);
     if (rating.userid !== user.id) {
       await createRating(id, user, body);
-      res.status(204).end();
+      res.status(201).end();
     } else {
       res.status(403).json({
         message:
