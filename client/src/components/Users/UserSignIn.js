@@ -1,61 +1,61 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import UserForm from './UserForm';
-import styled from 'styled-components';
-import { Form } from 'react-bootstrap/Form';
+import { Form, Container, Row, Col } from 'react-bootstrap';
+
 export default class UserSignIn extends Component {
   state = {
     email: '',
     password: '',
-    errors: [],
+    errors: '',
   };
 
   render() {
     const { email, password, errors } = this.state;
 
     return (
-      <FormContaner>
-        <h1>Sign In</h1>
-        <UserForm
-          cancel={this.cancel}
-          errors={errors}
-          submit={this.submit}
-          submitButtonText="Sign In"
-          elements={() => (
-            <React.Fragment>
-              <Form.Group controlId="formBasicEmail">
-                <Form.Label>Email address</Form.Label>
-                <Form.Control
-                  type="email"
-                  name="email"
-                  value={email}
-                  placeholder="name@example.com"
-                  onChange={this.change}
-                />
-                <Form.Text className="text-muted">
-                  We'll never share your email with anyone else.
-                </Form.Text>
-              </Form.Group>
+      <Container>
+        <Row className="justify-content-md-center">
+          <Col xs md lg="auto">
+            <h1>Sign In</h1>
 
-              <Form.Group controlId="formBasicPassword">
-                <Form.Label>Password</Form.Label>
-                <Form.Control
-                  type="password"
-                  name="password"
-                  value={password}
-                  placeholder="password"
-                  onChange={this.change}
-                />
-              </Form.Group>
-            </React.Fragment>
-          )}
-        />
+            <UserForm
+              cancel={this.cancel}
+              errors={errors}
+              submit={this.submit}
+              submitButtonText="Sign In"
+              elements={() => (
+                <React.Fragment>
+                  <Form.Group controlId="formBasicEmail">
+                    <Form.Control
+                      type="email"
+                      name="email"
+                      value={email}
+                      placeholder="name@example.com"
+                      onChange={this.change}
+                    />
+                  </Form.Group>
 
-        <p>
-          Don't have a user account? <Link to="/signup">Click here</Link> to
-          sign up!
-        </p>
-      </FormContaner>
+                  <Form.Group controlId="formBasicPassword">
+                    <Form.Control
+                      type="password"
+                      name="password"
+                      value={password}
+                      placeholder="password"
+                      onChange={this.change}
+                    />
+                  </Form.Group>
+                </React.Fragment>
+              )}
+            />
+
+            <p>
+              Don't have a user account? <Link to="/signup">Click here</Link> to
+              sign up!
+            </p>
+          </Col>
+        </Row>
+      </Container>
     );
   }
 
@@ -78,15 +78,17 @@ export default class UserSignIn extends Component {
     context.actions
       .signIn(email, password)
       .then(user => {
-        if (user === null) {
-          this.setState(() => {
-            return {
-              errors: ['Sign-In was unsuccessful'],
-            };
-          });
-        } else {
+        if (user !== null) {
           this.props.history.push(from);
           console.log('User signed In successfully');
+        } else {
+          this.setState(() => {
+            return {
+              errors: [
+                'Incorrect Email or Password, check your credentials and try again',
+              ],
+            };
+          });
         }
       })
       .catch(err => {
@@ -99,9 +101,3 @@ export default class UserSignIn extends Component {
     this.props.history.push('/');
   };
 }
-
-// div container styled component that centers form
-const FormContaner = styled.div`
-  display: flex;
-  justify-content: center;
-`;

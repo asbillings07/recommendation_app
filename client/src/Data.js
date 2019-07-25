@@ -17,7 +17,7 @@ export default class Data {
 
     if (requiresAuth) {
       const endcodedCreds = btoa(`${creds.email}:${creds.password}`);
-      options.headers['Authoriztion'] = `Basic ${endcodedCreds}`;
+      options.headers['Authorization'] = `Basic ${endcodedCreds}`;
     }
 
     return fetch(url, options);
@@ -33,12 +33,12 @@ export default class Data {
     });
 
     if (response.status === 200) {
+      return response.json().then(data => data);
+    } else if (response.status === 401) {
       return response
         .json()
-        .then(data => data)
+        .then(data => console.log(data.errors))
         .catch(err => console.log(err));
-    } else if (response.status === 401) {
-      return null;
     } else {
       throw new Error();
     }

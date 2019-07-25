@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Button } from 'react-bootstrap/Form';
+import { Form, Button } from 'react-bootstrap';
 import styled from 'styled-components';
 
 const UserForm = props => {
@@ -20,10 +20,11 @@ const UserForm = props => {
       <ErrorsDisplay errors={errors} />
       <Form onSubmit={handleSubmit}>
         {elements()}
-        <Button variant="primary" type="submit">
+
+        <Button className="mr-1" variant="primary" type="submit">
           {submitButtonText}
         </Button>
-        <Button variant="secondary" onClick={handleCancel}>
+        <Button className="mr-1" variant="secondary" onClick={handleCancel}>
           Cancel
         </Button>
       </Form>
@@ -37,23 +38,23 @@ function ErrorsDisplay({ errors }) {
   if (errors.length) {
     errorsDisplay = (
       <React.Fragment>
-        <validationLabel>Errors:</validationLabel>
-        <validationUl>
+        <ValidationLabel>Errors:</ValidationLabel>
+        <ValidationUl>
           {errors.map((error, i) => (
             <li key={i}>{error}</li>
           ))}
-        </validationUl>
+        </ValidationUl>
       </React.Fragment>
     );
   }
   return errorsDisplay;
 }
 
-const validationUl = styled.div`
+const ValidationUl = styled.div`
   color: red;
   padding: 15px 0 40px 10px;
 `;
-const validationLabel = styled.h2`
+const ValidationLabel = styled.h2`
   color: #0069c0;
   font-size: 28px;
 `;

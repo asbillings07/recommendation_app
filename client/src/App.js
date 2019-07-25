@@ -20,9 +20,9 @@ const App = () => {
     <Router>
       <NavigationWithContext />
       <Switch>
-        <Route path="/" component={HomeWithContext} />
+        <Route exact path="/" component={HomeWithContext} />
 
-        <Route exact path="/home" component />
+        {/* <Route exact path="/home" component /> */}
         <Route path="/signup" component={SignUpWithContext} />
         <Route path="/signin" component={SignInWithContext} />
         <Route path="/signout" component={SignOutWithContext} />

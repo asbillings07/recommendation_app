@@ -6,7 +6,7 @@ const Navigation = ({ context }) => {
   return (
     <div>
       <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
-        <Navbar.Brand href="/home">Recommendation App</Navbar.Brand>
+        <Navbar.Brand href="/">Recommend It!</Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           {authorizedUser ? (
@@ -25,8 +25,8 @@ const Navigation = ({ context }) => {
           ) : (
             <React.Fragment>
               <Nav className="mr-auto">
-                <Nav.Link href="#about">SignIn</Nav.Link>
-                <Nav.Link href="#signout">SignUp</Nav.Link>
+                <Nav.Link href="/signin">SignIn</Nav.Link>
+                <Nav.Link href="/signup">SignUp</Nav.Link>
               </Nav>
             </React.Fragment>
           )}
