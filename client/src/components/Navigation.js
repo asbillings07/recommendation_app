@@ -19,7 +19,7 @@ const Navigation = ({ context }) => {
 
               <Nav>
                 <Nav.Link href="#about">About</Nav.Link>
-                <Nav.Link href="#signout">Sign Out</Nav.Link>
+                <Nav.Link href="/signout">Sign Out</Nav.Link>
               </Nav>
             </React.Fragment>
           ) : (

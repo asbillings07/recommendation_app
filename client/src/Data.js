@@ -95,6 +95,18 @@ export default class Data {
     }
   }
 
+  async resetUserPassword(email) {
+    const response = await this.api('/forgotPassword', 'POST', email);
+    if (response.status === 200) {
+      return response.json().then(data => data);
+    } else if (response.status > 204) {
+      return response
+        .json()
+        .then(data => data.errors)
+        .catch(err => console.log(err));
+    }
+  }
+
   /** CATEGORY METHODS */
 
   // createCategory
