@@ -19,7 +19,6 @@ class Home extends Component {
       <div className="container">
         <Jumbotron className="jumbo-bk" fluid>
           <Container>
-            {console.log(authUser)}
             {authUser ? (
               <h1>Welcome, {authUser.firstName}!</h1>
             ) : (
