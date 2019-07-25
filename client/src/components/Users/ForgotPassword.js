@@ -63,7 +63,7 @@ export default class ForgotPassword extends Component {
     const { context } = this.props;
     const { email } = this.state;
     context.data
-      .resetUserPassword(email)
+      .forgotUserPassword(email)
       .then(user => {
         if (user) {
           this.setState({

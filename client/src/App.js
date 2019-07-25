@@ -8,6 +8,7 @@ import UserSignUp from './components/Users/UserSignUp';
 import UserSignOut from './components/Users/UserSignOut';
 import PrivateRoute from './PrivateRoute';
 import ForgotPassword from './components/Users/ForgotPassword';
+import ResetPassword from './components/Users/ResetPassword';
 import './css/App.css';
 
 const App = () => {
@@ -17,6 +18,7 @@ const App = () => {
   const SignUpWithContext = withContext(UserSignUp);
   const SignOutWithContext = withContext(UserSignOut);
   const ForgotPasswordWithContext = withContext(ForgotPassword);
+  const ResetPasswordWithContext = withContext(ResetPassword);
 
   return (
     <Router>
@@ -28,10 +30,8 @@ const App = () => {
         <Route path="/signup" component={SignUpWithContext} />
         <Route path="/signin" component={SignInWithContext} />
         <Route path="/signout" component={SignOutWithContext} />
-        <PrivateRoute
-          path="/forgotpassword"
-          component={ForgotPasswordWithContext}
-        />
+        <Route path="/forgotpassword" component={ForgotPasswordWithContext} />
+        <Route path="/reset/:token" component={ResetPasswordWithContext} />
       </Switch>
     </Router>
   );

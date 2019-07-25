@@ -94,9 +94,21 @@ export default class Data {
       throw new Error();
     }
   }
-
-  async resetUserPassword(email) {
+  // sends user reset email password link via email
+  async forgotUserPassword(email) {
     const response = await this.api('/forgotpassword', 'POST', email);
+    if (response.status === 200) {
+      return response.json().then(data => data);
+    } else if (response.status > 204) {
+      return response
+        .json()
+        .then(data => data.errors)
+        .catch(err => console.log(err));
+    }
+  }
+
+  async resetUserPassword(token) {
+    const response = await this.api('/reset', 'GET', token);
     if (response.status === 200) {
       return response.json().then(data => data);
     } else if (response.status > 204) {
