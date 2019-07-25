@@ -43,9 +43,17 @@ const deleteUser = currentUser =>
     },
   }).then(user => user.destroy());
 
+const findUserByEmail = email =>
+  User.findOne({
+    where: {
+      email,
+    },
+  });
+
 module.exports = {
   createUser,
   getUser,
   deleteUser,
   updateUser,
+  findUserByEmail,
 };

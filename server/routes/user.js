@@ -7,6 +7,7 @@ const {
   createUser,
   deleteUser,
   updateUser,
+  findUserByEmail,
 } = require('../services/userFunctions');
 
 // HOF try/catch error handling
@@ -66,4 +67,5 @@ router.delete(
       .end();
   })
 );
+
 module.exports = router;

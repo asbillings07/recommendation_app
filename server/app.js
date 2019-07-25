@@ -14,12 +14,14 @@ const userRoute = require('./routes/user');
 const recommendationRoute = require('./routes/recommendation');
 const categoryRoute = require('./routes/category');
 const ratingRoute = require('./routes/rating');
+const forgotPassword = require('./routes/forgotPassword');
 
 //api routes
 app.use('/api', userRoute);
 app.use('/api', recommendationRoute);
 app.use('/api', categoryRoute);
 app.use('/api', ratingRoute);
+app.use('/api', forgotPassword);
 
 app.get('/', (req, res, next) => {
   res.json({
