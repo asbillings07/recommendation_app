@@ -50,10 +50,21 @@ const findUserByEmail = email =>
     },
   });
 
+const findUserByToken = token =>
+  User.findOne({
+    where: {
+      resetPasswordToken: token,
+      resetPasswordExpires: {
+        $gt: Date.now(),
+      },
+    },
+  });
+
 module.exports = {
   createUser,
   getUser,
   deleteUser,
   updateUser,
   findUserByEmail,
+  findUserByToken,
 };
