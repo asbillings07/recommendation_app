@@ -96,7 +96,7 @@ export default class Data {
   }
 
   async resetUserPassword(email) {
-    const response = await this.api('/forgotPassword', 'POST', email);
+    const response = await this.api('/forgotpassword', 'POST', email);
     if (response.status === 200) {
       return response.json().then(data => data);
     } else if (response.status > 204) {
