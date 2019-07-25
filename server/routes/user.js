@@ -28,9 +28,7 @@ function asyncHandler(cb) {
 router.get('/users', authenticateUser, (req, res) => {
   const user = req.currentUser;
   const users = getUser(user);
-  res.status(200).json({
-    users,
-  });
+  res.status(200).json(users);
 });
 //POST /api/users 201 - Creates a user, sets the Location header to "/", and returns 'User created succesfully'
 router.post(
