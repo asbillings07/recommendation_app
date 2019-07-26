@@ -21,7 +21,7 @@ router.post(
     const user = await findUserByEmail(email);
     if (!user) {
       console.log('email not in DB');
-      res.status(400).json('Email not in DB');
+      res.status(400).json({ message: 'email not in DB' });
     } else {
       const token = crypto.randomBytes(20).toString('hex');
       console.log(token);
@@ -56,7 +56,7 @@ router.post(
           console.error(`There was an error: ${err}`);
         } else {
           console.log(`here is the response: ${response}`);
-          res.status(200).json('Recovery Email Sent');
+          res.status(200).json({ message: 'Recovery Email Sent' });
         }
       });
     }

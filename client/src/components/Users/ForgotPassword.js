@@ -68,14 +68,16 @@ export default class ForgotPassword extends Component {
         if (user) {
           this.setState({
             showError: false,
-            messageFromServer:
+            messageFromServer: [
               'Recovery email on the way, please check your email to reset your password',
+            ],
           });
         } else {
           this.setState({
             showError: true,
-            messageFromServer:
+            messageFromServer: [
               'Email not found in our in Database, please try again',
+            ],
           });
         }
       })

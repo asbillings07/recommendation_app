@@ -82,7 +82,7 @@ export default class UserSignIn extends Component {
     context.actions
       .signIn(email, password)
       .then(user => {
-        if (user !== null) {
+        if (user) {
           this.props.history.push(from);
           console.log('User signed In successfully');
         } else {
