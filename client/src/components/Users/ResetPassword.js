@@ -4,6 +4,7 @@ import Config from '../../Config';
 import Axios from 'axios';
 import UserForm from './UserForm';
 import { Alert, Form, Container, Row, Col, Button } from 'react-bootstrap';
+import Spinner from '../Spinner.js';
 
 export default class ResetPassword extends Component {
   state = {
@@ -70,7 +71,7 @@ export default class ResetPassword extends Component {
         </Container>
       );
     } else if (isloading) {
-      return null;
+      return <Spinner size="4x" spinning="spinning" />;
     } else {
       return (
         <Container>
