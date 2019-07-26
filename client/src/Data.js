@@ -2,7 +2,7 @@ import Config from './Config';
 
 export default class Data {
   api(path, method = 'GET', body = null, requiresAuth = false, creds = null) {
-    const url = Config.apiBaseUrl + path;
+    let url = Config.apiBaseUrl + path;
 
     const options = {
       method,
@@ -79,7 +79,7 @@ export default class Data {
 
   // Delete User
   async deleteUser(email, password) {
-    const response = await this.api('/users', 'DELETE', null, true, {
+    const response = await this.api('/users', 'DELETE', null, null, true, {
       email,
       password,
     });
@@ -107,10 +107,13 @@ export default class Data {
     }
   }
 
-  async resetUserPassword(token) {
-    const response = await this.api('/reset', 'GET', token);
+  /** @param Obj */
+
+  async updateUserPassword(user) {
+    const response = await this.api('/updatepasswordviaemail', 'PUT', user);
+
     if (response.status === 200) {
-      return response.json().then(data => data);
+      return [];
     } else if (response.status > 204) {
       return response
         .json()

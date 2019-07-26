@@ -33,7 +33,7 @@ router.post('/forgotpassword', validateEmail, async (req, res, _next) => {
         pass: `${process.env.EMAIL_PASSWORD}`,
       },
     });
-    const passwordResetLink = `http://localhost:5000/api/reset/${token}`;
+    const passwordResetLink = `http://localhost:3000/reset/${token}`;
     const mailOptions = {
       from: 'recommendItBot@gmail.com',
       to: `${user.email}`,
@@ -60,22 +60,24 @@ router.post('/forgotpassword', validateEmail, async (req, res, _next) => {
 
 //GET /api/reset - status: 200 - finds user by password reset token, if the token exists on the query param user can proceed to reset their password.
 router.get('/reset', async (req, res, _next) => {
-  const { resetPasswordToken } = req.query;
-  const user = await findUserByToken(resetPasswordToken);
-  if (!user) {
-    console.log('password reset link is invalid or expired');
-    res.status(400).json('password reset link is invalid or expired');
-  } else {
+  const token = req.query.resetPasswordToken;
+  console.log(token);
+  const user = await findUserByToken(token);
+
+  if (user) {
     res.status(200).json({
       email: user.email,
       message: 'password reset link successful',
     });
+  } else {
+    console.log('password reset link is invalid or expired');
+    res.status(400).json('password reset link is invalid or expired');
   }
 });
 
 //PUT /api/updatepassword - status: 200 - finds user by email, hashes password, inserts it into DB, resets token & expiration to null
 
-router.put('/updatepassword', async (req, res, _next) => {
+router.put('/updatepasswordviaemail', async (req, res, _next) => {
   const { email } = req.body;
   const user = await findUserByEmail(email);
   if (user) {

@@ -24,24 +24,24 @@ export default class UserSignUp extends Component {
               cancel={this.cancel}
               errors={errors}
               submit={this.submit}
-              submitButtonText="Sign In"
+              submitButtonText="Sign Up"
               elements={() => (
                 <React.Fragment>
-                  <Form.Group>
-                    <Form.Control
-                      type="text"
-                      name="lastName"
-                      placeholder="Last Name"
-                      value={lastName}
-                      onChange={this.change}
-                    />
-                  </Form.Group>
                   <Form.Group>
                     <Form.Control
                       type="text"
                       name="firstName"
                       placeholder="First Name"
                       value={firstName}
+                      onChange={this.change}
+                    />
+                  </Form.Group>
+                  <Form.Group>
+                    <Form.Control
+                      type="text"
+                      name="lastName"
+                      placeholder="Last Name"
+                      value={lastName}
                       onChange={this.change}
                     />
                   </Form.Group>

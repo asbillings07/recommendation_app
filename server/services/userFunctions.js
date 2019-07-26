@@ -54,9 +54,6 @@ const findUserByToken = token =>
   User.findOne({
     where: {
       resetPasswordToken: token,
-      resetPasswordExpires: {
-        $gt: Date.now(),
-      },
     },
   });
 

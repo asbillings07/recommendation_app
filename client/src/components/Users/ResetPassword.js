@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import Config from '../../Config';
+import Axios from 'axios';
 import UserForm from './UserForm';
 import { Form, Container, Row, Col } from 'react-bootstrap';
 
@@ -13,36 +15,66 @@ export default class ResetPassword extends Component {
     error: '',
   };
 
-  componentDidMount() {
-    const { context } = this.props;
+  async componentDidMount() {
     const { token } = this.props.match.params;
     console.log(token);
-    context.data
-      .resetUserPassword(token)
-      .then(user => {
-        if (user) {
+    await Axios.get(`${Config.apiBaseUrl}/reset`, {
+      params: {
+        resetPasswordToken: token,
+      },
+    })
+      .then(res => {
+        console.log(res);
+        if (res.data.status === 200) {
           this.setState({
-            email: user.email,
+            email: res.data.email,
             update: false,
             isloading: false,
           });
-        } else {
+        } else if (res.data.status > 200) {
           this.setState({
             update: false,
             isloading: false,
-            error: 'Token is not valid',
+            error: 'Invalid Token, please try to reset your password again.',
           });
         }
       })
       .catch(err => {
         console.log(err);
-        this.props.history.push('/error');
+        // this.props.history.push('/error');
       });
   }
 
   render() {
-    return;
+    const { password, error, isloading, updated } = this.state;
+    return (
+      <Container>
+        <Row className="justify-content-md-center">
+          <Col xs md lg="auto">
+            <UserForm
+              cancel={this.cancel}
+              errors={error}
+              submit={this.submit}
+              submitButtonText="Update Password"
+              elements={() => (
+                <Form.Group controlId="formBasicPassword">
+                  <Form.Control
+                    type="password"
+                    name="password"
+                    value={password}
+                    placeholder="password"
+                    onChange={this.change}
+                  />
+                </Form.Group>
+              )}
+            />
+          </Col>
+        </Row>
+      </Container>
+    );
   }
+
+  submit = () => {};
 
   change = e => {
     const name = e.target.name;
@@ -53,5 +85,9 @@ export default class ResetPassword extends Component {
         [name]: value,
       };
     });
+  };
+
+  cancel = () => {
+    this.props.history.push('/');
   };
 }
