@@ -16,13 +16,10 @@ const saltRounds = 12;
 router.post(
   '/forgotpassword',
   validateEmail,
-  asyncHandler(async (req, res, _next) => {
+  asyncHandler(async (req, res, next) => {
     const { email } = req.body;
     const user = await findUserByEmail(email);
-    if (!user) {
-      console.log('email not in DB');
-      res.status(400).json({ message: 'email not in DB' });
-    } else {
+    if (user) {
       const token = crypto.randomBytes(20).toString('hex');
       console.log(token);
       user.update({
@@ -59,6 +56,9 @@ router.post(
           res.status(200).json({ message: 'Recovery Email Sent' });
         }
       });
+    } else {
+      console.log('email not in DB');
+      res.status(400).json({ message: 'email not in DB' });
     }
   })
 );

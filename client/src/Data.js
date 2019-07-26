@@ -2,7 +2,7 @@ import Config from './Config';
 
 export default class Data {
   api(path, method = 'GET', body = null, requiresAuth = false, creds = null) {
-    let url = Config.apiBaseUrl + path;
+    const url = Config.apiBaseUrl + path;
 
     const options = {
       method,
@@ -13,6 +13,8 @@ export default class Data {
 
     if (body !== null) {
       options.body = JSON.stringify(body);
+      console.log(body);
+      console.log(options.body);
     }
 
     if (requiresAuth) {
@@ -94,12 +96,16 @@ export default class Data {
       throw new Error();
     }
   }
+
+  /** RESET PASSWORD METHODS */
+
   // sends user reset email password link via email
   async forgotUserPassword(email) {
     const response = await this.api('/forgotpassword', 'POST', email);
     if (response.status === 200) {
+      console.log(response);
       return response.json().then(data => data);
-    } else if (response.status > 204) {
+    } else if (response.status === 400 || response.status === 403) {
       return response
         .json()
         .then(data => data.errors)
@@ -114,7 +120,7 @@ export default class Data {
 
     if (response.status === 200) {
       return [];
-    } else if (response.status > 204) {
+    } else if (response.status === 400 || response.status === 403) {
       return response
         .json()
         .then(data => data.errors)

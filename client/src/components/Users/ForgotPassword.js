@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import UserForm from './UserForm';
 import { Form, Container, Row, Col } from 'react-bootstrap';
+import Axios from 'axios';
+import Config from '../../Config';
 
 export default class ForgotPassword extends Component {
   state = {
@@ -60,30 +62,38 @@ export default class ForgotPassword extends Component {
   };
 
   submit = () => {
-    const { context } = this.props;
     const { email } = this.state;
-    context.data
-      .forgotUserPassword(email)
-      .then(user => {
-        if (user) {
+    Axios.post(`${Config.apiBaseUrl}/forgotpassword`, {
+      email,
+    })
+      .then(res => {
+        console.log(res);
+        if (res.data.status === 200) {
           this.setState({
-            showError: false,
             messageFromServer: [
               'Recovery email on the way, please check your email to reset your password',
             ],
           });
         } else {
-          this.setState({
-            showError: true,
-            messageFromServer: [
-              'Email not found in our in Database, please try again',
-            ],
+          this.setState(() => {
+            return {
+              messageFromServer: [
+                'Incorrect Email or Password, check your credentials and try again',
+              ],
+            };
           });
         }
       })
       .catch(err => {
+        if (err) {
+          this.setState({
+            messageFromServer: [
+              'Email Not found in Database, check your credentials and try again',
+            ],
+          });
+        }
         console.log(err);
-        this.props.history.push('/error');
+        // this.props.history.push('/error');
       });
   };
 
