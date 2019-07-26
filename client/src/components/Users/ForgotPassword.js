@@ -59,7 +59,7 @@ export default class ForgotPassword extends Component {
     });
   };
 
-  Submit = () => {
+  submit = () => {
     const { context } = this.props;
     const { email } = this.state;
     context.data

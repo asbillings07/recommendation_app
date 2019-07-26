@@ -53,6 +53,10 @@ export default class UserSignIn extends Component {
               Don't have a user account? <Link to="/signup">Click here</Link> to
               sign up!
             </p>
+            <p>
+              Forgot your password? <Link to="/forgotpassword">Click here</Link>{' '}
+              to reset it!
+            </p>
           </Col>
         </Row>
       </Container>
