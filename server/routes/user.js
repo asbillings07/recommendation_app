@@ -2,28 +2,14 @@ const express = require('express');
 const router = express.Router();
 const { authenticateUser } = require('../services/authenticateUser');
 const { validateUser } = require('../services/validationChain');
+const asyncHandler = require('../services/asyncErrorHanlder');
 const {
   getUser,
   createUser,
   deleteUser,
   updateUser,
-  findUserByEmail,
 } = require('../services/userFunctions');
 
-// HOF try/catch error handling
-function asyncHandler(cb) {
-  return async (req, res, next) => {
-    try {
-      await cb(req, res, next);
-    } catch (err) {
-      if (err === 'SequelizeDatabaseError') {
-        res.status(err.status).json({ error: err.message });
-      } else {
-        console.log(err);
-      }
-    }
-  };
-}
 // User Routes
 //GET /api/users 200 - Returns the currently authenticated user
 router.get('/users', authenticateUser, (req, res) => {

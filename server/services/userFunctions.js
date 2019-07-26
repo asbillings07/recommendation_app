@@ -1,5 +1,7 @@
 const { User } = require('../models');
 const bcrypt = require('bcryptjs');
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
 
 // creates user and hashes password
 const createUser = user => {
@@ -54,6 +56,9 @@ const findUserByToken = token =>
   User.findOne({
     where: {
       resetPasswordToken: token,
+      resetPasswordExpires: {
+        [Op.gt]: Date.now(),
+      },
     },
   });
 
