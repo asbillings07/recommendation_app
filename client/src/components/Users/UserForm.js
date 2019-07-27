@@ -3,7 +3,14 @@ import { Form, Button } from 'react-bootstrap';
 import styled from 'styled-components';
 
 const UserForm = props => {
-  const { cancel, errors, submit, submitButtonText, elements } = props;
+  const {
+    cancel,
+    errors,
+    submit,
+    submitButtonText,
+    elements,
+    passwordErrors,
+  } = props;
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -17,7 +24,7 @@ const UserForm = props => {
 
   return (
     <React.Fragment>
-      <ErrorsDisplay errors={errors} />
+      <ErrorsDisplay errors={errors} passwordErrors={passwordErrors} />
       <Form onSubmit={handleSubmit}>
         {elements()}
 

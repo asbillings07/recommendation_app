@@ -8,10 +8,11 @@ export default class UserSignIn extends Component {
     email: '',
     password: '',
     errors: '',
+    confirmed: true,
   };
 
   render() {
-    const { email, password, errors } = this.state;
+    const { email, password, errors, confirmed } = this.state;
 
     return (
       <Container>
@@ -23,6 +24,7 @@ export default class UserSignIn extends Component {
               cancel={this.cancel}
               errors={errors}
               submit={this.submit}
+              passwordErrors={confirmed}
               submitButtonText="Sign In"
               elements={() => (
                 <React.Fragment>
