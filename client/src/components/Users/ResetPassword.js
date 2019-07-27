@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import Config from '../../Config';
 import Axios from 'axios';
 import UserForm from './UserForm';
-import { Alert, Form, Container, Row, Col, Button } from 'react-bootstrap';
+import { Alert, Form, Container, Row, Col } from 'react-bootstrap';
 import Spinner from '../Spinner.js';
 
 export default class ResetPassword extends Component {
@@ -11,10 +10,10 @@ export default class ResetPassword extends Component {
     email: '',
     password: '',
     confirmPassword: '',
-    update: false,
     isloading: true,
     error: false,
     errors: '',
+    updated: false,
   };
 
   async componentDidMount() {
@@ -29,13 +28,13 @@ export default class ResetPassword extends Component {
       if (res.data.message === 'successful') {
         this.setState({
           email: res.data.email,
-          update: false,
+          updated: false,
           isloading: false,
           error: false,
         });
       } else {
         this.setState({
-          update: false,
+          updated: false,
           isloading: false,
           error: true,
           errors: 'Password Token Expired',
@@ -45,7 +44,14 @@ export default class ResetPassword extends Component {
   }
 
   render() {
-    const { password, error, errors, isloading, updated } = this.state;
+    const {
+      password,
+      updated,
+      confirmPassword,
+      error,
+      errors,
+      isloading,
+    } = this.state;
     if (error) {
       return (
         <Container>
@@ -72,6 +78,26 @@ export default class ResetPassword extends Component {
       );
     } else if (isloading) {
       return <Spinner size="4x" spinning="spinning" />;
+    } else if (updated) {
+      return (
+        <Container>
+          <Row className="justify-content-md-center">
+            <Col xs md lg="auto">
+              <Alert variant="success">
+                <Alert.Heading>Password Reset Successful</Alert.Heading>
+                <p>
+                  Your password has been reset succesfully. Follow the link to
+                  sign in with your new password.
+                </p>
+                <hr />
+                <Alert.Link href="/signin" className="mb-0">
+                  Sign In
+                </Alert.Link>
+              </Alert>
+            </Col>
+          </Row>
+        </Container>
+      );
     } else {
       return (
         <Container>
@@ -83,15 +109,26 @@ export default class ResetPassword extends Component {
                 submit={this.submit}
                 submitButtonText="Update Password"
                 elements={() => (
-                  <Form.Group controlId="formBasicPassword">
-                    <Form.Control
-                      type="password"
-                      name="password"
-                      value={password}
-                      placeholder="password"
-                      onChange={this.change}
-                    />
-                  </Form.Group>
+                  <React.Fragment>
+                    <Form.Group controlId="formBasicPassword">
+                      <Form.Control
+                        type="password"
+                        name="password"
+                        value={password}
+                        placeholder="password"
+                        onChange={this.change}
+                      />
+                    </Form.Group>
+                    <Form.Group controlId="formBasicPassword">
+                      <Form.Control
+                        type="confirmPassword"
+                        name="confirmPassword"
+                        value={confirmPassword}
+                        placeholder="confirm password"
+                        onChange={this.change}
+                      />
+                    </Form.Group>
+                  </React.Fragment>
                 )}
               />
             </Col>
@@ -101,7 +138,26 @@ export default class ResetPassword extends Component {
     }
   }
 
-  submit = () => {};
+  submit = () => {
+    const { context } = this.props;
+    const { email, password } = this.state;
+    const user = {
+      email,
+      password,
+    };
+    context.data.updateUserPassword(user).then(user => {
+      console.log(user);
+      if (user) {
+        this.setState({
+          updated: true,
+        });
+      } else {
+        this.setState({
+          error: true,
+        });
+      }
+    });
+  };
 
   change = e => {
     const name = e.target.name;

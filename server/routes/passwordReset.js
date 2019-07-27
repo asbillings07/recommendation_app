@@ -52,7 +52,7 @@ router.post(
         if (err) {
           console.error(`There was an error: ${err}`);
         } else {
-          console.log(`here is the response: ${response}`);
+          console.log(response);
           res.status(200).json({ message: 'Recovery Email Sent' });
         }
       });

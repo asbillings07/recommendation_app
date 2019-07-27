@@ -1,53 +1,72 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import UserForm from './UserForm';
-import { Form, Container, Row, Col } from 'react-bootstrap';
-import Axios from 'axios';
-import Config from '../../Config';
+import { Alert, Form, Container, Row, Col } from 'react-bootstrap';
 
 export default class ForgotPassword extends Component {
   state = {
     email: '',
-    showError: false,
+    success: false,
     messageFromServer: '',
   };
 
   render() {
-    const { email, messageFromServer } = this.state;
-    return (
-      <Container>
-        <Row className="justify-content-md-center">
-          <Col xs md lg="auto">
-            <UserForm
-              cancel={this.cancel}
-              errors={messageFromServer}
-              submit={this.submit}
-              submitButtonText="Reset Password"
-              elements={() => (
-                <React.Fragment>
-                  <Form.Group controlId="formBasicEmail">
-                    <Form.Control
-                      type="email"
-                      name="email"
-                      value={email}
-                      placeholder="Email Address"
-                      onChange={this.change}
-                    />
-                    <Form.Text className="text-muted">
-                      If you exist in our database you will recieve a reset
-                      password email
-                    </Form.Text>
-                  </Form.Group>
-                </React.Fragment>
-              )}
-            />
-            <p>
-              Remember your password? <Link to="/signin">Sign In</Link>
-            </p>
-          </Col>
-        </Row>
-      </Container>
-    );
+    const { email, success, messageFromServer } = this.state;
+
+    if (!success) {
+      return (
+        <Container>
+          <Row className="justify-content-md-center">
+            <Col xs md lg="auto">
+              <UserForm
+                cancel={this.cancel}
+                errors={messageFromServer}
+                submit={this.submit}
+                submitButtonText="Reset Password"
+                elements={() => (
+                  <React.Fragment>
+                    <Form.Group controlId="formBasicEmail">
+                      <Form.Control
+                        type="email"
+                        name="email"
+                        value={email}
+                        placeholder="Email Address"
+                        onChange={this.change}
+                      />
+                      <Form.Text className="text-muted">
+                        If you exist in our database you will recieve a reset
+                        password email
+                      </Form.Text>
+                    </Form.Group>
+                  </React.Fragment>
+                )}
+              />
+              <p>
+                Remember your password? <Link to="/signin">Sign In</Link>
+              </p>
+            </Col>
+          </Row>
+        </Container>
+      );
+    } else {
+      return (
+        <Container>
+          <Row className="justify-content-md-center">
+            <Col xs md lg="auto">
+              <Alert variant="success">
+                <Alert.Heading>
+                  Reset Password Link Successfully Sent
+                </Alert.Heading>
+                <p>
+                  YAY! Your password reset link is heading to your inbox. Make
+                  sure you click the link with 24 hours or it will expire.
+                </p>
+              </Alert>
+            </Col>
+          </Row>
+        </Container>
+      );
+    }
   }
 
   change = e => {
@@ -62,38 +81,29 @@ export default class ForgotPassword extends Component {
   };
 
   submit = () => {
+    const { context } = this.props;
     const { email } = this.state;
-    Axios.post(`${Config.apiBaseUrl}/forgotpassword`, {
-      email,
-    })
-      .then(res => {
-        console.log(res);
-        if (res.data.status === 200) {
+    context.data
+      .forgotUserPassword(email)
+      .then(user => {
+        console.log(user);
+        if (user) {
           this.setState({
-            messageFromServer: [
-              'Recovery email on the way, please check your email to reset your password',
-            ],
-          });
-        } else {
-          this.setState(() => {
-            return {
-              messageFromServer: [
-                'Incorrect Email or Password, check your credentials and try again',
-              ],
-            };
+            success: true,
           });
         }
       })
       .catch(err => {
         if (err) {
-          this.setState({
-            messageFromServer: [
-              'Email Not found in Database, check your credentials and try again',
-            ],
+          this.setState(() => {
+            return {
+              messageFromServer: [
+                'Email does not exist in our Database, check your email and try again',
+              ],
+            };
           });
         }
         console.log(err);
-        // this.props.history.push('/error');
       });
   };
 

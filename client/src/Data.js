@@ -1,5 +1,5 @@
 import Config from './Config';
-
+import Axios from 'axios';
 export default class Data {
   api(path, method = 'GET', body = null, requiresAuth = false, creds = null) {
     const url = Config.apiBaseUrl + path;
@@ -100,20 +100,12 @@ export default class Data {
   /** RESET PASSWORD METHODS */
 
   // sends user reset email password link via email
-  async forgotUserPassword(email) {
-    const response = await this.api('/forgotpassword', 'POST', email);
-    if (response.status === 200) {
-      console.log(response);
-      return response.json().then(data => data);
-    } else if (response.status === 400 || response.status === 403) {
-      return response
-        .json()
-        .then(data => data.errors)
-        .catch(err => console.log(err));
-    }
-  }
+  forgotUserPassword = email =>
+    Axios.post(`${Config.apiBaseUrl}/forgotpassword`, {
+      email,
+    });
 
-  /** @param Obj */
+  /** Allows user to update their password */
 
   async updateUserPassword(user) {
     const response = await this.api('/updatepasswordviaemail', 'PUT', user);

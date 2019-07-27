@@ -57,7 +57,7 @@ const findUserByToken = token =>
     where: {
       resetPasswordToken: token,
       resetPasswordExpires: {
-        [Op.gt]: Date.now(),
+        [Op.gte]: Date.now(),
       },
     },
   });
