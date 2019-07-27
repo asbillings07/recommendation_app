@@ -12,6 +12,7 @@ export default class UserSignUp extends Component {
     password: '',
     password_conformation: '',
     errors: [],
+    confirmed: true,
   };
 
   render() {
@@ -22,6 +23,7 @@ export default class UserSignUp extends Component {
       password,
       password_conformation,
       errors,
+      confirmed,
     } = this.state;
 
     return (
@@ -32,6 +34,7 @@ export default class UserSignUp extends Component {
             <UserForm
               cancel={this.cancel}
               errors={errors}
+              passwordErrors={confirmed}
               submit={this.submit}
               submitButtonText="Sign Up"
               elements={() => (
@@ -76,7 +79,7 @@ export default class UserSignUp extends Component {
                       onChange={this.change}
                     />
                   </Form.Group>
-                  <Form.Group controlId="formBasicPassword">
+                  <Form.Group>
                     <Form.Control
                       type="password"
                       name="password_conformation"
@@ -108,15 +111,18 @@ export default class UserSignUp extends Component {
       };
     });
   };
+
   // grabs updateUserFunction from context and updates user password.
   submit = () => {
-    const data = this.state;
-    // create rules and sanitize data
-    const rules = {};
-
     const { context } = this.props;
 
-    const { firstName, lastName, email, password } = this.state;
+    const {
+      firstName,
+      lastName,
+      email,
+      password,
+      password_conformation,
+    } = this.state;
 
     const user = {
       firstName,
@@ -130,8 +136,8 @@ export default class UserSignUp extends Component {
     context.data
       .createUser(user)
       .then(errors => {
-        if (errors.length) {
-          this.setState({ errors });
+        if (errors.length || password !== password_conformation) {
+          this.setState({ errors, confirmed: false });
         } else {
           context.actions
             .signIn(email, password)

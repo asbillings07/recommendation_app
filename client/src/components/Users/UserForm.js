@@ -32,7 +32,7 @@ const UserForm = props => {
   );
 };
 
-function ErrorsDisplay({ errors }) {
+function ErrorsDisplay({ errors, passwordErrors }) {
   let errorsDisplay = null;
 
   if (errors.length) {
@@ -44,6 +44,13 @@ function ErrorsDisplay({ errors }) {
             <li key={i}>{error}</li>
           ))}
         </ValidationUl>
+      </React.Fragment>
+    );
+  } else if (!passwordErrors) {
+    errorsDisplay = (
+      <React.Fragment>
+        <ValidationLabel>Errors:</ValidationLabel>
+        <ValidationUl>{<li>Passwords must match</li>}</ValidationUl>
       </React.Fragment>
     );
   }
