@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import UserForm from './UserForm';
 import { Form, Container, Row, Col } from 'react-bootstrap';
+import { validateAll, sanitize } from 'indicative';
 
 export default class UserSignUp extends Component {
   state = {
@@ -9,11 +10,19 @@ export default class UserSignUp extends Component {
     lastName: '',
     email: '',
     password: '',
+    password_conformation: '',
     errors: [],
   };
 
   render() {
-    const { firstName, lastName, email, password, errors } = this.state;
+    const {
+      firstName,
+      lastName,
+      email,
+      password,
+      password_conformation,
+      errors,
+    } = this.state;
 
     return (
       <Container>
@@ -67,6 +76,15 @@ export default class UserSignUp extends Component {
                       onChange={this.change}
                     />
                   </Form.Group>
+                  <Form.Group controlId="formBasicPassword">
+                    <Form.Control
+                      type="password"
+                      name="password_conformation"
+                      value={password_conformation}
+                      placeholder="confirm password"
+                      onChange={this.change}
+                    />
+                  </Form.Group>
                 </React.Fragment>
               )}
             />
@@ -90,8 +108,12 @@ export default class UserSignUp extends Component {
       };
     });
   };
-
+  // grabs updateUserFunction from context and updates user password.
   submit = () => {
+    const data = this.state;
+    // create rules and sanitize data
+    const rules = {};
+
     const { context } = this.props;
 
     const { firstName, lastName, email, password } = this.state;
