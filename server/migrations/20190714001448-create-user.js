@@ -26,11 +26,11 @@ module.exports = {
       resetPasswordExpires: {
         type: Sequelize.DATE,
       },
-      photo: {
-        type: Sequelize.STRING,
-      },
       confirmed: {
         type: Sequelize.BOOLEAN,
+      },
+      photo: {
+        type: Sequelize.STRING,
       },
       createdAt: {
         allowNull: false,
