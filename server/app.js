@@ -1,4 +1,5 @@
 const express = require('express');
+const { PORT, CLIENT_ORIGIN } = require('./config/Config');
 // required to show HTTP requests in console
 const morgan = require('morgan');
 const cors = require('cors');
@@ -33,6 +34,8 @@ app.use('/api', categoryRoute);
 app.use('/api', ratingRoute);
 app.use('/api', passwordReset);
 
+app.get('/wakeup', (req, res) => res.json({ message: "I'm Up" }));
+
 app.get('/', (req, res, next) => {
   res.json({
     message: 'Welcome to the recommendation App!',
@@ -61,9 +64,8 @@ app.use((err, req, res, next) => {
 });
 
 // sets port
-const server = process.env.PORT || 5000;
 
 // creates server
-app.listen(server, () => {
-  console.log(`Server is running on ${server}`);
+app.listen(PORT, () => {
+  console.log(`Server is running on ${PORT}`);
 });

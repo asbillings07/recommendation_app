@@ -3,7 +3,8 @@ const express = require('express');
 const router = express.Router();
 const crypto = require('crypto');
 const bcrypt = require('bcryptjs');
-const nodemailer = require('nodemailer');
+const { sendEmail } = require('../services/emailSend');
+const emailTemplate = require('../services/emailTemplates');
 const asyncHandler = require('../services/asyncErrorHanlder');
 const { validateEmail } = require('../services/validationChain');
 const {
@@ -27,38 +28,22 @@ router.post(
         resetPasswordExpires: Date.now() + 360000,
       });
 
-      const transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-          user: `${process.env.EMAIL_ADDRESS}`,
-          pass: `${process.env.EMAIL_PASSWORD}`,
-        },
-      });
+      const email = user.email;
       const passwordResetLink = `http://localhost:3000/reset/${token}`;
-      const mailOptions = {
-        from: 'recommendItBot@gmail.com',
-        to: `${user.email}`,
-        subject: 'Link to Reset Password',
-        text: `You're receiving this e-mail because you requested a password reset for your RecommendIt account.
 
-      Please click on the link below to choose a new password.
-      ${passwordResetLink} 
-       `,
+      // email template with reset link and message
+      emailTemplate.passwordReset(email, passwordResetLink);
+
+      successfulMessage = {
+        message: 'Recovery Email Sent',
       };
 
-      console.log('Sending Email');
-
-      transporter.sendMail(mailOptions, (err, response) => {
-        if (err) {
-          console.error(`There was an error: ${err}`);
-        } else {
-          console.log(response);
-          res.status(200).json({ message: 'Recovery Email Sent' });
-        }
-      });
+      sendEmail(mailOptions, successfulMessage);
     } else {
       console.log('email not in DB');
-      res.status(400).json({ message: 'email not in DB' });
+      res.status(400).json({
+        message: 'Email not in Database',
+      });
     }
   })
 );

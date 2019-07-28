@@ -45,13 +45,15 @@ const deleteUser = currentUser =>
     },
   }).then(user => user.destroy());
 
+// find user by email
+
 const findUserByEmail = email =>
   User.findOne({
     where: {
       email,
     },
   });
-
+// find user by ForgotPasswordToken
 const findUserByToken = token =>
   User.findOne({
     where: {
@@ -62,6 +64,11 @@ const findUserByToken = token =>
     },
   });
 
+const findUserById = id =>
+  User.findOne({
+    where: { id },
+  });
+
 module.exports = {
   createUser,
   getUser,
@@ -69,4 +76,5 @@ module.exports = {
   updateUser,
   findUserByEmail,
   findUserByToken,
+  findUserById,
 };

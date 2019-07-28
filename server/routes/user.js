@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { authenticateUser } = require('../services/authenticateUser');
 const { validateUser } = require('../services/validationChain');
+const { collectEmail, confirmEmail } = require('../services/emailController');
 const asyncHandler = require('../services/asyncErrorHanlder');
 const {
   getUser,
@@ -53,5 +54,8 @@ router.delete(
       .end();
   })
 );
+
+router.post('/email', collectEmail);
+router.get('/email/confirm/id', confirmEmail);
 
 module.exports = router;
