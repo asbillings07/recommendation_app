@@ -6,6 +6,7 @@ import Navigation from './components/Navigation';
 import UserSignIn from './components/Users/UserSignIn';
 import UserSignUp from './components/Users/UserSignUp';
 import UserSignOut from './components/Users/UserSignOut';
+import Confirm from './components/Users/Confirm';
 import PrivateRoute from './PrivateRoute';
 import ForgotPassword from './components/Users/ForgotPassword';
 import ResetPassword from './components/Users/ResetPassword';
@@ -19,6 +20,7 @@ const App = () => {
   const SignOutWithContext = withContext(UserSignOut);
   const ForgotPasswordWithContext = withContext(ForgotPassword);
   const ResetPasswordWithContext = withContext(ResetPassword);
+  const ConfirmWithContext = withContext(Confirm);
 
   return (
     <Router>
@@ -28,6 +30,7 @@ const App = () => {
 
         {/* <Route exact path="/home" component /> */}
         <Route path="/signup" component={SignUpWithContext} />
+        <Route path="/confirm/:id" component={ConfirmWithContext} />
         <Route path="/signin" component={SignInWithContext} />
         <Route path="/signout" component={SignOutWithContext} />
         <Route path="/forgotpassword" component={ForgotPasswordWithContext} />

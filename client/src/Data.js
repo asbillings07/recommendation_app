@@ -13,8 +13,6 @@ export default class Data {
 
     if (body !== null) {
       options.body = JSON.stringify(body);
-      console.log(body);
-      console.log(options.body);
     }
 
     if (requiresAuth) {
@@ -119,6 +117,15 @@ export default class Data {
         .catch(err => console.log(err));
     }
   }
+  /** CONFIRM USER EMAIL METHODS */
+
+  // sends conformation email to user
+  sendConfirmUserEmail = email =>
+    Axios.post(`${Config.apiBaseUrl}/email`, {
+      email,
+    });
+  // when user clicks on conformation email
+  confirmUserEmail = id => Axios.get(`${Config.apiBaseUrl}/email/${id}`);
 
   /** CATEGORY METHODS */
 

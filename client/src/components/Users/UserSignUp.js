@@ -139,9 +139,14 @@ export default class UserSignUp extends Component {
         if (errors.length || password !== password_conformation) {
           this.setState({ errors, confirmed: false });
         } else {
-          context.actions
-            .signIn(email, password)
-            .then(() => this.props.history.push(from));
+          context.data.sendConfirmUserEmail(email).then(data => {
+            console.log(data);
+            if (data.status === 200) {
+              context.actions
+                .signIn(email, password)
+                .then(() => this.props.history.push(from));
+            }
+          });
         }
       })
       .catch(err => {
