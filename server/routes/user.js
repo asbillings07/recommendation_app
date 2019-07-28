@@ -56,6 +56,6 @@ router.delete(
 );
 
 router.post('/email', collectEmail);
-router.get('/email/confirm/id', confirmEmail);
+router.get('/email/confirm/:id', confirmEmail);
 
 module.exports = router;
