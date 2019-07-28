@@ -11,3 +11,34 @@ body {
   margin: 0;
   background-color: rgb(217, 219, 218);
 }
+
+/* Animations */
+.fadein {
+  animation: fadein 2s;
+}
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.spinning {
+  animation: spin 1.5s infinite linear;
+}
+
+.spinning svg {
+  border-radius: 50%;
+}
+
+@keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}

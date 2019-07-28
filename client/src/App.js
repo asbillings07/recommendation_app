@@ -7,6 +7,7 @@ import UserSignIn from './components/Users/UserSignIn';
 import UserSignUp from './components/Users/UserSignUp';
 import UserSignOut from './components/Users/UserSignOut';
 import Confirm from './components/Users/Confirm';
+import Notifications from 'react-notify-toast';
 import PrivateRoute from './PrivateRoute';
 import ForgotPassword from './components/Users/ForgotPassword';
 import ResetPassword from './components/Users/ResetPassword';
@@ -24,6 +25,7 @@ const App = () => {
 
   return (
     <Router>
+      <Notifications />
       <NavigationWithContext />
       <Switch>
         <Route exact path="/" component={HomeWithContext} />

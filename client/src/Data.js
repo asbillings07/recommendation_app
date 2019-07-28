@@ -125,7 +125,8 @@ export default class Data {
       email,
     });
   // when user clicks on conformation email
-  confirmUserEmail = id => Axios.get(`${Config.apiBaseUrl}/email/${id}`);
+  confirmUserEmail = id =>
+    Axios.get(`${Config.apiBaseUrl}/email/confirm/${id}`);
 
   /** CATEGORY METHODS */
 
