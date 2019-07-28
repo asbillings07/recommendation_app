@@ -38,7 +38,7 @@ export default class Confirm extends Component {
       return <Spinner size="8x" spinning={'spinning'} />;
     } else if (error) {
       return (
-        <Container>
+        <Container className="mt-3">
           <Row className="justify-content-md-center">
             <Col xs md lg="auto">
               <Alert variant="danger">
@@ -58,7 +58,7 @@ export default class Confirm extends Component {
       );
     } else {
       return (
-        <Container>
+        <Container className="mt-3">
           <Row className="justify-content-md-center">
             <Col xs md lg="auto">
               <Alert variant="success">

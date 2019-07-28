@@ -8,20 +8,23 @@ export default class ForgotPassword extends Component {
     email: '',
     success: false,
     messageFromServer: '',
+    confirmed: true,
   };
 
   render() {
-    const { email, success, messageFromServer } = this.state;
+    const { email, success, messageFromServer, confirmed } = this.state;
 
     if (!success) {
       return (
-        <Container>
+        <Container className="mt-3">
           <Row className="justify-content-md-center">
             <Col xs md lg="auto">
+              <h1>Forgot Password?</h1>
               <UserForm
                 cancel={this.cancel}
                 errors={messageFromServer}
                 submit={this.submit}
+                passwordErrors={confirmed}
                 submitButtonText="Reset Password"
                 elements={() => (
                   <React.Fragment>
@@ -50,7 +53,7 @@ export default class ForgotPassword extends Component {
       );
     } else {
       return (
-        <Container>
+        <Container className="mt-3">
           <Row className="justify-content-md-center">
             <Col xs md lg="auto">
               <Alert variant="success">

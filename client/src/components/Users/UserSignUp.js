@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import UserForm from './UserForm';
-import { Alert, Form, Container, Row, Col } from 'react-bootstrap';
+import { Form, Container, Row, Col } from 'react-bootstrap';
 import { notify } from 'react-notify-toast';
 
 export default class UserSignUp extends Component {
@@ -28,7 +28,7 @@ export default class UserSignUp extends Component {
     } = this.state;
 
     return (
-      <Container>
+      <Container className="mt-3">
         <Row className="justify-content-md-center">
           <Col xs md lg="auto">
             <h1>Sign Up</h1>
