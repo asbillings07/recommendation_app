@@ -20,11 +20,17 @@ module.exports = {
       password: {
         type: Sequelize.STRING,
       },
-      securityQuestion: {
+      resetPasswordToken: {
         type: Sequelize.STRING,
+      },
+      resetPasswordExpires: {
+        type: Sequelize.DATE,
       },
       photo: {
         type: Sequelize.STRING,
+      },
+      confirmed: {
+        type: Sequelize.BOOLEAN,
       },
       createdAt: {
         allowNull: false,

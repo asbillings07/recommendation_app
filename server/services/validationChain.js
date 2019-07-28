@@ -32,13 +32,17 @@ const validateUser = [
     .isEmail()
     .withMessage('Email Address must be formated correctly')
     .custom(value => {
-      return User.findOne({ where: { email: value } }).then(user => {
-        if (user) {
-          return Promise.reject(
-            'E-mail already in use, please use another email. '
-          );
-        }
-      });
+      if (!value) {
+        return null;
+      } else {
+        return User.findOne({ where: { email: value } }).then(user => {
+          if (user) {
+            return Promise.reject(
+              'E-mail already in use, please use another email. '
+            );
+          }
+        });
+      }
     }),
   check('password')
     .exists({ checkNull: true, checkFalsy: true })
@@ -72,9 +76,17 @@ const validateRating = [
     .withMessage('Please provide a comment'),
   errorHanlder,
 ];
+const validateEmail = [
+  check('email')
+    .exists({ checkNull: true, checkFalsy: true })
+    .withMessage('Please provide a value for Email Address')
+    .isEmail()
+    .withMessage('Email Address must be formated correctly'),
+];
 module.exports = {
   validateUser,
   validateRecommendation,
   validateCategory,
   validateRating,
+  validateEmail,
 };

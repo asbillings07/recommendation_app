@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const { authenticateUser } = require('../services/authenticateUser');
 const { validateUser } = require('../services/validationChain');
+const { collectEmail, confirmEmail } = require('../services/emailController');
+const asyncHandler = require('../services/asyncErrorHanlder');
 const {
   getUser,
   createUser,
@@ -9,28 +11,12 @@ const {
   updateUser,
 } = require('../services/userFunctions');
 
-// HOF try/catch error handling
-function asyncHandler(cb) {
-  return async (req, res, next) => {
-    try {
-      await cb(req, res, next);
-    } catch (err) {
-      if (err === 'SequelizeDatabaseError') {
-        res.status(err.status).json({ error: err.message });
-      } else {
-        console.log(err);
-      }
-    }
-  };
-}
 // User Routes
 //GET /api/users 200 - Returns the currently authenticated user
 router.get('/users', authenticateUser, (req, res) => {
   const user = req.currentUser;
   const users = getUser(user);
-  res.status(200).json({
-    users,
-  });
+  res.status(200).json(users);
 });
 //POST /api/users 201 - Creates a user, sets the Location header to "/", and returns 'User created succesfully'
 router.post(
@@ -68,4 +54,8 @@ router.delete(
       .end();
   })
 );
+
+router.post('/email', collectEmail);
+router.get('/email/confirm/id', confirmEmail);
+
 module.exports = router;
