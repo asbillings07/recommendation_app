@@ -11,7 +11,6 @@ import Notifications from 'react-notify-toast';
 import PrivateRoute from './PrivateRoute';
 import ForgotPassword from './components/Users/ForgotPassword';
 import ResetPassword from './components/Users/ResetPassword';
-import './css/App.css';
 
 const App = () => {
   const NavigationWithContext = withContext(Navigation);
