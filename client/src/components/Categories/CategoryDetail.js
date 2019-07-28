@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-
+import Axios from 'axios';
+import Config from '../../Config';
 class CategoryDetail extends Component {
   state = {
     firstName: '',
@@ -13,21 +14,7 @@ class CategoryDetail extends Component {
   getCategory = () => {};
 
   render() {
-    return (
-      <div>
-        <h5>Top Ten Picks</h5>
-        <p>Item</p>
-        <p>Item</p>
-        <p>Item</p>
-        <p>Item</p>
-        <p>Item</p>
-        <p>Item</p>
-        <p>Item</p>
-        <p>Item</p>
-        <p>Item</p>
-        <p>Item</p>
-      </div>
-    );
+    return <></>;
   }
 }
 
