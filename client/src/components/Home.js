@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import CategoryList from '../components/Categories/CategoryList';
 import CategoryTopTen from '../components/Categories/CategoryTopTen';
 import SearchBar from './SearchBar';
-import '../css/home.css';
 import { Jumbotron, Container } from 'react-bootstrap';
 
 // Pulls in mock json data
@@ -25,14 +24,12 @@ class Home extends Component {
               <h1>Welcome, User!</h1>
             )}
 
-            <p>Something catchy about recommmendations here :)</p>
+            <p>Browse Recommendations or create your own!</p>
           </Container>
         </Jumbotron>
         <SearchBar />
-        <div className=" home-page-catergory-holder">
-          <CategoryList categories={this.state.data} />
-          <CategoryTopTen />
-        </div>
+
+        <CategoryList categories={this.state.data} />
       </div>
     );
   }
