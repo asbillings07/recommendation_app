@@ -16,12 +16,17 @@ class CategoryList extends Component {
   }
 
   getAllCategories = async () => {
-    const categories = await Axios.get(`${Config.apiBaseUrl}/category`).catch(
-      err => console.log(err)
-    );
-    if (categories) {
-      console.log(categories.data.category);
-      this.setState({ categories: categories.data.category, loading: false });
+    try {
+      const categories = await Axios.get(`${Config.apiBaseUrl}/category`).catch(
+        err => console.log(err)
+      );
+      if (categories) {
+        console.log(categories.data.category);
+        this.setState({ categories: categories.data.category, loading: false });
+      }
+    } catch (err) {
+      console.log(err);
+      this.props.history.push('/notfound');
     }
   };
 

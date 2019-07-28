@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import CategoryList from '../components/Categories/CategoryList';
-import CategoryTopTen from '../components/Categories/CategoryTopTen';
 import SearchBar from './SearchBar';
 import { Jumbotron, Container } from 'react-bootstrap';
 

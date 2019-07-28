@@ -1,17 +1,16 @@
 import React from 'react';
-import { Form, Button } from 'react-bootstrap';
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
 import styled from 'styled-components';
 
-const UserForm = props => {
-  const {
-    cancel,
-    errors,
-    submit,
-    submitButtonText,
-    elements,
-    passwordErrors,
-  } = props;
-
+const UserForm = ({
+  cancel,
+  errors,
+  submit,
+  submitButtonText,
+  elements,
+  passwordErrors,
+}) => {
   function handleSubmit(event) {
     event.preventDefault();
     submit();
@@ -23,7 +22,7 @@ const UserForm = props => {
   }
 
   return (
-    <React.Fragment>
+    <>
       <ErrorsDisplay errors={errors} passwordErrors={passwordErrors} />
       <Form onSubmit={handleSubmit}>
         {elements()}
@@ -35,7 +34,7 @@ const UserForm = props => {
           Cancel
         </Button>
       </Form>
-    </React.Fragment>
+    </>
   );
 };
 
@@ -44,21 +43,21 @@ function ErrorsDisplay({ errors, passwordErrors }) {
 
   if (errors.length) {
     errorsDisplay = (
-      <React.Fragment>
+      <>
         <ValidationLabel>Errors:</ValidationLabel>
         <ValidationUl>
           {errors.map((error, i) => (
             <li key={i}>{error}</li>
           ))}
         </ValidationUl>
-      </React.Fragment>
+      </>
     );
   } else if (!passwordErrors) {
     errorsDisplay = (
-      <React.Fragment>
+      <>
         <ValidationLabel>Errors:</ValidationLabel>
         <ValidationUl>{<li>Passwords must match</li>}</ValidationUl>
-      </React.Fragment>
+      </>
     );
   }
   return errorsDisplay;
