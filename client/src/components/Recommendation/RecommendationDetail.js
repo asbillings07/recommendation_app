@@ -27,9 +27,9 @@ export default class RecommendationDetail extends Component {
         this.setState({
           title: rec.title,
           description: rec.description,
-          lastVisted: rec.lastvisted,
+          lastVisted: rec.lastvisted || null,
           location: rec.location,
-          rating: rec.rating[0],
+          rating: rec.rating[0] || null,
           userid: rec.userid,
         });
       }
