@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Axios from 'axios';
 import Config from '../../Config';
-import { Container, Col, Row } from 'react-bootstrap';
+import { Container, Col, Row, Card } from 'react-bootstrap';
 export default class RecommendationDetail extends Component {
   state = {
     title: '',
@@ -42,15 +42,18 @@ export default class RecommendationDetail extends Component {
     const { title, description, lastVisted, location, rating } = this.state;
     return (
       <>
-        <Container>
+        <Container className="mt-5">
           <Row className="justify-content-md-center">
             <Col xs md lg="auto">
-              <h1>{title}</h1>
-              <p>{description}</p>
-              <p>{lastVisted}</p>
-              <p>{location}</p>
-              <p>{rating.rate}</p>
-              <p>{rating.comment}</p>
+              <Card style={{ width: '60rem', height: '30rem' }}>
+                <Card.Body>
+                  <Card.Title>{title}</Card.Title>
+                  <Card.Subtitle className="mb-1 text-muted">
+                    {location}
+                  </Card.Subtitle>
+                  <Card.Text>What's it about: {description}</Card.Text>
+                </Card.Body>
+              </Card>
             </Col>
           </Row>
         </Container>
