@@ -1,16 +1,8 @@
 import React, { Component } from 'react';
 import Axios from 'axios';
 import Config from '../../Config';
-import {
-  Col,
-  Row,
-  Container,
-  Button,
-  Card,
-  CardColumns,
-  CardDeck,
-} from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Row, Button, Card, CardGroup } from 'react-bootstrap';
+import CreateRecommendation from '../Recommendation/CreateRecomendation';
 class CategoryDetail extends Component {
   state = {
     firstName: '',
@@ -31,28 +23,23 @@ class CategoryDetail extends Component {
       if (data) {
         console.log(data.data.category[0].Recommendations);
         this.setState({ category: data.data.category[0].Recommendations });
+      } else {
       }
     } catch (err) {
-      console.log(err);
+      console.log(err.response);
     }
   };
 
   showCategory = () => {
     const { category } = this.state;
     return category.map(rec => (
-      //   <Col className="mb-2" sm={4} key={rec.id}>
-      //     <Link to={`/category/${rec.id}`}>
-      //       <Button variant="primary" size="lg" block>
-      //         {rec.title}
-      //       </Button>
-      //     </Link>
-      //   </Col>
-
       <Card style={{ width: '18rem' }}>
         <Card.Body>
           <Card.Title>{rec.title}</Card.Title>
           <Card.Text>{rec.description}</Card.Text>
-          <Button variant="primary">Check it out</Button>
+          <Button href={`/rec/${rec.id}`} variant="primary">
+            Check it out
+          </Button>
         </Card.Body>
       </Card>
     ));
@@ -61,11 +48,10 @@ class CategoryDetail extends Component {
   render() {
     return (
       <>
-        <React.Fragment>
-          <Container className="justify-content-around">
-            <Row>{this.showCategory()}</Row>
-          </Container>
-        </React.Fragment>
+        <CardGroup>
+          <Row>{this.showCategory()}</Row>
+        </CardGroup>
+        <CreateRecommendation />
       </>
     );
   }

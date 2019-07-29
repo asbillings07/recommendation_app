@@ -12,6 +12,7 @@ import CategoryDetail from './components/Categories/CategoryDetail';
 import PrivateRoute from './PrivateRoute';
 import ForgotPassword from './components/Users/ForgotPassword';
 import ResetPassword from './components/Users/ResetPassword';
+import RecommendationDetail from './components/Recommendation/RecommendationDetail';
 
 const App = () => {
   const NavigationWithContext = withContext(Navigation);
@@ -23,6 +24,7 @@ const App = () => {
   const ResetPasswordWithContext = withContext(ResetPassword);
   const ConfirmWithContext = withContext(Confirm);
   const CategoryDetailWithContext = withContext(CategoryDetail);
+  const RecommendationDetailWithContext = withContext(RecommendationDetail);
 
   return (
     <Router>
@@ -30,8 +32,6 @@ const App = () => {
       <NavigationWithContext />
       <Switch>
         <Route exact path="/" component={HomeWithContext} />
-
-        {/* <Route exact path="/home" component /> */}
         <Route path="/signup" component={SignUpWithContext} />
         <Route path="/confirm/:id" component={ConfirmWithContext} />
         <Route path="/signin" component={SignInWithContext} />
@@ -39,6 +39,8 @@ const App = () => {
         <Route path="/forgotpassword" component={ForgotPasswordWithContext} />
         <Route path="/reset/:token" component={ResetPasswordWithContext} />
         <Route path="/category/:id" component={CategoryDetailWithContext} />
+        <Route path="/rec/:id" component={RecommendationDetailWithContext} />
+        {/* <PrivateRoute path="/rec/:id/update" component={} /> */}
       </Switch>
     </Router>
   );

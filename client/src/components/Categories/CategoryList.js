@@ -45,7 +45,7 @@ class CategoryList extends Component {
     return (
       <React.Fragment>
         <H2>Browse Categories</H2>
-        <Container className="mb-7 mt-3">
+        <Container className="mb-9 mt-3">
           <Row>{this.showCategories()}</Row>
         </Container>
       </React.Fragment>
