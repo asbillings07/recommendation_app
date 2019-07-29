@@ -8,20 +8,27 @@ export default class ForgotPassword extends Component {
     email: '',
     success: false,
     messageFromServer: '',
+    confirmed: true,
   };
 
   render() {
-    const { email, success, messageFromServer } = this.state;
+    const { email, success, messageFromServer, confirmed } = this.state;
 
     if (!success) {
       return (
-        <Container>
+        <Container className="mt-5">
           <Row className="justify-content-md-center">
             <Col xs md lg="auto">
+              <h2>ForgotPassword</h2>
+              <p>
+                Please enter your email address and we will send you an email
+                about how to reset your password.
+              </p>
               <UserForm
                 cancel={this.cancel}
                 errors={messageFromServer}
                 submit={this.submit}
+                passwordErrors={confirmed}
                 submitButtonText="Reset Password"
                 elements={() => (
                   <React.Fragment>
@@ -33,10 +40,6 @@ export default class ForgotPassword extends Component {
                         placeholder="Email Address"
                         onChange={this.change}
                       />
-                      <Form.Text className="text-muted">
-                        If you exist in our database you will recieve a reset
-                        password email
-                      </Form.Text>
                     </Form.Group>
                   </React.Fragment>
                 )}

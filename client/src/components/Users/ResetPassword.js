@@ -14,6 +14,7 @@ export default class ResetPassword extends Component {
     error: false,
     errors: '',
     updated: false,
+    confirmed: true,
   };
 
   async componentDidMount() {
@@ -51,6 +52,7 @@ export default class ResetPassword extends Component {
       error,
       errors,
       isloading,
+      confirmed,
     } = this.state;
     if (error) {
       return (
@@ -107,6 +109,7 @@ export default class ResetPassword extends Component {
                 cancel={this.cancel}
                 errors={errors}
                 submit={this.submit}
+                passwordErrors={confirmed}
                 submitButtonText="Update Password"
                 elements={() => (
                   <React.Fragment>

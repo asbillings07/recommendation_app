@@ -2,6 +2,7 @@ import React from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import styled from 'styled-components';
+import { Container, Row, Col } from 'react-bootstrap';
 
 const UserForm = ({
   cancel,
@@ -27,7 +28,12 @@ const UserForm = ({
       <Form onSubmit={handleSubmit}>
         {elements()}
 
-        <Button className="mr-1" variant="primary" type="submit">
+        <Button
+          className="mr-1"
+          variant="primary"
+          type="submit"
+          style={{ width: '13rem' }}
+        >
           {submitButtonText}
         </Button>
         <Button className="mr-1" variant="secondary" onClick={handleCancel}>
