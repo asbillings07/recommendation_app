@@ -21,7 +21,6 @@ class CategoryList extends Component {
         err => console.log(err)
       );
       if (categories) {
-        console.log(categories.data.category);
         this.setState({ categories: categories.data.category, loading: false });
       }
     } catch (err) {
@@ -33,7 +32,7 @@ class CategoryList extends Component {
   showCategories = () => {
     return this.state.categories.map(category => (
       <Col className="mb-2" sm={4} key={category.id}>
-        <Link to="#">
+        <Link to={`/category/${category.id}`}>
           <Button variant="primary" size="lg" block>
             {category.title}
           </Button>

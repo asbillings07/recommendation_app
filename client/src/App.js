@@ -8,6 +8,7 @@ import UserSignUp from './components/Users/UserSignUp';
 import UserSignOut from './components/Users/UserSignOut';
 import Confirm from './components/Users/Confirm';
 import Notifications from 'react-notify-toast';
+import CategoryDetail from './components/Categories/CategoryDetail';
 import PrivateRoute from './PrivateRoute';
 import ForgotPassword from './components/Users/ForgotPassword';
 import ResetPassword from './components/Users/ResetPassword';
@@ -21,6 +22,7 @@ const App = () => {
   const ForgotPasswordWithContext = withContext(ForgotPassword);
   const ResetPasswordWithContext = withContext(ResetPassword);
   const ConfirmWithContext = withContext(Confirm);
+  const CategoryDetailWithContext = withContext(CategoryDetail);
 
   return (
     <Router>
@@ -36,6 +38,7 @@ const App = () => {
         <Route path="/signout" component={SignOutWithContext} />
         <Route path="/forgotpassword" component={ForgotPasswordWithContext} />
         <Route path="/reset/:token" component={ResetPasswordWithContext} />
+        <Route path="/category/:id" component={CategoryDetailWithContext} />
       </Switch>
     </Router>
   );
