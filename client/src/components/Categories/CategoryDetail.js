@@ -3,6 +3,7 @@ import Axios from 'axios';
 import Config from '../../Config';
 import { Row, Button, Card, CardGroup } from 'react-bootstrap';
 import CreateRecommendation from '../Recommendation/CreateRecomendation';
+
 class CategoryDetail extends Component {
   state = {
     firstName: '',

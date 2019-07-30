@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Axios from 'axios';
 import Config from '../../Config';
 import { Container, Col, Row, Card } from 'react-bootstrap';
+import Rating from '../Recommendation/Rating';
 export default class RecommendationDetail extends Component {
   state = {
     title: '',
@@ -27,9 +28,9 @@ export default class RecommendationDetail extends Component {
         this.setState({
           title: rec.title,
           description: rec.description,
-          lastVisted: rec.lastvisted || null,
+          lastVisted: rec.lastvisted,
           location: rec.location,
-          rating: rec.rating[0] || null,
+          rating: rec.rating[0],
           userid: rec.userid,
         });
       }
@@ -54,6 +55,7 @@ export default class RecommendationDetail extends Component {
                   <Card.Text>What's it about: {description}</Card.Text>
                 </Card.Body>
               </Card>
+              <Rating rating={rating} />
             </Col>
           </Row>
         </Container>
