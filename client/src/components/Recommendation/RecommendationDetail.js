@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import Axios from 'axios';
 import Config from '../../Config';
-import { Container, Col, Row, Card } from 'react-bootstrap';
+import { Container, Row, Card, Button, ButtonGroup } from 'react-bootstrap';
 import Rating from '../Recommendation/Rating';
+import Map from '../Map/Map';
 export default class RecommendationDetail extends Component {
   state = {
     title: '',
@@ -24,7 +25,7 @@ export default class RecommendationDetail extends Component {
 
       if (data) {
         const rec = data.data[0];
-        console.log(data.data[0].rating[0]);
+        console.log(data.data[0].rating);
         this.setState({
           title: rec.title,
           description: rec.description,
@@ -35,7 +36,7 @@ export default class RecommendationDetail extends Component {
         });
       }
     } catch (err) {
-      console.log(err.response);
+      console.log(err);
     }
   };
 
@@ -43,20 +44,29 @@ export default class RecommendationDetail extends Component {
     const { title, description, lastVisted, location, rating } = this.state;
     return (
       <>
-        <Container className="mt-5">
-          <Row className="justify-content-md-center">
-            <Col xs md lg="auto">
-              <Card style={{ width: '60rem', height: '30rem' }}>
-                <Card.Body>
-                  <Card.Title>{title}</Card.Title>
-                  <Card.Subtitle className="mb-1 text-muted">
-                    {location}
-                  </Card.Subtitle>
-                  <Card.Text>What's it about: {description}</Card.Text>
-                </Card.Body>
-              </Card>
-              <Rating rating={rating} />
-            </Col>
+        <Container className="mt-1" style={{ width: '60rem', height: '30rem' }}>
+          <Row className="justify-content-center">
+            <Card style={{ width: '60rem', height: '30rem' }}>
+              <Card.Body>
+                <Card.Header>
+                  <ButtonGroup className="mr-2">
+                    <Button href="#" variant="info">
+                      Update
+                    </Button>
+                  </ButtonGroup>
+                  <ButtonGroup>
+                    <Button variant="danger">Delete</Button>
+                  </ButtonGroup>
+                </Card.Header>
+                <Card.Title>{title}</Card.Title>
+                <Card.Subtitle className="mt-2 text-muted">
+                  {location}
+                </Card.Subtitle>
+                <Card.Text>{description}</Card.Text>
+                <Rating />
+              </Card.Body>
+              <Map />
+            </Card>
           </Row>
         </Container>
       </>

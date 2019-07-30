@@ -4,7 +4,7 @@ import Star from './Star';
 class StarRating extends Component {
   // Initialize a 'rating' state
   state = {
-    rating: this.props.rating.rate,
+    rating: 0,
   };
 
   // Write a function that returns 5 Star components
@@ -25,7 +25,11 @@ class StarRating extends Component {
     return stars;
   };
   handleSetRating = rating => {
-    this.setState({ rating });
+    if (this.state.rating === rating) {
+      this.setState({ rating: 0 });
+    } else {
+      this.setState({ rating });
+    }
   };
 
   // Pass the function to a Star component via props

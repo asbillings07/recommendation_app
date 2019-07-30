@@ -12,6 +12,7 @@ export default props => (
           icon={faSync}
           size={props.size}
         />
+        <br />
         <h1>{'Loading.....'}</h1>
       </Col>
     </Row>

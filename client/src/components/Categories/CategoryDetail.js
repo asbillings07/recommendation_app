@@ -34,7 +34,7 @@ class CategoryDetail extends Component {
   showCategory = () => {
     const { category } = this.state;
     return category.map(rec => (
-      <Card style={{ width: '18rem' }}>
+      <Card className="text-center" key={rec.id} style={{ width: '18rem' }}>
         <Card.Body>
           <Card.Title>{rec.title}</Card.Title>
           <Card.Text>{rec.description}</Card.Text>
