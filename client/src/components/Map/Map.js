@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Marker from './Marker';
 import GoogleMapReact from 'google-map-react';
 import Geocode from 'react-geocode';
-import env from '../../env';
+import Config from '../../Config';
 
 class Map extends Component {
   state = {
@@ -37,7 +37,7 @@ class Map extends Component {
       // Important! Always set the container height explicitly
       <div style={{ height: '100vh', width: '100%' }}>
         <GoogleMapReact
-          bootstrapURLKeys={{ key: env.mapsApiKey }}
+          bootstrapURLKeys={{ key: Config.mapKey }}
           center={center}
           defaultZoom={zoom}
           onClick={() => this.getCoors(this.props.location)}
@@ -52,5 +52,5 @@ export default Map;
 
 // Geocode set up ///
 
-Geocode.setApiKey(env.mapsApiKey);
+Geocode.setApiKey(Config.mapKey);
 Geocode.enableDebug();

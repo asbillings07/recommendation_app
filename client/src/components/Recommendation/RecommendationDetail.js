@@ -26,7 +26,7 @@ export default class RecommendationDetail extends Component {
 
       if (data) {
         const rec = data.data[0];
-        console.log(data.data[0].location);
+        console.log(data.data[0]);
         this.setState({
           title: rec.title,
           description: rec.description,
@@ -42,23 +42,36 @@ export default class RecommendationDetail extends Component {
   };
 
   render() {
-    const { title, description, lastVisted, location, rating } = this.state;
+    const {
+      title,
+      description,
+      lastVisted,
+      location,
+      userid,
+      rating,
+    } = this.state;
+    const { authorizedUser } = this.props.context;
     return (
       <>
         <Container className="mt-1" style={{ width: '60rem', height: '30rem' }}>
           <Row className="justify-content-center">
             <Card style={{ width: '60rem', height: '30rem' }}>
               <Card.Body>
-                <Card.Header>
-                  <ButtonGroup className="mr-2">
-                    <Button href="#" variant="info">
-                      Update
-                    </Button>
-                  </ButtonGroup>
-                  <ButtonGroup>
-                    <Button variant="danger">Delete</Button>
-                  </ButtonGroup>
-                </Card.Header>
+                {authorizedUser && authorizedUser.id === userid ? (
+                  <Card.Header>
+                    <ButtonGroup className="mr-2">
+                      <Button href="#" variant="info">
+                        Update
+                      </Button>
+                    </ButtonGroup>
+                    <ButtonGroup>
+                      <Button variant="danger">Delete</Button>
+                    </ButtonGroup>
+                  </Card.Header>
+                ) : (
+                  ''
+                )}
+
                 <Card.Title>{title}</Card.Title>
                 <Card.Subtitle className="mt-2 text-muted">
                   {location}
