@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Axios from 'axios';
 import Config from '../../Config';
 import Forms from '../Forms';
-import { Container, Row, Col } from 'react-bootstrap';
+import { Form, Container, Row, Col } from 'react-bootstrap';
 
 export default class UpdateRecommendation extends Component {
   state = {
@@ -16,9 +16,11 @@ export default class UpdateRecommendation extends Component {
     confirmed: true,
   };
 
-  componentDidMount() {}
+  componentDidMount() {
+    this.getData();
+  }
 
-  getRecById = async () => {
+  getData = async () => {
     const { id } = this.props.match.params;
     const { authorizedUser } = this.props.context;
     try {
@@ -69,7 +71,37 @@ export default class UpdateRecommendation extends Component {
               submit={this.submit}
               passwordErrors={confirmed}
               submitButtonText="Update Recommendation"
-              //   elements={}
+              elements={() => (
+                <React.Fragment>
+                  <Form.Group>
+                    <Form.Control
+                      type="text"
+                      name="title"
+                      placeholder=""
+                      value={title}
+                      onChange={this.change}
+                    />
+                  </Form.Group>
+                  <Form.Group>
+                    <Form.Control
+                      type="text"
+                      name="description"
+                      placeholder=""
+                      value={description}
+                      onChange={this.change}
+                    />
+                  </Form.Group>
+                  <Form.Group>
+                    <Form.Control
+                      type="text"
+                      name="location"
+                      value={location}
+                      placeholder=""
+                      onChange={this.change}
+                    />
+                  </Form.Group>
+                </React.Fragment>
+              )}
             />
           </Col>
         </Row>

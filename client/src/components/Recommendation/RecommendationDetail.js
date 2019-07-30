@@ -13,6 +13,7 @@ export default class RecommendationDetail extends Component {
     location: '',
     rating: '',
     userid: '',
+    recid: '',
   };
 
   componentDidMount() {
@@ -26,7 +27,7 @@ export default class RecommendationDetail extends Component {
 
       if (data) {
         const rec = data.data[0];
-        console.log(data.data[0]);
+        console.log(data.data[0].id);
         this.setState({
           title: rec.title,
           description: rec.description,
@@ -34,6 +35,7 @@ export default class RecommendationDetail extends Component {
           location: rec.location,
           rating: rec.rating[0],
           userid: rec.userid,
+          recid: rec.id,
         });
       }
     } catch (err) {
@@ -42,7 +44,7 @@ export default class RecommendationDetail extends Component {
   };
 
   render() {
-    const { title, description, location, userid, rating } = this.state;
+    const { title, description, location, userid, rating, recid } = this.state;
     const { authorizedUser } = this.props.context;
     return (
       <>
@@ -53,7 +55,7 @@ export default class RecommendationDetail extends Component {
                 {authorizedUser && authorizedUser.id === userid ? (
                   <Card.Header>
                     <ButtonGroup className="mr-2">
-                      <Button href="#" variant="info">
+                      <Button href={`/rec/${recid}/update`} variant="info">
                         Update
                       </Button>
                     </ButtonGroup>
@@ -79,4 +81,6 @@ export default class RecommendationDetail extends Component {
       </>
     );
   }
+
+  deleteRecommendation = () => {};
 }
