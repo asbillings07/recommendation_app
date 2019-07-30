@@ -4,6 +4,7 @@ import Config from '../../Config';
 import { Container, Row, Card, Button, ButtonGroup } from 'react-bootstrap';
 import Rating from '../Recommendation/Rating';
 import Map from '../Map/Map';
+
 export default class RecommendationDetail extends Component {
   state = {
     title: '',
@@ -25,7 +26,7 @@ export default class RecommendationDetail extends Component {
 
       if (data) {
         const rec = data.data[0];
-        console.log(data.data[0].rating);
+        console.log(data.data[0].location);
         this.setState({
           title: rec.title,
           description: rec.description,
@@ -65,7 +66,7 @@ export default class RecommendationDetail extends Component {
                 <Card.Text>{description}</Card.Text>
                 <Rating />
               </Card.Body>
-              <Map />
+              <Map location={location} />
             </Card>
           </Row>
         </Container>

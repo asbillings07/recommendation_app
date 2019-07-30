@@ -1,39 +1,56 @@
 import React, { Component } from 'react';
-
+import Marker from './Marker';
 import GoogleMapReact from 'google-map-react';
-
+import Geocode from 'react-geocode';
 import env from '../../env';
 
-const AnyReactComponent = ({ text }) => <div>{text}</div>;
-const MyGreatPlaceWithHover = ({ text, ...greatPlaceCoords }) => (
-  <div>{text}</div>
-);
 class Map extends Component {
-  static defaultProps = {
+  state = {
     center: {
       lat: 33.74709,
       lng: -84.35629,
     },
     zoom: 11,
-    greatPlaceCoords: { lat: 59.724465, lng: 30.080121 },
+  };
+
+  getCoors = address => {
+    Geocode.fromAddress(address).then(
+      response => {
+        const { lat, lng } = response.results[0].geometry.location;
+        console.log(lat, lng);
+        this.setState({
+          center: {
+            lat,
+            lng,
+          },
+        });
+      },
+      error => {
+        console.error(error.message);
+      }
+    );
   };
 
   render() {
+    const { center, zoom } = this.state;
     return (
       // Important! Always set the container height explicitly
       <div style={{ height: '100vh', width: '100%' }}>
         <GoogleMapReact
           bootstrapURLKeys={{ key: env.mapsApiKey }}
-          defaultCenter={this.props.center}
-          defaultZoom={this.props.zoom}
+          center={center}
+          defaultZoom={zoom}
+          onClick={() => this.getCoors(this.props.location)}
         >
-          <AnyReactComponent lat={33.74709} lng={-84.35629} text="My Marker" />
-          <MyGreatPlaceWithHover lat={59.955413} lng={30.337844} text="A" />
-          <MyGreatPlaceWithHover {...this.props.greatPlaceCoords} text="B" />
+          <Marker lat={center.lat} lng={center.lng} text="My Marker" />
         </GoogleMapReact>
       </div>
     );
   }
 }
-
 export default Map;
+
+// Geocode set up ///
+
+Geocode.setApiKey(env.mapsApiKey);
+Geocode.enableDebug();
