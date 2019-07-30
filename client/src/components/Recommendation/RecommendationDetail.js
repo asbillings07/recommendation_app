@@ -42,14 +42,7 @@ export default class RecommendationDetail extends Component {
   };
 
   render() {
-    const {
-      title,
-      description,
-      lastVisted,
-      location,
-      userid,
-      rating,
-    } = this.state;
+    const { title, description, location, userid, rating } = this.state;
     const { authorizedUser } = this.props.context;
     return (
       <>
@@ -77,7 +70,7 @@ export default class RecommendationDetail extends Component {
                   {location}
                 </Card.Subtitle>
                 <Card.Text>{description}</Card.Text>
-                <Rating />
+                <Rating /* rating={} */ />
               </Card.Body>
               <Map location={location} />
             </Card>
