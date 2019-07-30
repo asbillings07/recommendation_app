@@ -36,10 +36,6 @@ export default class ForgotPassword extends Component {
                         placeholder="Email Address"
                         onChange={this.change}
                       />
-                      <Form.Text className="text-muted">
-                        If you exist in our database you will recieve a reset
-                        password email
-                      </Form.Text>
                     </Form.Group>
                   </React.Fragment>
                 )}

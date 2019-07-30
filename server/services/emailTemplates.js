@@ -4,15 +4,15 @@ module.exports = {
   confirm: (id, email) => ({
     from: 'recommendItBot@gmail.com',
     to: `${email}`,
-    subject: 'React Confirm Email',
+    subject: 'Confirm Your Email',
     html: `
         <h1> Welcome to RecommendIt! </h1>
         <p>Click the link below to confirm your email </p>
         <a href='${CLIENT_ORIGIN}/confirm/${id}'>
           Confirm Email
         </a>
+        <p>We hope you enjoy using the App, if you think of anything that could make your experience better, please let us know!</p>
       `,
-    text: `Copy and paste this link: ${CLIENT_ORIGIN}/confirm/${id}`,
   }),
 
   passwordReset: (email, passwordResetLink) => ({
@@ -26,6 +26,9 @@ module.exports = {
     Please click on the link below to choose a new password.
     </p>
     <a href='${passwordResetLink}'>Reset Password</a>
+
+    <p>If you did not request to reset your password, please disregard this email and your password will not be changed.
+    </p>
    `,
   }),
 };

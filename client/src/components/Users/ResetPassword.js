@@ -111,6 +111,7 @@ export default class ResetPassword extends Component {
                 errors={errors}
                 passwordErrors={confirmed}
                 submit={this.submit}
+                passwordErrors={confirmed}
                 submitButtonText="Update Password"
                 elements={() => (
                   <React.Fragment>

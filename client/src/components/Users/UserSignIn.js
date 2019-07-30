@@ -47,17 +47,15 @@ export default class UserSignIn extends Component {
                       onChange={this.change}
                     />
                   </Form.Group>
+                  <Form.Text className="text-muted mb-2">
+                    <Link to="/forgotpassword">Forgot password?</Link>
+                  </Form.Text>
                 </React.Fragment>
               )}
             />
 
             <p>
-              Don't have a user account? <Link to="/signup">Click here</Link> to
-              sign up!
-            </p>
-            <p>
-              Forgot your password? <Link to="/forgotpassword">Click here</Link>{' '}
-              to reset it!
+              New to RecommendIt? <Link to="/signup">Sign up</Link>{' '}
             </p>
           </Col>
         </Row>

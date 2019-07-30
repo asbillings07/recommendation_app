@@ -5,3 +5,5 @@ nodemon.json
 .db
 notes
 test
+Todo
+env.js

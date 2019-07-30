@@ -1,7 +1,51 @@
+@import url('https://fonts.googleapis.com/css?family=Oswald&display=swap');
+
 * {
   box-sizing: border-box;
 }
 /* body { padding-top: 70px; } */
+
+/*STAR RATING STYLES */
+.stars {
+  border: 0;
+  margin: 20px 0 0;
+  padding: 0;
+  font-size: 100%;
+}
+
+.stars li {
+  float: left;
+  list-style: none;
+  width: 20%;
+  max-width: 40px;
+  line-height: 0;
+  margin-bottom: 10px;
+  text-align: center;
+  padding: 0 5px;
+  box-sizing: border-box;
+}
+
+.stars li:first-child {
+  margin-left: -2px;
+}
+
+.stars li:hover {
+  cursor: pointer;
+}
+
+.stars .star {
+  width: auto;
+  height: 100%;
+  fill: #3658a25f;
+}
+
+.stars .selected .star {
+  fill: #2d4f9a;
+}
+
+.course--reviews--form .stars {
+  margin-bottom: 10px;
+}
 
 html,
 body {
@@ -9,7 +53,27 @@ body {
   width: 100%;
   padding: 0;
   margin: 0;
+  font-family: 'Oswald', sans-serif;
   background-color: rgb(217, 219, 218);
+}
+.home-page-catergory-holder {
+  border: 1px solid blue;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: baseline;
+}
+
+.jumbo-bk {
+  background-image: url('https://images.unsplash.com/photo-1444852538915-ac95232916dd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80');
+  width: 100%;
+  height: 200px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  text-align: center;
+  color: white;
 }
 
 /* Animations */

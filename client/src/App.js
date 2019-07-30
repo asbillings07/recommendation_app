@@ -8,10 +8,16 @@ import UserSignUp from './components/Users/UserSignUp';
 import UserSignOut from './components/Users/UserSignOut';
 import Confirm from './components/Users/Confirm';
 import Notifications from 'react-notify-toast';
+import CategoryDetail from './components/Categories/CategoryDetail';
 import PrivateRoute from './PrivateRoute';
 import ForgotPassword from './components/Users/ForgotPassword';
 import ResetPassword from './components/Users/ResetPassword';
-import './css/App.css';
+import RecommendationDetail from './components/Recommendation/RecommendationDetail';
+import UpdateRecommendation from './components/Recommendation/UpdateRecommendation';
+import CreateRecommendation from './components/Recommendation/CreateRecomendation';
+import NotFound from './components/Errors/NotFound';
+import UnhandledError from './components/Errors/UnhandledError';
+import Forbidden from './components/Errors/Forbidden';
 
 const App = () => {
   const NavigationWithContext = withContext(Navigation);
@@ -22,6 +28,10 @@ const App = () => {
   const ForgotPasswordWithContext = withContext(ForgotPassword);
   const ResetPasswordWithContext = withContext(ResetPassword);
   const ConfirmWithContext = withContext(Confirm);
+  const CategoryDetailWithContext = withContext(CategoryDetail);
+  const RecommendationDetailWithContext = withContext(RecommendationDetail);
+  const UpdateRecommendationWithContext = withContext(UpdateRecommendation);
+  const CreateRecommendationWithContext = withContext(CreateRecommendation);
 
   return (
     <Router>
@@ -29,14 +39,25 @@ const App = () => {
       <NavigationWithContext />
       <Switch>
         <Route exact path="/" component={HomeWithContext} />
-
-        {/* <Route exact path="/home" component /> */}
         <Route path="/signup" component={SignUpWithContext} />
         <Route path="/confirm/:id" component={ConfirmWithContext} />
         <Route path="/signin" component={SignInWithContext} />
         <Route path="/signout" component={SignOutWithContext} />
         <Route path="/forgotpassword" component={ForgotPasswordWithContext} />
         <Route path="/reset/:token" component={ResetPasswordWithContext} />
+        <Route path="/category/:id" component={CategoryDetailWithContext} />
+        <Route path="/rec/:id" component={RecommendationDetailWithContext} />
+        <PrivateRoute
+          path="/rec/:id/update"
+          component={UpdateRecommendationWithContext}
+        />
+        <PrivateRoute
+          path="/rec/create"
+          component={CreateRecommendationWithContext}
+        />
+        <Route path="/forbidden" component={Forbidden} />
+        <Route path="/error" component={UnhandledError} />
+        <Route component={NotFound} />
       </Switch>
     </Router>
   );
