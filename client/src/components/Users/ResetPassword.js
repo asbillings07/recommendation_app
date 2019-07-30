@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Config from '../../Config';
 import Axios from 'axios';
-import UserForm from './UserForm';
+import Forms from '../Forms';
 import { Alert, Form, Container, Row, Col } from 'react-bootstrap';
 import Spinner from '../Spinner.js';
 
@@ -106,12 +106,11 @@ export default class ResetPassword extends Component {
           <Row className="justify-content-md-center">
             <Col xs md lg="auto">
               <h1>Reset Password</h1>
-              <UserForm
+              <Forms
                 cancel={this.cancel}
                 errors={errors}
                 passwordErrors={confirmed}
                 submit={this.submit}
-                passwordErrors={confirmed}
                 submitButtonText="Update Password"
                 elements={() => (
                   <React.Fragment>

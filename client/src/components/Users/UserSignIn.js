@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import UserForm from './UserForm';
+import Forms from '../Forms';
 import { Form, Container, Row, Col } from 'react-bootstrap';
 
 export default class UserSignIn extends Component {
@@ -20,7 +20,7 @@ export default class UserSignIn extends Component {
           <Col xs md lg="auto">
             <h1>Sign In</h1>
 
-            <UserForm
+            <Forms
               cancel={this.cancel}
               errors={errors}
               submit={this.submit}

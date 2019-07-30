@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import Marker from './Marker';
 import GoogleMapReact from 'google-map-react';
 import Geocode from 'react-geocode';
-import Config from '../../Config';
 
 class Map extends Component {
   state = {
