@@ -4,7 +4,7 @@ import { faSync } from '@fortawesome/free-solid-svg-icons';
 import { Container, Row, Col } from 'react-bootstrap';
 
 export default props => (
-  <Container>
+  <Container className="mt-5">
     <Row className="justify-content-md-center">
       <Col xs md lg="auto">
         <FontAwesomeIcon

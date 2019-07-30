@@ -28,7 +28,7 @@ export default class UserSignUp extends Component {
     } = this.state;
 
     return (
-      <Container>
+      <Container className="mt-3">
         <Row className="justify-content-md-center">
           <Col xs md lg="auto">
             <h1>Sign Up</h1>

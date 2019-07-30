@@ -16,14 +16,10 @@ export default class ForgotPassword extends Component {
 
     if (!success) {
       return (
-        <Container className="mt-5">
+        <Container className="mt-3">
           <Row className="justify-content-md-center">
             <Col xs md lg="auto">
-              <h2>ForgotPassword</h2>
-              <p>
-                Please enter your email address and we will send you an email
-                about how to reset your password.
-              </p>
+              <h1>Forgot Password?</h1>
               <UserForm
                 cancel={this.cancel}
                 errors={messageFromServer}
@@ -53,7 +49,7 @@ export default class ForgotPassword extends Component {
       );
     } else {
       return (
-        <Container>
+        <Container className="mt-3">
           <Row className="justify-content-md-center">
             <Col xs md lg="auto">
               <Alert variant="success">

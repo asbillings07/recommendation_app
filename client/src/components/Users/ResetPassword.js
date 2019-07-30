@@ -56,7 +56,7 @@ export default class ResetPassword extends Component {
     } = this.state;
     if (error) {
       return (
-        <Container>
+        <Container className="mt-3">
           <Row className="justify-content-md-center">
             <Col xs md lg="auto">
               <Alert variant="danger">
@@ -82,7 +82,7 @@ export default class ResetPassword extends Component {
       return <Spinner size="4x" spinning="spinning" />;
     } else if (updated) {
       return (
-        <Container>
+        <Container className="mt-3">
           <Row className="justify-content-md-center">
             <Col xs md lg="auto">
               <Alert variant="success">
@@ -102,12 +102,14 @@ export default class ResetPassword extends Component {
       );
     } else {
       return (
-        <Container>
+        <Container className="mt-3">
           <Row className="justify-content-md-center">
             <Col xs md lg="auto">
+              <h1>Reset Password</h1>
               <UserForm
                 cancel={this.cancel}
                 errors={errors}
+                passwordErrors={confirmed}
                 submit={this.submit}
                 passwordErrors={confirmed}
                 submitButtonText="Update Password"
@@ -143,23 +145,28 @@ export default class ResetPassword extends Component {
 
   submit = () => {
     const { context } = this.props;
-    const { email, password } = this.state;
+    const { email, password, confirmPassword } = this.state;
     const user = {
       email,
       password,
     };
-    context.data.updateUserPassword(user).then(user => {
-      console.log(user);
-      if (user) {
-        this.setState({
-          updated: true,
-        });
-      } else {
-        this.setState({
-          error: true,
-        });
-      }
-    });
+
+    if (confirmPassword === password) {
+      context.data.updateUserPassword(user).then(user => {
+        console.log(user);
+        if (user) {
+          this.setState({
+            updated: true,
+          });
+        } else {
+          this.setState({
+            error: true,
+          });
+        }
+      });
+    } else {
+      this.setState({ errors: ['Passwords must match'] });
+    }
   };
 
   change = e => {

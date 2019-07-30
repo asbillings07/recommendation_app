@@ -15,7 +15,7 @@ export default class UserSignIn extends Component {
     const { email, password, errors, confirmed } = this.state;
 
     return (
-      <Container className="mt-5">
+      <Container className="mt-3">
         <Row className="justify-content-md-center">
           <Col xs md lg="auto">
             <h1>Sign In</h1>

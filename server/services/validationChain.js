@@ -46,7 +46,7 @@ const validateUser = [
     }),
   check('password')
     .exists({ checkNull: true, checkFalsy: true })
-    .isLength({ min: 8 })
+    .isLength({ min: 8 }) // need to make sure pw is alphaNumeric later
     .withMessage(
       'Please provide a value for password that is atleast 8 chars long'
     ),
