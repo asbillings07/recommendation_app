@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Axios from 'axios';
 import Config from '../../Config';
 
-export class UpdateRecommendation extends Component {
+export default class UpdateRecommendation extends Component {
   state = {
     title: '',
     description: '',

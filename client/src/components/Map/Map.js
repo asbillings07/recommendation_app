@@ -37,7 +37,7 @@ class Map extends Component {
       // Important! Always set the container height explicitly
       <div style={{ height: '100vh', width: '100%' }}>
         <GoogleMapReact
-          bootstrapURLKeys={{ key: Config.mapKey }}
+          bootstrapURLKeys={{ key: `${process.env.REACT_APP_MAPS_API_KEY}` }}
           center={center}
           defaultZoom={zoom}
           onClick={() => this.getCoors(this.props.location)}
@@ -52,5 +52,5 @@ export default Map;
 
 // Geocode set up ///
 
-Geocode.setApiKey(Config.mapKey);
+Geocode.setApiKey(`${process.env.REACT_APP_MAPS_API_KEY}`);
 Geocode.enableDebug();
