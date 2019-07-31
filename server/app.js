@@ -39,6 +39,7 @@ const sessionOptions = {
   saveUninitialized: false,
   cookie: {
     expires: 360000,
+    path: '/api',
   },
 };
 store.sync();

@@ -13,7 +13,8 @@ const {
 
 // GET /rating status 200 - gets all ratings for user
 router.get('/rating', authenticateUser, async (req, res) => {
-  const userId = req.currentUser.id;
+  const session = req.session;
+  const userId = session.user.id;
   const ratings = await getRatings(userId);
   res.status(200).json(ratings);
 });
@@ -25,7 +26,7 @@ router.post(
   asyncHandler(async (req, res) => {
     const body = req.body;
     const id = +req.params.id;
-    const user = req.currentUser;
+    const user = req.session.user;
     const rating = await verifyUser(id);
     console.log(rating);
     if (rating.userid !== user.id) {
@@ -47,7 +48,7 @@ router.put(
   asyncHandler(async (req, res) => {
     const body = req.body;
     const id = +req.params.id;
-    const user = req.currentUser;
+    const user = req.session.user;
     const authedUser = await verifyUser(id);
     if (authedUser.userid === user.id) {
       await updateRating(id, body);
@@ -66,7 +67,7 @@ router.delete(
   authenticateUser,
   asyncHandler(async (req, res) => {
     const id = +req.params.id;
-    const user = req.currentUser;
+    const user = req.session.user;
     const rating = await verifyUser(id);
     if (rating.userid === user.id) {
       await deleteRating(id);

@@ -24,6 +24,10 @@ if (config.use_env_variable) {
     config
   );
 }
+// sync our DB
+sequelize.sync().then(() => {
+  console.log('DB synced');
+});
 // let's us know if our DB connection is good or not
 sequelize
   .authenticate()
@@ -33,6 +37,7 @@ sequelize
   .catch(err => {
     console.log('Unable to connect to the database:', err);
   });
+
 // reading the files and importing sequelize
 fs.readdirSync(__dirname)
   .filter(file => {

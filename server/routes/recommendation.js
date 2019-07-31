@@ -51,7 +51,7 @@ router.post(
   authenticateUser,
   validateRecommendation,
   asyncHandler(async (req, res) => {
-    const user = req.currentUser;
+    const user = req.session.user;
     const rec = req.body;
     const recs = await createRec(user, rec);
     if (recs) {
@@ -72,7 +72,7 @@ router.put(
   authenticateUser,
   asyncHandler(async (req, res) => {
     const id = +req.params.id;
-    const user = req.currentUser;
+    const user = req.session.user;
     const rec = req.body;
     const authedUser = await verifyUser(id);
     if (authedUser.userid === user.id) {
@@ -91,7 +91,7 @@ router.delete(
   authenticateUser,
   asyncHandler(async (req, res) => {
     const id = +req.params.id;
-    const user = req.currentUser;
+    const user = req.session.user;
     const authedUser = await verifyUser(id);
     if (authedUser.userid === user.id) {
       await deleteRecs(id);

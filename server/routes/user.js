@@ -10,15 +10,14 @@ const {
   deleteUser,
   updateUser,
 } = require('../services/userFunctions');
+const { User } = require('../models');
 
 // User Routes
 //GET /api/users 200 - Returns the currently authenticated user
 router.get('/users', authenticateUser, (req, res) => {
-  const user = req.currentUser;
   const session = req.session;
-  console.log(session.user);
-  const users = getUser(session);
-  res.status(200).json(users);
+  const user = getUser(session);
+  res.status(200).json(user);
 });
 //POST /api/users 201 - Creates a user, sets the Location header to "/", and returns 'User created succesfully'
 router.post(
@@ -26,7 +25,7 @@ router.post(
   validateUser,
   asyncHandler(async (req, res) => {
     const user = req.body;
-    session = req.session;
+
     await createUser(user);
     res
       .location('/')
@@ -39,7 +38,7 @@ router.post(
 
 // PUT /api/users - updates user and returns no content
 router.put('/users', authenticateUser, validateUser, async (req, res) => {
-  const currentUserId = req.currentUser.id;
+  const currentUserId = req.session.user.id;
   const body = req.body;
   await updateUser(currentUserId, body);
   res.status(204).end();
@@ -49,7 +48,7 @@ router.delete(
   '/users',
   authenticateUser,
   asyncHandler(async (req, res) => {
-    const user = req.currentUser;
+    const user = req.session.user;
     await deleteUser(user);
     res
       .status(204)
