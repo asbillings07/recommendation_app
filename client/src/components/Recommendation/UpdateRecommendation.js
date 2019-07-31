@@ -3,6 +3,7 @@ import Axios from 'axios';
 import Config from '../../Config';
 import Forms from '../Forms';
 import { Form, Container, Row, Col } from 'react-bootstrap';
+import { notify } from 'react-notify-toast';
 
 export default class UpdateRecommendation extends Component {
   state = {
@@ -121,11 +122,31 @@ export default class UpdateRecommendation extends Component {
   };
 
   submit = () => {
-    const { context } = this.props;
+    const { id } = this.props.match.params;
+    const { authorizedUser, data } = this.props.context;
+    const { title, description, location } = this.state;
+    const rec = { title, description, location };
+
+    data
+      .updateRecommendation(
+        authorizedUser.email,
+        authorizedUser.password,
+        rec,
+        id
+      )
+      .then(errors => {
+        if (errors.length) {
+          this.setState({ errors: errors.message });
+        } else {
+          notify.show('Recommendation Updated!', 'success', 10000);
+          this.props.history.push(`/rec/${id}`);
+        }
+      })
+      .catch(error => console.log(error.message));
   };
 
   cancel = () => {
     const { id } = this.props.match.params;
-    this.props.history.push(`/courses/${id}`);
+    this.props.history.push(`/rec/${id}`);
   };
 }
