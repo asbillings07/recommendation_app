@@ -1,8 +1,13 @@
 const express = require('express');
-const { PORT, CLIENT_ORIGIN } = require('./config/Config');
+const { PORT, CLIENT_ORIGIN } = require('./Config');
+require('dotenv').config();
 // required to show HTTP requests in console
 const morgan = require('morgan');
+const Sequelize = require('sequelize');
 const cors = require('cors');
+const expressSession = require('express-session');
+const SessionStore = require('connect-session-sequelize')(expressSession.Store);
+const cookieParser = require('cookie-parser');
 
 const whitelist = ['http://localhost:3000'];
 const corsOptions = {
@@ -14,11 +19,36 @@ const corsOptions = {
     }
   },
 };
+const myDB = new Sequelize('recommendation_app', 'aaronbillings', 'password', {
+  host: 'localhost',
+  dialect: 'postgres',
+});
+
+const store = new SessionStore({
+  db: myDB,
+  checkExpirationInterval: 15 * 60 * 1000, // The interval at which to cleanup expired sessions in milliseconds.
+  expiration: 24 * 60 * 60 * 1000,
+});
+
+//new table session
+
+const sessionOptions = {
+  secret: 'shhhhhhhh!',
+  store,
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    expires: 360000,
+  },
+};
+store.sync();
 
 const app = express();
 app.use(cors());
+app.use(cookieParser());
 app.use(morgan('dev'));
 app.use(express.json());
+app.use(expressSession(sessionOptions));
 
 //route requires
 const userRoute = require('./routes/user');
@@ -33,8 +63,6 @@ app.use('/api', recommendationRoute);
 app.use('/api', categoryRoute);
 app.use('/api', ratingRoute);
 app.use('/api', passwordReset);
-
-app.get('/wakeup', (req, res) => res.json({ message: "I'm Up" }));
 
 app.get('/', (req, res, next) => {
   res.json({

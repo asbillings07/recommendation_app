@@ -4,10 +4,11 @@ const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 
 // creates user and hashes password
-const createUser = user => {
+const createUser = (session, user) => {
   user.password = bcrypt.hashSync(user.password);
 
   User.create({
+    sessionid: session.id,
     firstName: user.firstName,
     lastName: user.lastName,
     email: user.email,
@@ -16,13 +17,14 @@ const createUser = user => {
 };
 // gets user
 
-const getUser = user => {
+const getUser = session => {
   return {
-    id: user.id,
-    firstName: user.firstName,
-    lastName: user.lastName,
-    email: user.email,
-    password: user.password,
+    userid: session.user.id,
+    sessionid: session.id,
+    sessionCookie: session.cookie,
+    firstName: session.user.firstName,
+    lastName: session.user.lastName,
+    email: session.user.email,
   };
 };
 // Finds authed user by id then updates user and hashes password if needed

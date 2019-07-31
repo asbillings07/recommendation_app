@@ -47,6 +47,12 @@ module.exports = (sequelize, DataTypes) => {
       },
     });
     User.belongsToMany(models.Recommendation, { through: 'SavedRec' });
+    User.hasOne(models.Sessions, {
+      as: 'session',
+      foreignKey: {
+        fieldName: 'userid',
+      },
+    });
   };
   return User;
 };

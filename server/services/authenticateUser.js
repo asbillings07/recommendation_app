@@ -25,7 +25,8 @@ const authenticateUser = asyncHandler(async (req, res, next) => {
       const authed = bcrypt.compareSync(credentials.pass, user.password);
 
       if (authed) {
-        req.currentUser = user;
+        req.session.user = user;
+
         next();
       } else {
         message = `Authentication failure for username: ${user.email}`;

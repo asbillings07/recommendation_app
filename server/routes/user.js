@@ -15,7 +15,9 @@ const {
 //GET /api/users 200 - Returns the currently authenticated user
 router.get('/users', authenticateUser, (req, res) => {
   const user = req.currentUser;
-  const users = getUser(user);
+  const session = req.session;
+  console.log(session.user);
+  const users = getUser(session);
   res.status(200).json(users);
 });
 //POST /api/users 201 - Creates a user, sets the Location header to "/", and returns 'User created succesfully'
@@ -24,6 +26,7 @@ router.post(
   validateUser,
   asyncHandler(async (req, res) => {
     const user = req.body;
+    session = req.session;
     await createUser(user);
     res
       .location('/')
