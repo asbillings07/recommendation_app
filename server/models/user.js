@@ -19,10 +19,21 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      resetPasswordToken: DataTypes.STRING,
-      resetPasswordExpires: DataTypes.DATE,
-      confirmed: DataTypes.BOOLEAN,
-      photo: DataTypes.STRING,
+      resetPasswordToken: {
+        type: DataTypes.STRING,
+      },
+      resetPasswordExpires: {
+        type: DataTypes.DATE,
+      },
+      confirmed: {
+        type: DataTypes.BOOLEAN,
+      },
+      photo: {
+        type: DataTypes.STRING,
+      },
+      isAdmin: {
+        type: DataTypes.BOOLEAN,
+      },
     },
     {}
   );

@@ -1,6 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const { authenticateUser } = require('../services/authenticateUser');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const passport = require('passport');
+const { app, jwtOptions, authenticateUser } = require('../app');
 const { validateUser } = require('../services/validationChain');
 const { collectEmail, confirmEmail } = require('../services/emailController');
 const asyncHandler = require('../services/asyncErrorHanlder');
@@ -9,15 +12,42 @@ const {
   createUser,
   deleteUser,
   updateUser,
+  findUserByObj,
 } = require('../services/userFunctions');
+
+// Authentication Route
+router.post('/login', async (req, res, next) => {
+  const { email, password } = req.body;
+  if (email && password) {
+    let user = await findUserByObj({ email });
+    console.log(user);
+    if (!user) {
+      res.status(401).json({ message: `${user} not found` });
+    }
+    if (bcrypt.compareSync(password, user.password)) {
+      let payload = { id: user.id };
+      let token = jwt.sign(payload, jwtOptions.secretOrKey);
+      res.json({ message: 'ok', token: token });
+    } else {
+      res.status(401).json({ message: `Password is incorrect` });
+    }
+  } else {
+    res.json({ message: 'please enter email and password' });
+  }
+});
 
 // User Routes
 //GET /api/users 200 - Returns the currently authenticated user
-router.get('/users', authenticateUser, (req, res) => {
-  const user = req.currentUser;
-  const users = getUser(user);
-  res.status(200).json(users);
-});
+router.get(
+  '/users',
+  passport.authenticate('jwt', { session: false }),
+  async (req, res) => {
+    const id = req.user.id;
+    console.log(id);
+    const user = await findUserByObj({ id });
+    res.status(200).json(user);
+  }
+);
 //POST /api/users 201 - Creates a user, sets the Location header to "/", and returns 'User created succesfully'
 router.post(
   '/users',
@@ -36,9 +66,9 @@ router.post(
 
 // PUT /api/users - updates user and returns no content
 router.put('/users', authenticateUser, validateUser, async (req, res) => {
-  const currentUserId = req.currentUser.id;
+  const userid = req.user.id;
   const body = req.body;
-  await updateUser(currentUserId, body);
+  await updateUser(userid, body);
   res.status(204).end();
 });
 // DELETE (Careful, this deletes users from the DB) /api/users 204 - deletes a user, sets the location to '/', and returns no content
@@ -46,7 +76,7 @@ router.delete(
   '/users',
   authenticateUser,
   asyncHandler(async (req, res) => {
-    const user = req.currentUser;
+    const user = req.user;
     await deleteUser(user);
     res
       .status(204)

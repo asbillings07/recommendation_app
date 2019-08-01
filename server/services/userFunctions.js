@@ -25,6 +25,7 @@ const getUser = user => {
     password: user.password,
   };
 };
+
 // Finds authed user by id then updates user and hashes password if needed
 const updateUser = (id, body) => {
   body.password = bcrypt.hashSync(body.password);
@@ -69,6 +70,8 @@ const findUserById = id =>
     where: { id },
   });
 
+const findUserByObj = obj => User.findOne({ where: obj });
+
 module.exports = {
   createUser,
   getUser,
@@ -77,4 +80,5 @@ module.exports = {
   findUserByEmail,
   findUserByToken,
   findUserById,
+  findUserByObj,
 };
