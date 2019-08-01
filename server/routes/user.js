@@ -2,8 +2,10 @@ const express = require('express');
 const router = express.Router();
 const { authenticateUser } = require('../services/authenticateUser');
 const { validateUser } = require('../services/validationChain');
+const passport = require('passport');
 const {
   getUser,
+  getUserByObj,
   createUser,
   deleteUser,
   updateUser,
@@ -23,11 +25,13 @@ function asyncHandler(cb) {
     }
   };
 }
+const auth = passport.authenticate('jwt', { session: false });
 // User Routes
 //GET /api/users 200 - Returns the currently authenticated user
-router.get('/users', authenticateUser, (req, res) => {
-  const user = req.currentUser;
-  const users = getUser(user);
+router.get('/users', auth, (req, res) => {
+  id = req.user.id;
+  console.log(id);
+  const users = getUserByObj({ id });
   res.status(200).json({
     users,
   });
