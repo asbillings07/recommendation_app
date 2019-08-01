@@ -3,6 +3,7 @@ const { PORT, CLIENT_ORIGIN } = require('./config/Config');
 // required to show HTTP requests in console
 const morgan = require('morgan');
 const cors = require('cors');
+const passport = require('passport');
 
 const whitelist = ['http://localhost:3000'];
 const corsOptions = {
@@ -19,6 +20,7 @@ const app = express();
 app.use(cors());
 app.use(morgan('dev'));
 app.use(express.json());
+app.use(passport.initialize());
 
 //route requires
 const userRoute = require('./routes/user');
