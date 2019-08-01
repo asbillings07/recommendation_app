@@ -5,7 +5,7 @@ const express = require('express');
 const router = express.Router();
 require('dotenv').config();
 const passportJWT = require('passport-jwt');
-const { findUserByObj, getUserByObj } = require('./services/userFunctions');
+const { findUserByObj } = require('../services/userFunctions');
 // create JWT
 let ExtractJwt = passportJWT.ExtractJwt;
 let JWTstrategy = passportJWT.Strategy;
@@ -29,10 +29,10 @@ passport.use(strategy);
 
 // Authentication Route
 
-route.post('/login', async (req, res, next) => {
+router.post('/login', async (req, res, next) => {
   const { email, password } = req.body;
   if (email && password) {
-    let user = await getUserByObj({ email });
+    let user = await findUserByObj({ email });
     if (!user) {
       res.status(401).json({ message: `${user} not found` });
     }
@@ -50,7 +50,13 @@ route.post('/login', async (req, res, next) => {
 
 const authenticate = passport.authenticate('jwt', { session: false });
 
-router.get('/protected', passport.authenticate('jwt', { session: false }), (req, res) => {
-  res.json({ message: 'Congrats, it works!' });
+router.get(
+  '/protected',
+  passport.authenticate('jwt', { session: false }),
+  (req, res) => {
+    res.json({ message: 'Congrats, it works!' });
+  }
+);
 
-module.exports = router
+module.exports = router;
+module.exports = authenticate;

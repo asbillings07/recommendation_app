@@ -4,7 +4,13 @@ const { PORT, CLIENT_ORIGIN } = require('./config/Config');
 const morgan = require('morgan');
 const cors = require('cors');
 const passport = require('passport');
+require('bcryptjs');
+require('jsonwebtoken');
+require('dotenv').config();
+const passportJWT = require('passport-jwt');
+const { findUserByObj } = require('./services/userFunctions');
 
+/// whitelisting for Cors
 const whitelist = ['http://localhost:3000'];
 const corsOptions = {
   origin: function(origin, callback) {
@@ -16,7 +22,32 @@ const corsOptions = {
   },
 };
 
+// Passport JWT Authentication
+let ExtractJwt = passportJWT.ExtractJwt;
+let JWTstrategy = passportJWT.Strategy;
+let jwtOptions = {
+  jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+  secretOrKey: process.env.JWT_SECRET,
+};
+exports.jwtOptions = jwtOptions;
+// create Strategy for passport
+let strategy = new JWTstrategy(jwtOptions, async (jwt_payload, next) => {
+  console.log('pay load recived!', jwt_payload);
+  let user = await findUserByObj({ id: jwt_payload.id });
+  console.log(user);
+  if (user) {
+    next(null, user);
+  } else {
+    next(null, false, info.message);
+  }
+});
+
+passport.use(strategy);
+const authenticateUser = passport.authenticate('jwt', { session: false });
+exports.authenticateUser = authenticateUser;
+
 const app = express();
+exports.app = app;
 app.use(cors());
 app.use(morgan('dev'));
 app.use(express.json());
@@ -35,6 +66,14 @@ app.use('/api', recommendationRoute);
 app.use('/api', categoryRoute);
 app.use('/api', ratingRoute);
 app.use('/api', passwordReset);
+
+app.get(
+  '/protected',
+
+  (req, res) => {
+    res.json({ message: 'Congrats, it works!' });
+  }
+);
 
 app.get('/wakeup', (req, res) => res.json({ message: "I'm Up" }));
 

@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { authenticateUser } = require('../services/authenticateUser');
+const { authenticateUser } = require('../app');
 const { validateRecommendation } = require('../services/validationChain');
 const asyncHandler = require('../services/asyncErrorHanlder');
 const {
@@ -51,7 +51,7 @@ router.post(
   authenticateUser,
   validateRecommendation,
   asyncHandler(async (req, res) => {
-    const user = req.currentUser;
+    const user = req.user;
     const rec = req.body;
     const recs = await createRec(user, rec);
     if (recs) {
@@ -72,14 +72,14 @@ router.put(
   authenticateUser,
   asyncHandler(async (req, res) => {
     const id = +req.params.id;
-    const user = req.currentUser;
+    const user = req.user;
     const rec = req.body;
     const authedUser = await verifyUser(id);
     if (authedUser.userid === user.id) {
       recommendation = await updateRecs(id, rec);
       res.status(204).json(recommendation);
     } else {
-      res.status(403).json({
+      res.status(401).json({
         message: 'You can not edit recommendations that you do not own.',
       });
     }
@@ -91,13 +91,13 @@ router.delete(
   authenticateUser,
   asyncHandler(async (req, res) => {
     const id = +req.params.id;
-    const user = req.currentUser;
+    const user = req.user;
     const authedUser = await verifyUser(id);
     if (authedUser.userid === user.id) {
       await deleteRecs(id);
       res.status(204).end();
     } else {
-      res.status(403).json({
+      res.status(401).json({
         message: 'You can not delete recommendations that you do not own.',
       });
     }
