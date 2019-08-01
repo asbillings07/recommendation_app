@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Axios from 'axios';
 import Config from '../../Config';
 import { Row, Button, Card, CardGroup } from 'react-bootstrap';
-import CreateRecommendation from '../Recommendation/CreateRecomendation';
+import AddRecommendation from '../Recommendation/AddRecomendation';
 
 class CategoryDetail extends Component {
   state = {
@@ -22,7 +22,6 @@ class CategoryDetail extends Component {
       const data = await Axios.get(`${Config.apiBaseUrl}/category/${id}`);
 
       if (data) {
-        console.log(data.data.category[0].Recommendations);
         this.setState({ category: data.data.category[0].Recommendations });
       } else {
       }
@@ -47,12 +46,14 @@ class CategoryDetail extends Component {
   };
 
   render() {
+    const { authorizedUser } = this.props.context;
+
     return (
       <>
         <CardGroup>
           <Row>{this.showCategory()}</Row>
         </CardGroup>
-        <CreateRecommendation />
+        {authorizedUser ? <AddRecommendation /> : ''}
       </>
     );
   }

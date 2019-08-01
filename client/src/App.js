@@ -14,7 +14,7 @@ import ForgotPassword from './components/Users/ForgotPassword';
 import ResetPassword from './components/Users/ResetPassword';
 import RecommendationDetail from './components/Recommendation/RecommendationDetail';
 import UpdateRecommendation from './components/Recommendation/UpdateRecommendation';
-import CreateRecommendation from './components/Recommendation/CreateRecomendation';
+import CreateRecommendation from './components/Recommendation/CreateRecommendation';
 import NotFound from './components/Errors/NotFound';
 import UnhandledError from './components/Errors/UnhandledError';
 import Forbidden from './components/Errors/Forbidden';
@@ -56,7 +56,7 @@ const App = () => {
           component={UpdateRecommendationWithContext}
         />
         <PrivateRoute
-          path="/rec/create"
+          path="/rec-create"
           component={CreateRecommendationWithContext}
         />
         <Route path="/forbidden" component={Forbidden} />

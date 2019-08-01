@@ -1,11 +1,11 @@
 import React from 'react';
 import { Card, Button } from 'react-bootstrap';
 
-const CreateRecommendation = () => {
+const AddRecommendation = () => {
   return (
     <Card style={{ width: '17rem' }}>
       <Card.Body>
-        <Button href="#" variant="primary">
+        <Button href="/rec-create" variant="primary">
           Create Recommendation
         </Button>
       </Card.Body>
@@ -13,4 +13,4 @@ const CreateRecommendation = () => {
   );
 };
 
-export default CreateRecommendation;
+export default AddRecommendation;
