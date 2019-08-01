@@ -14,6 +14,7 @@ export class Provider extends Component {
 
   state = {
     authorizedUser: Cookies.getJSON('authorizedUser') || null,
+    token: Cookies.getJSON('token') || null,
   };
 
   render() {
@@ -36,15 +37,19 @@ export class Provider extends Component {
   /** SignIn Method - Signs in user and sets authorized user in cookies */
 
   signIn = async (email, password) => {
-    const user = await this.data.getUser(email, password);
+    const creds = { email, password };
+    const user = await this.data.login(creds);
     if (user) {
+      console.log(user);
+      console.log(user.token);
       this.setState(() => {
         return {
-          authorizedUser: user,
-          password,
+          authorizedUser: user.user,
+          token: user.token,
         };
       });
-      Cookies.set('authorizedUser', JSON.stringify(user), { expires: 5 });
+      Cookies.set('authorizedUser', JSON.stringify(user.user), { expires: 1 });
+      Cookies.set('token', JSON.stringify(user.token), { expires: 1 });
     }
     return user;
   };
@@ -52,8 +57,9 @@ export class Provider extends Component {
   /**SignOut Method - Signs out user and removes cookies */
 
   signOut = () => {
-    this.setState({ authorizedUser: null });
+    this.setState({ authorizedUser: null, token: null });
     Cookies.remove('authorizedUser');
+    Cookies.remove('token');
     console.log('SignOut Successful');
   };
 }

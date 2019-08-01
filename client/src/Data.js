@@ -25,12 +25,24 @@ export default class Data {
 
   /** USER METHODS */
 
-  //get users
-  async getUser(email, password) {
-    const response = await this.api('/users', 'GET', null, true, {
-      email,
-      password,
-    });
+  //Login User, create JWT Token
+  async login(creds) {
+    const response = await this.api('/login', 'POST', creds);
+
+    if (response.status === 200) {
+      return response.json().then(data => data);
+    } else if (response.status === 401) {
+      return response
+        .json()
+        .then(data => console.log(data.errors))
+        .catch(err => console.log(err));
+    } else {
+      throw new Error();
+    }
+  }
+
+  async getUser(token) {
+    const response = await this.api('/login', 'GET', token);
 
     if (response.status === 200) {
       return response.json().then(data => data);
