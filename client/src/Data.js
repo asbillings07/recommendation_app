@@ -17,6 +17,7 @@ export default class Data {
 
     if (requiresAuth) {
       const endcodedCreds = btoa(`${creds.email}:${creds.password}`);
+      // edit headers to include JWT Token
       options.headers['Authorization'] = `Basic ${endcodedCreds}`;
     }
 
