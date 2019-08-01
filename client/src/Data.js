@@ -16,9 +16,9 @@ export default class Data {
     }
 
     if (requiresAuth) {
-      const endcodedCreds = btoa(`${creds.email}:${creds.password}`);
+      const token = creds;
       // edit headers to include JWT Token
-      options.headers['Authorization'] = `Basic ${endcodedCreds}`;
+      options.headers['Authorization'] = `Bearer ${token}`;
     }
 
     return fetch(url, options);
@@ -58,11 +58,8 @@ export default class Data {
   }
 
   // Update User
-  async updateUser(email, password, user) {
-    const response = await this.api('/users', 'PUT', user, true, {
-      email,
-      password,
-    });
+  async updateUser(token, user) {
+    const response = await this.api('/users', 'PUT', user, true, token);
     if (response.status === 201) {
       return [];
     } else if (response.status === 403 || response.status === 400) {
@@ -76,11 +73,15 @@ export default class Data {
   }
 
   // Delete User
-  async deleteUser(email, password) {
-    const response = await this.api('/users', 'DELETE', null, null, true, {
-      email,
-      password,
-    });
+  async deleteUser(token) {
+    const response = await this.api(
+      '/users',
+      'DELETE',
+      null,
+      null,
+      true,
+      token
+    );
     if (response.status === 204) {
       return [];
     } else if (response.status === 400 || response.status === 403) {
@@ -146,11 +147,8 @@ export default class Data {
   /** RECOMMENDATION METHODS */
 
   // create recommendation
-  async createRecommendation(email, password, rec) {
-    const response = await this.api('/recs', 'POST', rec, true, {
-      email,
-      password,
-    });
+  async createRecommendation(token, rec) {
+    const response = await this.api('/recs', 'POST', rec, true, token);
     if (response.status === 201) {
       return response.headers;
     } else if (response.status === 401 || response.status === 400) {
@@ -168,11 +166,8 @@ export default class Data {
   }
 
   // Update Recommendation
-  async updateRecommendation(email, password, rec, id) {
-    const response = await this.api(`/recs/${id}`, 'PUT', rec, true, {
-      email,
-      password,
-    });
+  async updateRecommendation(token, rec, id) {
+    const response = await this.api(`/recs/${id}`, 'PUT', rec, true, token);
     if (response.status === 204) {
       return [];
     } else if (response.status === 400 || response.status === 403) {
@@ -187,11 +182,8 @@ export default class Data {
 
   // Delete Recommendation
 
-  async deleteRecommendation(email, password, id) {
-    const response = await this.api(`/recs/${id}`, 'DELETE', null, true, {
-      email,
-      password,
-    });
+  async deleteRecommendation(token, id) {
+    const response = await this.api(`/recs/${id}`, 'DELETE', null, true, token);
     if (response.status === 204) {
       return [];
     } else if (response.status === 400 || response.status === 403) {
@@ -229,11 +221,14 @@ export default class Data {
   }
 
   // update rating
-  async updateRating(email, password, rating, id) {
-    const response = await this.api(`/rating/recs/${id}`, 'PUT', rating, true, {
-      email,
-      password,
-    });
+  async updateRating(token, rating, id) {
+    const response = await this.api(
+      `/rating/recs/${id}`,
+      'PUT',
+      rating,
+      true,
+      token
+    );
     if (response.status === 204) {
       return [];
     } else if (response.status === 400 || response.status === 403) {
@@ -246,13 +241,13 @@ export default class Data {
     }
   }
   // delete rating
-  async deleteRating(email, password, rating, id) {
+  async deleteRating(token, id) {
     const response = await this.api(
       `/rating/recs/${id}`,
       'DELETE',
       null,
       true,
-      { email, password }
+      token
     );
     if (response.status === 204) {
       return [];

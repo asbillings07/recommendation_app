@@ -27,7 +27,7 @@ export default class RecommendationDetail extends Component {
 
       if (data) {
         const rec = data.data[0];
-        console.log(data.data[0].id);
+        console.log(data.data[0]);
         this.setState({
           title: rec.title,
           description: rec.description,

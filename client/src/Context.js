@@ -18,10 +18,11 @@ export class Provider extends Component {
   };
 
   render() {
-    const { authorizedUser } = this.state;
+    const { authorizedUser, token } = this.state;
 
     const value = {
       authorizedUser,
+      token,
       data: this.data,
       actions: {
         signIn: this.signIn,
