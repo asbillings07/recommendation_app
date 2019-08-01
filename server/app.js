@@ -10,18 +10,6 @@ require('dotenv').config();
 const passportJWT = require('passport-jwt');
 const { findUserByObj } = require('./services/userFunctions');
 
-/// whitelisting for Cors
-const whitelist = ['http://localhost:3000'];
-const corsOptions = {
-  origin: function(origin, callback) {
-    if (whitelist.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-};
-
 // Passport JWT Authentication
 let ExtractJwt = passportJWT.ExtractJwt;
 let JWTstrategy = passportJWT.Strategy;
@@ -43,8 +31,21 @@ let strategy = new JWTstrategy(jwtOptions, async (jwt_payload, next) => {
 });
 
 passport.use(strategy);
+// export passport authenication middleware
 const authenticateUser = passport.authenticate('jwt', { session: false });
 exports.authenticateUser = authenticateUser;
+
+/// whitelisting for Cors
+const whitelist = ['http://localhost:3000'];
+const corsOptions = {
+  origin: function(origin, callback) {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+};
 
 const app = express();
 exports.app = app;
@@ -66,16 +67,6 @@ app.use('/api', recommendationRoute);
 app.use('/api', categoryRoute);
 app.use('/api', ratingRoute);
 app.use('/api', passwordReset);
-
-app.get(
-  '/protected',
-
-  (req, res) => {
-    res.json({ message: 'Congrats, it works!' });
-  }
-);
-
-app.get('/wakeup', (req, res) => res.json({ message: "I'm Up" }));
 
 app.get('/', (req, res, next) => {
   res.json({
