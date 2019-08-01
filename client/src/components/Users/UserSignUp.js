@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import UserForm from './UserForm';
+import Forms from '../Forms';
 import { Form, Container, Row, Col } from 'react-bootstrap';
 import { notify } from 'react-notify-toast';
 
@@ -32,7 +32,7 @@ export default class UserSignUp extends Component {
         <Row className="justify-content-md-center">
           <Col xs md lg="auto">
             <h1>Sign Up</h1>
-            <UserForm
+            <Forms
               cancel={this.cancel}
               errors={errors}
               passwordErrors={confirmed}

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import UserForm from './UserForm';
+import Forms from '../Forms';
 import { Alert, Form, Container, Row, Col } from 'react-bootstrap';
 
 export default class ForgotPassword extends Component {
@@ -20,7 +20,7 @@ export default class ForgotPassword extends Component {
           <Row className="justify-content-md-center">
             <Col xs md lg="auto">
               <h1>Forgot Password?</h1>
-              <UserForm
+              <Forms
                 cancel={this.cancel}
                 errors={messageFromServer}
                 submit={this.submit}
