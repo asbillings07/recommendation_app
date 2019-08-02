@@ -22,7 +22,6 @@ exports.jwtOptions = jwtOptions;
 let strategy = new JWTstrategy(jwtOptions, async (jwt_payload, next) => {
   console.log('pay load recived!', jwt_payload);
   let user = await findUserByObj({ id: jwt_payload.id });
-  console.log(user);
   if (user) {
     next(null, user);
   } else {

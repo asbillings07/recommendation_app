@@ -10,9 +10,9 @@ const verifyUser = id =>
 
 // create recommendation
 
-const createRec = (user, rec) =>
+const createRec = (user, rec, id) =>
   Recommendation.create({
-    categoryId: rec.categoryId,
+    categoryId: id,
     userid: user.id,
     title: rec.title,
     description: rec.description,
@@ -32,7 +32,7 @@ const getAllRecs = () =>
             model: Rating,
             as: 'userRating',
             attributes: {
-              exclude: ['createdAt', 'updatedAt'],
+              exclude: ['createdAt', 'updatedAt', 'password'],
             },
           },
         ],
@@ -56,7 +56,7 @@ const getRec = id =>
       {
         model: User,
         attributes: {
-          exclude: ['createdAt', 'updatedAt'],
+          exclude: ['createdAt', 'updatedAt', 'password'],
         },
       },
     ],

@@ -47,13 +47,14 @@ router.get(
 
 //POST /recs status: 201 - Creates a recommendation, sets the Location header to the URI for the recommendation, and returns no content
 router.post(
-  '/recs',
+  '/recs/category/:id',
   authenticateUser,
   validateRecommendation,
   asyncHandler(async (req, res) => {
+    const id = req.params.id;
     const user = req.user;
     const rec = req.body;
-    const recs = await createRec(user, rec);
+    const recs = await createRec(user, rec, id);
     if (recs) {
       res.status(204).end();
     } else {
