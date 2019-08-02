@@ -3,6 +3,7 @@ import Forms from '../Forms';
 import { Form, Container, Row, Col } from 'react-bootstrap';
 import { notify } from 'react-notify-toast';
 import Axios from 'axios';
+import DatePicker from '../Calendar/DatePicker';
 export default class CreateRecommendation extends Component {
   state = {
     title: '',
@@ -30,12 +31,9 @@ export default class CreateRecommendation extends Component {
         },
       }).then(response => {
         const address = response.data.suggestions[0].address;
+        const coords = response.data.suggestions[0];
         const id = response.data.suggestions[0].locationId;
-        console.log(
-          `${address.houseNumber} ${address.street}. ${address.city}, ${
-            address.state
-          } ${address.postalCode}`
-        );
+        console.log(coords);
         const location = `${address.houseNumber} ${address.street}. ${
           address.city
         }, ${address.state} ${address.postalCode}`;
@@ -109,9 +107,10 @@ export default class CreateRecommendation extends Component {
                       readOnly
                     />
                   </Form.Group>
+                  <Form.Label>Last Visited</Form.Label>
                   <Form.Group>
                     <Form.Control
-                      type="text"
+                      type="date"
                       name="lastvisted"
                       value={lastVisited}
                       placeholder="When did you last visit the place?"
@@ -139,8 +138,19 @@ export default class CreateRecommendation extends Component {
   };
 
   submit = () => {
-    const { id } = this.props.location.state;
-    console.log(id);
+    const { id } = this.props.match.params;
+    const catId = id.toString();
+    const { token, data } = this.props.context;
+    const { title, description, location, lastVisited } = this.state;
+    const rec = { catId, title, description, location, lastVisited };
+    data.createRecommendation(token, rec).then(errors => {
+      if (errors) {
+        this.setState({ errors });
+      } else {
+        notify.show('Recommendation Created!', 'success', 10000);
+        this.props.history.push(`/category/${id}`);
+      }
+    });
   };
 
   cancel = () => {

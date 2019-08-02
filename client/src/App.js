@@ -45,7 +45,11 @@ const App = () => {
         <Route path="/signout" component={SignOutWithContext} />
         <Route path="/forgotpassword" component={ForgotPasswordWithContext} />
         <Route path="/reset/:token" component={ResetPasswordWithContext} />
-        <Route path="/category/:id" component={CategoryDetailWithContext} />
+        <Route
+          exact
+          path="/category/:id"
+          component={CategoryDetailWithContext}
+        />
         <Route
           exact
           path="/rec/:id"
@@ -56,7 +60,7 @@ const App = () => {
           component={UpdateRecommendationWithContext}
         />
         <PrivateRoute
-          path="/rec-create"
+          path="/category/:id/rec-create"
           component={CreateRecommendationWithContext}
         />
         <Route path="/forbidden" component={Forbidden} />

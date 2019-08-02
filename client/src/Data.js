@@ -150,13 +150,11 @@ export default class Data {
   async createRecommendation(token, rec) {
     const response = await this.api('/recs', 'POST', rec, true, token);
     if (response.status === 201) {
-      return response.headers;
+      return [];
     } else if (response.status === 401 || response.status === 400) {
       return response
         .json()
-        .then(data => {
-          return data.errors;
-        })
+        .then(data => data.errors)
         .catch(err => {
           console.log(err);
         });

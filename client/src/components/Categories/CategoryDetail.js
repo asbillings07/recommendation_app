@@ -9,6 +9,7 @@ class CategoryDetail extends Component {
     firstName: '',
     lastName: '',
     category: [],
+    id: '',
     message: '',
   };
 
@@ -22,7 +23,10 @@ class CategoryDetail extends Component {
       const data = await Axios.get(`${Config.apiBaseUrl}/category/${id}`);
 
       if (data) {
-        this.setState({ category: data.data.category[0].Recommendations });
+        this.setState({
+          category: data.data.category[0].Recommendations,
+          id: data.data.category[0].id,
+        });
       } else {
       }
     } catch (err) {
@@ -47,13 +51,14 @@ class CategoryDetail extends Component {
 
   render() {
     const { authorizedUser } = this.props.context;
+    const { id } = this.state;
 
     return (
       <>
         <CardGroup>
           <Row>{this.showCategory()}</Row>
         </CardGroup>
-        {authorizedUser ? <AddRecommendation /> : ''}
+        {authorizedUser ? <AddRecommendation id={id} /> : ''}
       </>
     );
   }
