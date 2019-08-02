@@ -21,28 +21,32 @@ export default class CreateRecommendation extends Component {
   onQuery = e => {
     const query = e.target.value;
     if (query.length > 0) {
-      const address = this.getEmptyAddress();
-      return this.setState({
-        location: address,
+      Axios.get('https://autocomplete.geocoder.api.here.com/6.2/suggest.json', {
+        params: {
+          app_id: `${process.env.REACT_APP_ID}`,
+          app_code: `${process.env.REACT_APP_CODE}`,
+          query: query,
+          maxresults: 10,
+        },
+      }).then(response => {
+        const address = response.data.suggestions[0].address;
+        const id = response.data.suggestions[0].locationId;
+        console.log(
+          `${address.houseNumber} ${address.street}. ${address.city}, ${
+            address.state
+          } ${address.postalCode}`
+        );
+        const location = `${address.houseNumber} ${address.street}. ${
+          address.city
+        }, ${address.state} ${address.postalCode}`;
+
+        this.setState({
+          location: location,
+          query: query,
+          locationId: id,
+        });
       });
     }
-
-    Axios.get('https://autocomplete.geocoder.api.here.com/6.2/suggest.json', {
-      params: {
-        app_id: process.env.REACT_APP_ID,
-        app_code: process.env.REACT_APP_CODE,
-        query: query,
-        maxresults: 1,
-      },
-    }).then(response => {
-      const address = response.data.suggestions[0].address;
-      const id = response.data.suggestions[0].locationId;
-      this.setState({
-        location: address,
-        query: query,
-        locationId: id,
-      });
-    });
   };
 
   render() {
@@ -67,7 +71,7 @@ export default class CreateRecommendation extends Component {
               errors={errors}
               submit={this.submit}
               passwordErrors={confirmed}
-              submitButtonText="Update Recommendation"
+              submitButtonText="Create Recommendation"
               elements={() => (
                 <React.Fragment>
                   <Form.Group>
@@ -92,9 +96,17 @@ export default class CreateRecommendation extends Component {
                     <Form.Control
                       type="text"
                       name="location"
-                      value={location}
                       placeholder="What's the address?"
-                      onChange={this.change}
+                      onBlur={this.onQuery}
+                    />
+                  </Form.Group>
+                  <Form.Group>
+                    <Form.Control
+                      type="text"
+                      name="location"
+                      value={location}
+                      placeholder={location}
+                      readOnly
                     />
                   </Form.Group>
                   <Form.Group>
