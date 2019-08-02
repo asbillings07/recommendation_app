@@ -147,8 +147,14 @@ export default class Data {
   /** RECOMMENDATION METHODS */
 
   // create recommendation
-  async createRecommendation(token, rec) {
-    const response = await this.api('/recs', 'POST', rec, true, token);
+  async createRecommendation(token, rec, id) {
+    const response = await this.api(
+      `/recs/category/${id}`,
+      'POST',
+      rec,
+      true,
+      token
+    );
     if (response.status === 201) {
       return [];
     } else if (response.status === 401 || response.status === 400) {

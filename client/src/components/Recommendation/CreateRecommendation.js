@@ -3,7 +3,6 @@ import Forms from '../Forms';
 import { Form, Container, Row, Col } from 'react-bootstrap';
 import { notify } from 'react-notify-toast';
 import Axios from 'axios';
-import DatePicker from '../Calendar/DatePicker';
 export default class CreateRecommendation extends Component {
   state = {
     title: '',
@@ -139,11 +138,10 @@ export default class CreateRecommendation extends Component {
 
   submit = () => {
     const { id } = this.props.match.params;
-    const catId = id.toString();
     const { token, data } = this.props.context;
     const { title, description, location, lastVisited } = this.state;
-    const rec = { catId, title, description, location, lastVisited };
-    data.createRecommendation(token, rec).then(errors => {
+    const rec = { title, description, location, lastVisited };
+    data.createRecommendation(token, rec, id).then(errors => {
       if (errors) {
         this.setState({ errors });
       } else {
