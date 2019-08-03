@@ -4,6 +4,8 @@ import Config from '../../Config';
 import { Container, Row, Card, Button, ButtonGroup } from 'react-bootstrap';
 import Rating from '../Recommendation/Rating';
 import Map from '../Map/Map';
+import notify from 'react-notify-toast';
+import showModal, { ShowModal } from '../Modal';
 
 export default class RecommendationDetail extends Component {
   state = {
@@ -60,7 +62,12 @@ export default class RecommendationDetail extends Component {
                       </Button>
                     </ButtonGroup>
                     <ButtonGroup>
-                      <Button variant="danger">Delete</Button>
+                      <Button
+                        variant="danger"
+                        onClick={() => this.confirmDelete()}
+                      >
+                        Delete
+                      </Button>
                     </ButtonGroup>
                   </Card.Header>
                 ) : (
@@ -82,5 +89,24 @@ export default class RecommendationDetail extends Component {
     );
   }
 
-  deleteRecommendation = () => {};
+  confirmDelete = () => {
+    return <ShowModal />;
+  };
+
+  deleteRecommendation = () => {
+    const { id } = this.props.match.params;
+    const { data, token } = this.props.context;
+    const { from } = this.props.location.state || {
+      from: { pathname: '/' },
+    };
+
+    data.deleteRecommendation(token, id).then(error => {
+      if (error) {
+        console.log(error);
+      } else {
+        notify.show('Recommendation Created!', 'success', 10000);
+        this.props.history.push(from);
+      }
+    });
+  };
 }

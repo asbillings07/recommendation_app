@@ -7,7 +7,7 @@ export default class CreateRecommendation extends Component {
   state = {
     title: '',
     description: '',
-    lastVisited: '',
+    lastVisited: '2019-08-02',
     location: '',
     query: '',
     rating: '',
@@ -112,7 +112,6 @@ export default class CreateRecommendation extends Component {
                       type="date"
                       name="lastvisted"
                       value={lastVisited}
-                      placeholder="When did you last visit the place?"
                       onChange={this.change}
                     />
                   </Form.Group>

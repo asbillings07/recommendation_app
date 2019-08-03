@@ -50,7 +50,6 @@ class CategoryDetail extends Component {
   };
 
   render() {
-    const { authorizedUser } = this.props.context;
     const { id } = this.state;
 
     return (
@@ -58,7 +57,7 @@ class CategoryDetail extends Component {
         <CardGroup>
           <Row>{this.showCategory()}</Row>
         </CardGroup>
-        {authorizedUser ? <AddRecommendation id={id} /> : ''}
+        <AddRecommendation id={id} />
       </>
     );
   }

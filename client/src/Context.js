@@ -41,8 +41,6 @@ export class Provider extends Component {
     const creds = { email, password };
     const user = await this.data.login(creds);
     if (user) {
-      console.log(user);
-      console.log(user.token);
       this.setState(() => {
         return {
           authorizedUser: user.user,
