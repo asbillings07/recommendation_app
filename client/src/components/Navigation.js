@@ -12,12 +12,11 @@ const Navigation = ({ context }) => {
           {authorizedUser ? (
             <React.Fragment>
               <Nav className="mr-auto">
-                <Nav.Link href="#profile">Profile</Nav.Link>
-                <Nav.Link href="#friends">Friends</Nav.Link>
-                <Nav.Link href="#settings">Settings</Nav.Link>
+                {/* <Nav.Link href="#friends">Friends</Nav.Link> */}
               </Nav>
 
               <Nav>
+                <Nav.Link href="#profile">Profile</Nav.Link>
                 <Nav.Link href="#about">About</Nav.Link>
                 <Nav.Link href="/signout">Sign Out</Nav.Link>
               </Nav>
@@ -25,6 +24,8 @@ const Navigation = ({ context }) => {
           ) : (
             <React.Fragment>
               <Nav className="mr-auto">
+                {/* <Nav.Link href="#friends">Friends</Nav.Link> */}
+                <Nav.Link href="#about">About</Nav.Link>
                 <Nav.Link href="/signin">SignIn</Nav.Link>
                 <Nav.Link href="/signup">SignUp</Nav.Link>
               </Nav>
