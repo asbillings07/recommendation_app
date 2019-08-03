@@ -3,6 +3,7 @@ import Axios from 'axios';
 import Config from '../../Config';
 import { Row, Button, Card, CardGroup } from 'react-bootstrap';
 import AddRecommendation from '../Recommendation/AddRecomendation';
+import styled from 'styled-components';
 
 class CategoryDetail extends Component {
   state = {
@@ -37,7 +38,7 @@ class CategoryDetail extends Component {
   showCategory = () => {
     const { category } = this.state;
     return category.map(rec => (
-      <Card className="text-center" key={rec.id} style={{ width: '18rem' }}>
+      <CategoryCard className="text-center" key={rec.id}>
         <Card.Body>
           <Card.Title>{rec.title}</Card.Title>
           <Card.Text>{rec.description}</Card.Text>
@@ -45,7 +46,7 @@ class CategoryDetail extends Component {
             Check it out
           </Button>
         </Card.Body>
-      </Card>
+      </CategoryCard>
     ));
   };
 
@@ -54,13 +55,24 @@ class CategoryDetail extends Component {
 
     return (
       <>
-        <CardGroup>
-          <Row>{this.showCategory()}</Row>
-        </CardGroup>
-        <AddRecommendation id={id} />
+        <CategoryCardGroup>
+          <Row>
+            {this.showCategory()} <AddRecommendation id={id} />
+          </Row>
+        </CategoryCardGroup>
       </>
     );
   }
 }
 
 export default CategoryDetail;
+
+const CategoryCard = styled(Card)`
+  width: 18rem;
+  height: auto;
+  margin: 20px;
+`;
+const CategoryCardGroup = styled(CardGroup)`
+  width: 1000px;
+  margin: auto;
+`;
