@@ -39,9 +39,12 @@ export default class RecommendationDetail extends Component {
           userid: rec.userid,
           recid: rec.id,
         });
+      } else {
+        this.props.history.push('/notfound');
       }
     } catch (err) {
       console.log(err);
+      this.props.history.push('/notfound');
     }
   };
 
@@ -90,7 +93,14 @@ export default class RecommendationDetail extends Component {
   }
 
   confirmDelete = () => {
-    return <ShowModal />;
+    const deleteIt = window.confirm(
+      'Careful...Are you sure you want to delete this recommendation? There is no going back.'
+    );
+    if (deleteIt) {
+      this.deleteRecommendation();
+      notify.show('Recommendation Deleted!', 'Danger', 10000);
+    } else {
+    }
   };
 
   deleteRecommendation = () => {
