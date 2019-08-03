@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 const Forbidden = () => {
   return (
-    <Container>
+    <Container className="mt-5">
       <div className="bounds">
         <Heading>Forbidden</Heading>
         <Padding>
@@ -42,6 +42,7 @@ const Button = styled.a`
 
 const Container = styled.div`
   text-align: center;
+  margin-top: 5px;
 `;
 
 const Padding = styled.div`

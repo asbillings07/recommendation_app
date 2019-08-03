@@ -3,21 +3,21 @@ import styled from 'styled-components';
 
 const UnhandledError = () => {
   return (
-    <Container>
-      <div className="bounds">
+    <Container className="mt-5">
+      <div>
         <Space>
           <Button href="/">Home</Button>
         </Space>
         <Heading>Error</Heading>
         <Text>Sorry! We just encountered an unexpected error.</Text>
         <iframe
-          src="https://giphy.com/embed/bi6RQ5x3tqoSI"
-          title="error"
+          src="https://giphy.com/embed/AgPiUxdXWlSEig908v"
           width="480"
-          height="349"
+          height="480"
+          title="error"
           frameBorder="0"
           className="giphy-embed"
-          allowFullScreen
+          href="https://giphy.com/gifs/trippy-abstract-pi-slices-AgPiUxdXWlSEig908v"
         />
       </div>
     </Container>
@@ -26,6 +26,7 @@ const UnhandledError = () => {
 
 const Container = styled.div`
   text-align: center;
+  margin-bottom: 5px;
 `;
 
 const Space = styled.div`
