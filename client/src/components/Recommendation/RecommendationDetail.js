@@ -32,7 +32,7 @@ export default class RecommendationDetail extends Component {
 
       if (data) {
         const rec = data.data;
-        console.log(data.data.User);
+        console.log(data.data);
         this.setState({
           loading: false,
           title: rec.title,

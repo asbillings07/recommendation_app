@@ -1,4 +1,4 @@
-const { Recommendation, User, Rating } = require('../models');
+const { Recommendation, User, Rating, Comment } = require('../models');
 
 // verifies user by checking the recommendation where the recommendation id is equal to the param id
 const verifyUser = id =>
@@ -59,30 +59,15 @@ const getRecWithUser = id =>
           exclude: ['createdAt', 'updatedAt', 'password'],
         },
       },
-    ],
-    // include: [
-    //   {
-    //     model: Rating,
-    //     as: 'rating',
-    //     attributes: {
-    //       exclude: ['createdAt', 'updatedAt'],
-    //     },
-    //   },
-    // ],
-    attributes: {
-      exclude: ['createdAt', 'updatedAt'],
-    },
-  });
-
-getRecWithRating = id =>
-  Recommendation.findOne({
-    where: {
-      id,
-    },
-    include: [
       {
         model: Rating,
         as: 'rating',
+        attributes: {
+          exclude: ['createdAt', 'updatedAt'],
+        },
+      },
+      {
+        model: Comment,
         attributes: {
           exclude: ['createdAt', 'updatedAt'],
         },
@@ -118,7 +103,6 @@ const deleteRecs = id =>
 module.exports = {
   getAllRecs,
   getRecWithUser,
-  getRecWithRating,
   createRec,
   updateRecs,
   deleteRecs,

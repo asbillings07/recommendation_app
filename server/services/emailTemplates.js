@@ -1,4 +1,4 @@
-const { CLIENT_ORIGIN } = require('../config/Config');
+const { CLIENT_ORIGIN } = require('../Config');
 
 module.exports = {
   confirm: (id, email) => ({
