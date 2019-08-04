@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import Axios from 'axios';
 import Config from '../../Config';
-import { Row, Button, Card, CardGroup } from 'react-bootstrap';
+import { Container, Row, Button, Col, Card } from 'react-bootstrap';
 import AddRecommendation from '../Recommendation/AddRecomendation';
 import styled from 'styled-components';
+import Spinner from '../Spinner';
 
 class CategoryDetail extends Component {
   state = {
@@ -12,6 +13,7 @@ class CategoryDetail extends Component {
     category: [],
     id: '',
     message: '',
+    loading: true,
   };
 
   componentDidMount() {
@@ -25,6 +27,7 @@ class CategoryDetail extends Component {
 
       if (data) {
         this.setState({
+          loading: false,
           category: data.data.category[0].Recommendations,
           id: data.data.category[0].id,
         });
@@ -51,17 +54,21 @@ class CategoryDetail extends Component {
   };
 
   render() {
-    const { id } = this.state;
+    const { id, loading } = this.state;
 
-    return (
-      <>
-        <CategoryCardGroup>
-          <Row>
-            {this.showCategory()} <AddRecommendation id={id} />
-          </Row>
-        </CategoryCardGroup>
-      </>
-    );
+    if (loading) {
+      return <Spinner size="4x" spinning="spinning" />;
+    } else {
+      return (
+        <>
+          <Container>
+            <Row>
+              {this.showCategory()} <AddRecommendation id={id} />
+            </Row>
+          </Container>
+        </>
+      );
+    }
   }
 }
 
@@ -71,8 +78,4 @@ const CategoryCard = styled(Card)`
   width: 18rem;
   height: auto;
   margin: 20px;
-`;
-const CategoryCardGroup = styled(CardGroup)`
-  width: 1000px;
-  margin: auto;
 `;

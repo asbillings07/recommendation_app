@@ -1,5 +1,5 @@
 const express = require('express');
-const { PORT, CLIENT_ORIGIN } = require('./config/Config');
+const { PORT, CLIENT_ORIGIN } = require('./Config');
 // required to show HTTP requests in console
 const morgan = require('morgan');
 const cors = require('cors');

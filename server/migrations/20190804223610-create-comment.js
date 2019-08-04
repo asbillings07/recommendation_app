@@ -1,20 +1,20 @@
 'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('Ratings', {
+    return queryInterface.createTable('Comments', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      rate: {
+      comment: {
+        type: Sequelize.STRING,
+      },
+      userid: {
         type: Sequelize.INTEGER,
       },
       recid: {
-        type: Sequelize.INTEGER,
-      },
-      userid: {
         type: Sequelize.INTEGER,
       },
       createdAt: {
@@ -28,6 +28,6 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('Ratings');
+    return queryInterface.dropTable('Comments');
   },
 };
