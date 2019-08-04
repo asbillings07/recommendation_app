@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Axios from 'axios';
 import Config from '../../Config';
-import { Row, Button, Card, CardGroup } from 'react-bootstrap';
+import { Container, Row, Button, Col, Card } from 'react-bootstrap';
 import AddRecommendation from '../Recommendation/AddRecomendation';
 import styled from 'styled-components';
 
@@ -55,11 +55,11 @@ class CategoryDetail extends Component {
 
     return (
       <>
-        <CategoryCardGroup>
+        <Container>
           <Row>
             {this.showCategory()} <AddRecommendation id={id} />
           </Row>
-        </CategoryCardGroup>
+        </Container>
       </>
     );
   }
@@ -71,8 +71,4 @@ const CategoryCard = styled(Card)`
   width: 18rem;
   height: auto;
   margin: 20px;
-`;
-const CategoryCardGroup = styled(CardGroup)`
-  width: 1000px;
-  margin: auto;
 `;

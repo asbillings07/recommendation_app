@@ -1,7 +1,14 @@
 import React, { Component } from 'react';
 import Axios from 'axios';
 import Config from '../../Config';
-import { Container, Row, Card, Button, ButtonGroup } from 'react-bootstrap';
+import {
+  Container,
+  Row,
+  Col,
+  Card,
+  Button,
+  ButtonGroup,
+} from 'react-bootstrap';
 import Rating from '../Recommendation/Rating';
 import Map from '../Map/Map';
 import notify from 'react-notify-toast';
@@ -66,46 +73,48 @@ export default class RecommendationDetail extends Component {
       <>
         <Container className="mt-1" style={{ width: '60rem', height: '30rem' }}>
           <Row className="justify-content-center">
-            <Card style={{ width: '60rem', height: '30rem' }}>
-              <Card.Body>
-                {authorizedUser && authorizedUser.id === userid ? (
+            <Col xs md lg="auto">
+              <Card style={{ width: '60rem', height: '30rem' }}>
+                <Card.Body>
+                  {authorizedUser && authorizedUser.id === userid ? (
+                    <Card.Header>
+                      <ButtonGroup className="mr-2">
+                        <Button href={`/rec/${recid}/update`} variant="info">
+                          Update
+                        </Button>
+                      </ButtonGroup>
+                      <ButtonGroup>
+                        <Button
+                          variant="danger"
+                          onClick={() => this.confirmDelete()}
+                        >
+                          Delete
+                        </Button>
+                      </ButtonGroup>
+                    </Card.Header>
+                  ) : (
+                    ''
+                  )}
                   <Card.Header>
                     <ButtonGroup className="mr-2">
-                      <Button href={`/rec/${recid}/update`} variant="info">
-                        Update
-                      </Button>
-                    </ButtonGroup>
-                    <ButtonGroup>
-                      <Button
-                        variant="danger"
-                        onClick={() => this.confirmDelete()}
-                      >
-                        Delete
+                      <Button href={`/category/${catid}`} variant="secondary">
+                        Back
                       </Button>
                     </ButtonGroup>
                   </Card.Header>
-                ) : (
-                  ''
-                )}
-                <Card.Header>
-                  <ButtonGroup className="mr-2">
-                    <Button href={`/category/${catid}`} variant="secondary">
-                      Back
-                    </Button>
-                  </ButtonGroup>
-                </Card.Header>
-                <Card.Title>{title}</Card.Title>
-                <Card.Subtitle className="mt-2 text-muted">
-                  {location}
-                </Card.Subtitle>
-                <Card.Text>{description}</Card.Text>
-                <Card.Text>
-                  Recommended by: {`${user.firstName} ${user.lastName}`}
-                </Card.Text>
-                <Rating /* rating={} */ />
-              </Card.Body>
-              <Map location={location} />
-            </Card>
+                  <Card.Title>{title}</Card.Title>
+                  <Card.Subtitle className="mt-2 text-muted">
+                    {location}
+                  </Card.Subtitle>
+                  <Card.Text>{description}</Card.Text>
+                  <Card.Text>
+                    Recommended by: {`${user.firstName} ${user.lastName}`}
+                  </Card.Text>
+                  <Rating /* rating={} */ />
+                </Card.Body>
+                <Map location={location} />
+              </Card>
+            </Col>
           </Row>
         </Container>
       </>
