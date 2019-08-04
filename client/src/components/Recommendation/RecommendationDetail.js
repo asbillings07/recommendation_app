@@ -1,14 +1,8 @@
 import React, { Component } from 'react';
 import Axios from 'axios';
 import Config from '../../Config';
-import {
-  Container,
-  Row,
-  Col,
-  Card,
-  Button,
-  ButtonGroup,
-} from 'react-bootstrap';
+import Spinner from '../Spinner';
+import { Container, Row, Card, Button, ButtonGroup } from 'react-bootstrap';
 import Rating from '../Recommendation/Rating';
 import Map from '../Map/Map';
 import notify from 'react-notify-toast';
@@ -24,6 +18,7 @@ export default class RecommendationDetail extends Component {
     recid: '',
     catid: '',
     user: '',
+    loading: true,
   };
 
   componentDidMount() {
@@ -39,6 +34,7 @@ export default class RecommendationDetail extends Component {
         const rec = data.data;
         console.log(data.data.User);
         this.setState({
+          loading: false,
           title: rec.title,
           description: rec.description,
           lastVisted: rec.lastvisted,
@@ -66,57 +62,63 @@ export default class RecommendationDetail extends Component {
       recid,
       catid,
       user,
+      loading,
     } = this.state;
     const { authorizedUser } = this.props.context;
     // add a Created by First Name & Last Name
-    return (
-      <>
-        <Container className="mt-1">
-          <Row className="justify-content-center">
-            <Card style={{ width: '60rem', height: '30rem' }}>
-              <Card.Body>
-                {authorizedUser && authorizedUser.id === userid ? (
+
+    if (loading) {
+      return <Spinner size="4x" spinning="spinning" />;
+    } else {
+      return (
+        <>
+          <Container className="mt-1">
+            <Row className="justify-content-center">
+              <Card style={{ width: '60rem', height: '30rem' }}>
+                <Card.Body>
+                  {authorizedUser && authorizedUser.id === userid ? (
+                    <Card.Header>
+                      <ButtonGroup className="mr-2">
+                        <Button href={`/rec/${recid}/update`} variant="info">
+                          Update
+                        </Button>
+                      </ButtonGroup>
+                      <ButtonGroup>
+                        <Button
+                          variant="danger"
+                          onClick={() => this.confirmDelete()}
+                        >
+                          Delete
+                        </Button>
+                      </ButtonGroup>
+                    </Card.Header>
+                  ) : (
+                    ''
+                  )}
                   <Card.Header>
                     <ButtonGroup className="mr-2">
-                      <Button href={`/rec/${recid}/update`} variant="info">
-                        Update
-                      </Button>
-                    </ButtonGroup>
-                    <ButtonGroup>
-                      <Button
-                        variant="danger"
-                        onClick={() => this.confirmDelete()}
-                      >
-                        Delete
+                      <Button href={`/category/${catid}`} variant="secondary">
+                        Back
                       </Button>
                     </ButtonGroup>
                   </Card.Header>
-                ) : (
-                  ''
-                )}
-                <Card.Header>
-                  <ButtonGroup className="mr-2">
-                    <Button href={`/category/${catid}`} variant="secondary">
-                      Back
-                    </Button>
-                  </ButtonGroup>
-                </Card.Header>
-                <Card.Title>{title}</Card.Title>
-                <Card.Subtitle className="mt-2 text-muted">
-                  {location}
-                </Card.Subtitle>
-                <Card.Text>{description}</Card.Text>
-                <Card.Text>
-                  Recommended by: {`${user.firstName} ${user.lastName}`}
-                </Card.Text>
-                <Rating /* rating={} */ />
-              </Card.Body>
-              <Map location={location} />
-            </Card>
-          </Row>
-        </Container>
-      </>
-    );
+                  <Card.Title>{title}</Card.Title>
+                  <Card.Subtitle className="mt-2 text-muted">
+                    {location}
+                  </Card.Subtitle>
+                  <Card.Text>{description}</Card.Text>
+                  <Card.Text>
+                    Recommended by: {`${user.firstName} ${user.lastName}`}
+                  </Card.Text>
+                  <Rating /* rating={} */ />
+                </Card.Body>
+                <Map location={location} />
+              </Card>
+            </Row>
+          </Container>
+        </>
+      );
+    }
   }
 
   confirmDelete = () => {

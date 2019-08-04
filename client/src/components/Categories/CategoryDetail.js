@@ -4,6 +4,7 @@ import Config from '../../Config';
 import { Container, Row, Button, Col, Card } from 'react-bootstrap';
 import AddRecommendation from '../Recommendation/AddRecomendation';
 import styled from 'styled-components';
+import Spinner from '../Spinner';
 
 class CategoryDetail extends Component {
   state = {
@@ -12,6 +13,7 @@ class CategoryDetail extends Component {
     category: [],
     id: '',
     message: '',
+    loading: true,
   };
 
   componentDidMount() {
@@ -25,6 +27,7 @@ class CategoryDetail extends Component {
 
       if (data) {
         this.setState({
+          loading: false,
           category: data.data.category[0].Recommendations,
           id: data.data.category[0].id,
         });
@@ -51,17 +54,21 @@ class CategoryDetail extends Component {
   };
 
   render() {
-    const { id } = this.state;
+    const { id, loading } = this.state;
 
-    return (
-      <>
-        <Container>
-          <Row>
-            {this.showCategory()} <AddRecommendation id={id} />
-          </Row>
-        </Container>
-      </>
-    );
+    if (loading) {
+      return <Spinner size="4x" spinning="spinning" />;
+    } else {
+      return (
+        <>
+          <Container>
+            <Row>
+              {this.showCategory()} <AddRecommendation id={id} />
+            </Row>
+          </Container>
+        </>
+      );
+    }
   }
 }
 

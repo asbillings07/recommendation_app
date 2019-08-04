@@ -4,6 +4,7 @@ import Config from '../../Config';
 import { Link } from 'react-router-dom';
 import { Container, Button, Row, Col } from 'react-bootstrap';
 import styled from 'styled-components';
+import Spinner from '../Spinner';
 
 class CategoryList extends Component {
   state = {
@@ -42,14 +43,18 @@ class CategoryList extends Component {
   };
 
   render() {
-    return (
-      <React.Fragment>
-        <H2>Browse Categories</H2>
-        <Container className="mb-9 mt-3">
-          <Row>{this.showCategories()}</Row>
-        </Container>
-      </React.Fragment>
-    );
+    if (this.state.loading) {
+      return <Spinner size="4x" spinning="spinning" />;
+    } else {
+      return (
+        <React.Fragment>
+          <H2>Browse Categories</H2>
+          <Container className="mb-9 mt-3">
+            <Row>{this.showCategories()}</Row>
+          </Container>
+        </React.Fragment>
+      );
+    }
   }
 }
 
