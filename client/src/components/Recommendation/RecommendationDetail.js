@@ -30,7 +30,7 @@ export default class RecommendationDetail extends Component {
 
       if (data) {
         const rec = data.data;
-        console.log(data.data);
+        console.log(data.data.User);
         this.setState({
           title: rec.title,
           description: rec.description,
@@ -39,7 +39,7 @@ export default class RecommendationDetail extends Component {
           userid: rec.userid,
           recid: rec.id,
           catid: rec.categoryId,
-          user: rec.user,
+          user: rec.User,
         });
       } else {
         this.props.history.push('/notfound');
@@ -51,7 +51,15 @@ export default class RecommendationDetail extends Component {
   };
 
   render() {
-    const { title, description, location, userid, recid, catid } = this.state;
+    const {
+      title,
+      description,
+      location,
+      userid,
+      recid,
+      catid,
+      user,
+    } = this.state;
     const { authorizedUser } = this.props.context;
     // add a Created by First Name & Last Name
     return (
@@ -91,6 +99,9 @@ export default class RecommendationDetail extends Component {
                   {location}
                 </Card.Subtitle>
                 <Card.Text>{description}</Card.Text>
+                <Card.Text>
+                  Recommended by: {`${user.firstName} ${user.lastName}`}
+                </Card.Text>
                 <Rating /* rating={} */ />
               </Card.Body>
               <Map location={location} />
