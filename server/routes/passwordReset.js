@@ -32,7 +32,8 @@ router.post(
       const passwordResetLink = `http://localhost:3000/reset/${token}`;
 
       // email template with reset link and message
-      emailTemplate.passwordReset(email, passwordResetLink);
+
+      const mailOptions = emailTemplate.passwordReset(email, passwordResetLink);
 
       successfulMessage = {
         message: 'Recovery Email Sent',
@@ -57,6 +58,10 @@ router.get(
     const user = await findUserByToken(token);
     console.log(user);
     if (user) {
+      user.update({
+        resetPasswordToken: null,
+        resetPasswordExpires: null,
+      });
       res.json({
         email: user.email,
         message: 'successful',

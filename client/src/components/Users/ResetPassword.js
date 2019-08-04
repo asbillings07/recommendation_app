@@ -125,7 +125,7 @@ export default class ResetPassword extends Component {
                     </Form.Group>
                     <Form.Group controlId="formBasicPassword">
                       <Form.Control
-                        type="confirmPassword"
+                        type="password"
                         name="confirmPassword"
                         value={confirmPassword}
                         placeholder="confirm password"
