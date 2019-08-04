@@ -5,7 +5,6 @@ import { Container, Row, Card, Button, ButtonGroup } from 'react-bootstrap';
 import Rating from '../Recommendation/Rating';
 import Map from '../Map/Map';
 import notify from 'react-notify-toast';
-import showModal, { ShowModal } from '../Modal';
 
 export default class RecommendationDetail extends Component {
   state = {
@@ -16,6 +15,8 @@ export default class RecommendationDetail extends Component {
     rating: '',
     userid: '',
     recid: '',
+    catid: '',
+    user: '',
   };
 
   componentDidMount() {
@@ -28,16 +29,17 @@ export default class RecommendationDetail extends Component {
       const data = await Axios.get(`${Config.apiBaseUrl}/recs/${id}`);
 
       if (data) {
-        const rec = data.data[0];
-        console.log(data.data[0]);
+        const rec = data.data;
+        console.log(data.data);
         this.setState({
           title: rec.title,
           description: rec.description,
           lastVisted: rec.lastvisted,
           location: rec.location,
-          rating: rec.rating[0],
           userid: rec.userid,
           recid: rec.id,
+          catid: rec.categoryId,
+          user: rec.user,
         });
       } else {
         this.props.history.push('/notfound');
@@ -49,8 +51,9 @@ export default class RecommendationDetail extends Component {
   };
 
   render() {
-    const { title, description, location, userid, rating, recid } = this.state;
+    const { title, description, location, userid, recid, catid } = this.state;
     const { authorizedUser } = this.props.context;
+    // add a Created by First Name & Last Name
     return (
       <>
         <Container className="mt-1" style={{ width: '60rem', height: '30rem' }}>
@@ -76,7 +79,13 @@ export default class RecommendationDetail extends Component {
                 ) : (
                   ''
                 )}
-
+                <Card.Header>
+                  <ButtonGroup className="mr-2">
+                    <Button href={`/category/${catid}`} variant="secondary">
+                      Back
+                    </Button>
+                  </ButtonGroup>
+                </Card.Header>
                 <Card.Title>{title}</Card.Title>
                 <Card.Subtitle className="mt-2 text-muted">
                   {location}

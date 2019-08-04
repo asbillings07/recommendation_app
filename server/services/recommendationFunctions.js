@@ -47,8 +47,8 @@ const getAllRecs = () =>
   });
 
 // get one Recommendation with id and include User and Ratings
-const getRec = id =>
-  Recommendation.findAll({
+const getRecWithUser = id =>
+  Recommendation.findOne({
     where: {
       id,
     },
@@ -60,6 +60,25 @@ const getRec = id =>
         },
       },
     ],
+    // include: [
+    //   {
+    //     model: Rating,
+    //     as: 'rating',
+    //     attributes: {
+    //       exclude: ['createdAt', 'updatedAt'],
+    //     },
+    //   },
+    // ],
+    attributes: {
+      exclude: ['createdAt', 'updatedAt'],
+    },
+  });
+
+getRecWithRating = id =>
+  Recommendation.findOne({
+    where: {
+      id,
+    },
     include: [
       {
         model: Rating,
@@ -98,7 +117,8 @@ const deleteRecs = id =>
 
 module.exports = {
   getAllRecs,
-  getRec,
+  getRecWithUser,
+  getRecWithRating,
   createRec,
   updateRecs,
   deleteRecs,

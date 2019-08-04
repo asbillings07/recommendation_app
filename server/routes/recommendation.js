@@ -8,7 +8,8 @@ const {
   createRec,
   updateRecs,
   deleteRecs,
-  getRec,
+  getRecWithUser,
+  getRecWithRating,
   verifyUser,
 } = require('../services/recommendationFunctions');
 
@@ -33,7 +34,7 @@ router.get(
   '/recs/:id',
   asyncHandler(async (req, res) => {
     const id = +req.params.id;
-    const rec = await getRec(id);
+    const rec = await getRecWithUser(id);
     if (rec) {
       res.status(200).json(rec);
     } else {
