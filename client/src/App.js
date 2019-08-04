@@ -14,7 +14,7 @@ import ForgotPassword from './components/Users/ForgotPassword';
 import ResetPassword from './components/Users/ResetPassword';
 import RecommendationDetail from './components/Recommendation/RecommendationDetail';
 import UpdateRecommendation from './components/Recommendation/UpdateRecommendation';
-import CreateRecommendation from './components/Recommendation/CreateRecomendation';
+import CreateRecommendation from './components/Recommendation/CreateRecommendation';
 import NotFound from './components/Errors/NotFound';
 import UnhandledError from './components/Errors/UnhandledError';
 import Forbidden from './components/Errors/Forbidden';
@@ -45,7 +45,11 @@ const App = () => {
         <Route path="/signout" component={SignOutWithContext} />
         <Route path="/forgotpassword" component={ForgotPasswordWithContext} />
         <Route path="/reset/:token" component={ResetPasswordWithContext} />
-        <Route path="/category/:id" component={CategoryDetailWithContext} />
+        <Route
+          exact
+          path="/category/:id"
+          component={CategoryDetailWithContext}
+        />
         <Route
           exact
           path="/rec/:id"
@@ -56,7 +60,7 @@ const App = () => {
           component={UpdateRecommendationWithContext}
         />
         <PrivateRoute
-          path="/rec/create"
+          path="/category/:id/rec-create"
           component={CreateRecommendationWithContext}
         />
         <Route path="/forbidden" component={Forbidden} />

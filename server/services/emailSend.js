@@ -1,6 +1,8 @@
 const nodemailer = require('nodemailer');
 require('dotenv').config();
 
+// Nodemailer function to send email to email address if valid.
+
 exports.sendEmail = (mailOptions, successfulMessage) => {
   const creds = {
     service: 'gmail',
@@ -10,13 +12,16 @@ exports.sendEmail = (mailOptions, successfulMessage) => {
     },
   };
   const transporter = nodemailer.createTransport(creds);
-  console.log('Sending Email');
-  transporter.sendMail(mailOptions, (err, response) => {
-    if (err) {
-      console.error(`There was an error: ${err}`);
-    } else {
-      console.log(response);
-      res.status(200).json(successfulMessage);
-    }
-  });
+
+  transporter
+    .sendMail(mailOptions, (err, response) => {
+      if (response) {
+        console.log('Sending Email');
+        console.log(response);
+        res.status(200).json(successfulMessage);
+      } else {
+        console.error(`There was an error: ${err}`);
+      }
+    })
+    .catch(err => console.log(err));
 };

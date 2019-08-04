@@ -84,14 +84,11 @@ export default class ForgotPassword extends Component {
     const { email } = this.state;
     context.data
       .forgotUserPassword(email)
-      .then(user => {
-        console.log(user);
-        if (user) {
-          this.setState({
-            success: true,
-          });
-        }
-      })
+      .then(() =>
+        this.setState({
+          success: true,
+        })
+      )
       .catch(err => {
         if (err) {
           this.setState(() => {

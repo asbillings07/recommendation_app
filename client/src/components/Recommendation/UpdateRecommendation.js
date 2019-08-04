@@ -123,17 +123,11 @@ export default class UpdateRecommendation extends Component {
 
   submit = () => {
     const { id } = this.props.match.params;
-    const { authorizedUser, data } = this.props.context;
+    const { token, data } = this.props.context;
     const { title, description, location } = this.state;
     const rec = { title, description, location };
-
     data
-      .updateRecommendation(
-        authorizedUser.email,
-        authorizedUser.password,
-        rec,
-        id
-      )
+      .updateRecommendation(token, rec, id)
       .then(errors => {
         if (errors.length) {
           this.setState({ errors: errors.message });

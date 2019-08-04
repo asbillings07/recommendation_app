@@ -7,23 +7,12 @@ const Op = Sequelize.Op;
 const createUser = user => {
   user.password = bcrypt.hashSync(user.password);
 
-  User.create({
+  return User.create({
     firstName: user.firstName,
     lastName: user.lastName,
     email: user.email,
     password: user.password,
   });
-};
-// gets user
-
-const getUser = user => {
-  return {
-    id: user.id,
-    firstName: user.firstName,
-    lastName: user.lastName,
-    email: user.email,
-    password: user.password,
-  };
 };
 
 // Finds authed user by id then updates user and hashes password if needed
@@ -74,7 +63,6 @@ const findUserByObj = obj => User.findOne({ where: obj });
 
 module.exports = {
   createUser,
-  getUser,
   deleteUser,
   updateUser,
   findUserByEmail,

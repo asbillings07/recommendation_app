@@ -2,13 +2,15 @@ import React, { Component } from 'react';
 import Axios from 'axios';
 import Config from '../../Config';
 import { Row, Button, Card, CardGroup } from 'react-bootstrap';
-import CreateRecommendation from '../Recommendation/CreateRecomendation';
+import AddRecommendation from '../Recommendation/AddRecomendation';
+import styled from 'styled-components';
 
 class CategoryDetail extends Component {
   state = {
     firstName: '',
     lastName: '',
     category: [],
+    id: '',
     message: '',
   };
 
@@ -22,8 +24,10 @@ class CategoryDetail extends Component {
       const data = await Axios.get(`${Config.apiBaseUrl}/category/${id}`);
 
       if (data) {
-        console.log(data.data.category[0].Recommendations);
-        this.setState({ category: data.data.category[0].Recommendations });
+        this.setState({
+          category: data.data.category[0].Recommendations,
+          id: data.data.category[0].id,
+        });
       } else {
       }
     } catch (err) {
@@ -34,7 +38,7 @@ class CategoryDetail extends Component {
   showCategory = () => {
     const { category } = this.state;
     return category.map(rec => (
-      <Card className="text-center" key={rec.id} style={{ width: '18rem' }}>
+      <CategoryCard className="text-center" key={rec.id}>
         <Card.Body>
           <Card.Title>{rec.title}</Card.Title>
           <Card.Text>{rec.description}</Card.Text>
@@ -42,20 +46,33 @@ class CategoryDetail extends Component {
             Check it out
           </Button>
         </Card.Body>
-      </Card>
+      </CategoryCard>
     ));
   };
 
   render() {
+    const { id } = this.state;
+
     return (
       <>
-        <CardGroup>
-          <Row>{this.showCategory()}</Row>
-        </CardGroup>
-        <CreateRecommendation />
+        <CategoryCardGroup>
+          <Row>
+            {this.showCategory()} <AddRecommendation id={id} />
+          </Row>
+        </CategoryCardGroup>
       </>
     );
   }
 }
 
 export default CategoryDetail;
+
+const CategoryCard = styled(Card)`
+  width: 18rem;
+  height: auto;
+  margin: 20px;
+`;
+const CategoryCardGroup = styled(CardGroup)`
+  width: 1000px;
+  margin: auto;
+`;
