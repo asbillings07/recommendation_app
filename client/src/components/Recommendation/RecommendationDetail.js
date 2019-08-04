@@ -71,50 +71,48 @@ export default class RecommendationDetail extends Component {
     // add a Created by First Name & Last Name
     return (
       <>
-        <Container className="mt-1" style={{ width: '60rem', height: '30rem' }}>
+        <Container className="mt-1">
           <Row className="justify-content-center">
-            <Col xs md lg="auto">
-              <Card style={{ width: '60rem', height: '30rem' }}>
-                <Card.Body>
-                  {authorizedUser && authorizedUser.id === userid ? (
-                    <Card.Header>
-                      <ButtonGroup className="mr-2">
-                        <Button href={`/rec/${recid}/update`} variant="info">
-                          Update
-                        </Button>
-                      </ButtonGroup>
-                      <ButtonGroup>
-                        <Button
-                          variant="danger"
-                          onClick={() => this.confirmDelete()}
-                        >
-                          Delete
-                        </Button>
-                      </ButtonGroup>
-                    </Card.Header>
-                  ) : (
-                    ''
-                  )}
+            <Card style={{ width: '60rem', height: '30rem' }}>
+              <Card.Body>
+                {authorizedUser && authorizedUser.id === userid ? (
                   <Card.Header>
                     <ButtonGroup className="mr-2">
-                      <Button href={`/category/${catid}`} variant="secondary">
-                        Back
+                      <Button href={`/rec/${recid}/update`} variant="info">
+                        Update
+                      </Button>
+                    </ButtonGroup>
+                    <ButtonGroup>
+                      <Button
+                        variant="danger"
+                        onClick={() => this.confirmDelete()}
+                      >
+                        Delete
                       </Button>
                     </ButtonGroup>
                   </Card.Header>
-                  <Card.Title>{title}</Card.Title>
-                  <Card.Subtitle className="mt-2 text-muted">
-                    {location}
-                  </Card.Subtitle>
-                  <Card.Text>{description}</Card.Text>
-                  <Card.Text>
-                    Recommended by: {`${user.firstName} ${user.lastName}`}
-                  </Card.Text>
-                  <Rating /* rating={} */ />
-                </Card.Body>
-                <Map location={location} />
-              </Card>
-            </Col>
+                ) : (
+                  ''
+                )}
+                <Card.Header>
+                  <ButtonGroup className="mr-2">
+                    <Button href={`/category/${catid}`} variant="secondary">
+                      Back
+                    </Button>
+                  </ButtonGroup>
+                </Card.Header>
+                <Card.Title>{title}</Card.Title>
+                <Card.Subtitle className="mt-2 text-muted">
+                  {location}
+                </Card.Subtitle>
+                <Card.Text>{description}</Card.Text>
+                <Card.Text>
+                  Recommended by: {`${user.firstName} ${user.lastName}`}
+                </Card.Text>
+                <Rating /* rating={} */ />
+              </Card.Body>
+              <Map location={location} />
+            </Card>
           </Row>
         </Container>
       </>
