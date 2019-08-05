@@ -20,14 +20,18 @@ class Map extends Component {
     zoom: 12,
   };
 
-  // allows us to access the google maps API directly
-
+  // ensures coordinates load before
+  componentDidMount() {
+    this.getCoors(this.props.location);
+    this.getUserPosition();
+  }
+  // allows us to access the google maps API directly'
   handleApiLoaded = (map, maps) => {
     const { personCoors, recRoute } = this.state;
     // gets the location of the recommendation from props
-    this.getCoors(this.props.location);
+
     // gets the user location from the browser
-    this.getUserPosition();
+
     // use map and maps objects
     const directionsService = new maps.DirectionsService();
     const directionsDisplay = new maps.DirectionsRenderer({
