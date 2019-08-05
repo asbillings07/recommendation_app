@@ -13,8 +13,69 @@ class Map extends Component {
       lat: null,
       lng: null,
     },
+    recRoute: {
+      lat: null,
+      lng: null,
+    },
     zoom: 12,
   };
+
+  // allows us to access the google maps API directly
+
+  handleApiLoaded = (map, maps) => {
+    const { personCoors, recRoute } = this.state;
+    // gets the location of the recommendation from props
+    this.getCoors(this.props.location);
+    // gets the user location from the browser
+    this.getUserPosition();
+    // use map and maps objects
+    const directionsService = new maps.DirectionsService();
+    const directionsDisplay = new maps.DirectionsRenderer({
+      map,
+    });
+    const pointA = {
+      lat: personCoors.lat,
+      lng: personCoors.lng,
+    };
+    console.log(pointA);
+    const pointB = {
+      lat: recRoute.lat,
+      lng: recRoute.lng,
+    };
+    console.log(pointB);
+
+    this.calculateAndDisplayRoute(
+      directionsService,
+      directionsDisplay,
+      pointA,
+      pointB,
+      maps
+    );
+  };
+
+  // calulates and displays the route for google maps.
+  calculateAndDisplayRoute(
+    directionsService,
+    directionsDisplay,
+    pointA,
+    pointB,
+    maps
+  ) {
+    directionsService.route(
+      {
+        origin: pointA,
+        destination: pointB,
+        travelMode: maps.TravelMode.DRIVING,
+      },
+      function(response, status) {
+        if (status === maps.DirectionsStatus.OK) {
+          directionsDisplay.setDirections(response);
+        } else {
+          window.alert('Directions request failed due to ' + status);
+        }
+      }
+    );
+  }
 
   createMapOptions = maps => {
     // next props are exposed at maps
@@ -32,19 +93,15 @@ class Map extends Component {
         position: maps.ControlPosition.TOP_RIGHT,
       },
       mapTypeControl: true,
-      DirectionsTravelMode: maps.DirectionsTravelMode,
-      DirectionsStatus: maps.DirectionsStatus,
     };
   };
 
   getUserPosition = () => {
     if ('geolocation' in navigator) {
-      console.log('Geolocation is available');
       navigator.geolocation.getCurrentPosition(position => {
         const lat = position.coords.latitude;
         const lng = position.coords.longitude;
 
-        console.log(lat, lng);
         this.setState({
           personCoors: {
             lat,
@@ -63,7 +120,7 @@ class Map extends Component {
         const { lat, lng } = response.results[0].geometry.location;
         console.log(lat, lng);
         this.setState({
-          center: {
+          recRoute: {
             lat,
             lng,
           },
@@ -76,7 +133,7 @@ class Map extends Component {
   };
 
   render() {
-    const { center, zoom, personCoors } = this.state;
+    const { center, zoom, personCoors, recRoute } = this.state;
     return (
       // Important! Always set the container height explicitly
       <div style={{ height: '100vh', width: '100%' }}>
@@ -84,14 +141,15 @@ class Map extends Component {
           bootstrapURLKeys={{ key: `${process.env.REACT_APP_MAPS_API_KEY}` }}
           center={center}
           defaultZoom={zoom}
-          onClick={() => this.getCoors(this.props.location)}
           options={this.createMapOptions}
+          yesIWantToUseGoogleMapApiInternals
+          onGoogleApiLoaded={({ map, maps }) => this.handleApiLoaded(map, maps)}
         >
           <Marker
-            lat={center.lat}
-            lng={center.lng}
+            lat={recRoute.lat}
+            lng={recRoute.lng}
             color={'black'}
-            text="My Marker"
+            text="Other Location"
           />
           <Marker
             color={'green'}
@@ -100,7 +158,6 @@ class Map extends Component {
             text="Your location"
           />
         </GoogleMapReact>
-        {console.log(this.getUserPosition())}
       </div>
     );
   }
