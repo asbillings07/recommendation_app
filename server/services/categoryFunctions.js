@@ -40,14 +40,14 @@ const getCategory = id =>
     where: {
       id,
     },
-    include: [
-      {
-        model: Recommendation, // possibly get user later?
-        attributes: {
-          exclude: ['updatedAt', 'createdAt'],
-        },
-      },
-    ],
+    // include: [
+    //   {
+    //     model: Recommendation, // possibly get user later?
+    //     attributes: {
+    //       exclude: ['updatedAt', 'createdAt'],
+    //     },
+    //   },
+    // ],
   });
 
 module.exports = {

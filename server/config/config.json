@@ -3,7 +3,8 @@
     "use_env_variable": "DATABASE_URL"
   },
   "test": {
-    "use_env_variable": "DATABASE_URL"
+    "dialect": "sqlite",
+    "storage": "test.db"
   },
   "production": {
     "use_env_variable": "DATABASE_URL"

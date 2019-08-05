@@ -18,14 +18,14 @@ const createUser = user => {
 // Finds authed user by id then updates user and hashes password if needed
 const updateUser = (id, body) => {
   body.password = bcrypt.hashSync(body.password);
-  User.findOne({ where: { id } }).then(user =>
-    user.update({
+  return User.findOne({ where: { id } }).then(user => {
+    return user.update({
       firstName: body.firstName,
       lastName: body.lastName,
       email: body.email,
       password: body.password,
-    })
-  );
+    });
+  });
 };
 // finds an authed user id then deletes a user
 const deleteUser = currentUser =>

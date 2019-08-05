@@ -4,7 +4,7 @@
   "description": "App that allows you to recommend places to your friends",
   "main": "app.js",
   "scripts": {
-    "test": "mocha",
+    "test": "mocha --watch",
     "start": "nodemon app.js",
     "start:dev": "ndb nodemon app.js"
   },
@@ -42,6 +42,10 @@
   "devDependencies": {
     "chai": "^4.2.0",
     "chai-http": "^4.3.0",
-    "mocha": "^6.1.4"
+    "faker": "^4.1.0",
+    "mocha": "^6.1.4",
+    "proxyrequire": "^1.0.21",
+    "sequelize-mock": "^0.10.2",
+    "sqlite3": "^4.0.9"
   }
 }
