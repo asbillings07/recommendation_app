@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Marker from './Marker';
 import GoogleMapReact from 'google-map-react';
 import Geocode from 'react-geocode';
+import notify from 'react-notify-toast';
 
 class Map extends Component {
   state = {
@@ -21,22 +22,20 @@ class Map extends Component {
   };
 
   // ensures coordinates load before
-  componentDidMount() {
+  componentWillMount() {
     this.getCoors(this.props.location);
     this.getUserPosition();
   }
   // allows us to access the google maps API directly'
   handleApiLoaded = (map, maps) => {
     const { personCoors, recRoute } = this.state;
-    // gets the location of the recommendation from props
-
-    // gets the user location from the browser
-
     // use map and maps objects
     const directionsService = new maps.DirectionsService();
     const directionsDisplay = new maps.DirectionsRenderer({
       map,
     });
+
+    // directionsDisplay.setPanel(); - will find out how this works later
     const pointA = {
       lat: personCoors.lat,
       lng: personCoors.lng,
@@ -48,13 +47,17 @@ class Map extends Component {
     };
     console.log(pointB);
 
-    this.calculateAndDisplayRoute(
-      directionsService,
-      directionsDisplay,
-      pointA,
-      pointB,
-      maps
-    );
+    if (pointA.lat && pointB.lat !== null) {
+      this.calculateAndDisplayRoute(
+        directionsService,
+        directionsDisplay,
+        pointA,
+        pointB,
+        maps
+      );
+    } else {
+      return 'loading...';
+    }
   };
 
   // calulates and displays the route for google maps.
@@ -70,12 +73,20 @@ class Map extends Component {
         origin: pointA,
         destination: pointB,
         travelMode: maps.TravelMode.DRIVING,
+        drivingOptions: {
+          departureTime: new Date(Date.now() + 1),
+          trafficModel: 'optimistic',
+        },
       },
-      function(response, status) {
+      (response, status) => {
         if (status === maps.DirectionsStatus.OK) {
           directionsDisplay.setDirections(response);
         } else {
-          window.alert('Directions request failed due to ' + status);
+          notify.show(
+            `Directions request failed due to ${status}`,
+            'danger',
+            10000
+          );
         }
       }
     );
@@ -103,15 +114,17 @@ class Map extends Component {
   getUserPosition = () => {
     if ('geolocation' in navigator) {
       navigator.geolocation.getCurrentPosition(position => {
-        const lat = position.coords.latitude;
-        const lng = position.coords.longitude;
-
+        const userPostion = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+        };
         this.setState({
           personCoors: {
-            lat,
-            lng,
+            lat: userPostion.lat,
+            lng: userPostion.lng,
           },
         });
+        return userPostion;
       });
     } else {
       console.log('geolocation is not avaiable');
@@ -122,13 +135,14 @@ class Map extends Component {
     Geocode.fromAddress(address).then(
       response => {
         const { lat, lng } = response.results[0].geometry.location;
-        console.log(lat, lng);
+
         this.setState({
           recRoute: {
             lat,
             lng,
           },
         });
+        return { lat, lng };
       },
       error => {
         console.error(error.message);
@@ -146,8 +160,8 @@ class Map extends Component {
           center={center}
           defaultZoom={zoom}
           options={this.createMapOptions}
-          yesIWantToUseGoogleMapApiInternals
-          onGoogleApiLoaded={({ map, maps }) => this.handleApiLoaded(map, maps)}
+          // yesIWantToUseGoogleMapApiInternals
+          // onGoogleApiLoaded={({ map, maps }) => this.handleApiLoaded(map, maps)}
         >
           <Marker
             lat={recRoute.lat}
@@ -162,6 +176,7 @@ class Map extends Component {
             text="Your location"
           />
         </GoogleMapReact>
+        <div />
       </div>
     );
   }
