@@ -59,6 +59,7 @@ const recommendationRoute = require('./routes/recommendation');
 const categoryRoute = require('./routes/category');
 const ratingRoute = require('./routes/rating');
 const passwordReset = require('./routes/passwordReset');
+const commentRoute = require('./routes/comment');
 
 //api routes
 app.use('/api', userRoute);
@@ -66,6 +67,7 @@ app.use('/api', recommendationRoute);
 app.use('/api', categoryRoute);
 app.use('/api', ratingRoute);
 app.use('/api', passwordReset);
+app.use('/api', commentRoute);
 
 app.get('/', (req, res, next) => {
   res.json({
