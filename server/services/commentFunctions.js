@@ -1,9 +1,11 @@
 const { Comment } = require('../models');
 
 // create comment
-const createComment = body =>
+const createComment = (id, body, user) =>
   Comment.create({
     comment: body.comment,
+    recid: id,
+    userid: user.id,
   });
 // update comment
 const updateComment = (id, body) =>
@@ -15,7 +17,7 @@ const updateComment = (id, body) =>
     });
   });
 // gets comment
-const getComment = id => Comment.findOne({ where: { userid: id } });
+const getComment = id => Comment.findAll({ where: { recid: id } });
 // deletes comment
 const deleteComment = id =>
   Comment.findOne({ where: { userid: id } }).then(comment => comment.destroy());

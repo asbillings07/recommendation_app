@@ -16,14 +16,12 @@ const createRating = (id, user, body) =>
     rate: body.rate,
     recid: id,
     userid: user.id,
-    comment: body.comment,
   });
 // updates rating on a given recommendation for user
 const updateRating = (id, body) =>
   Rating.findOne({ where: { recid: id } }).then(rating =>
     rating.update({
       rate: body.rate,
-      comment: body.comment,
     })
   );
 // deletes a rating along with their comments for user.

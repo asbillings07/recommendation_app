@@ -3,7 +3,14 @@ module.exports = (sequelize, DataTypes) => {
   const Comment = sequelize.define(
     'Comment',
     {
-      comment: DataTypes.STRING,
+      comment: {
+        type: DataTypes.STRING,
+        validate: {
+          notEmpty: {
+            msg: 'Comment Required',
+          },
+        },
+      },
       userid: DataTypes.INTEGER,
       recid: DataTypes.INTEGER,
     },

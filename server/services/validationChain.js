@@ -1,5 +1,11 @@
 const { check, validationResult } = require('express-validator');
-const { User } = require('../models');
+const {
+  User,
+  Recommendations,
+  Category,
+  Rating,
+  Comment,
+} = require('../models');
 
 // displays errors to the user when fields are left empty or filled out incorrectly.
 const errorHanlder = async (req, res, next) => {
@@ -71,9 +77,6 @@ const validateRating = [
   check('rate')
     .exists({ checkNull: true, checkFalsy: true })
     .withMessage('Please provide a rating'),
-  check('comment')
-    .exists({ checkNull: true, checkFalsy: true })
-    .withMessage('Please provide a comment'),
   errorHanlder,
 ];
 const validateEmail = [
@@ -83,10 +86,17 @@ const validateEmail = [
     .isEmail()
     .withMessage('Email Address must be formated correctly'),
 ];
+const validateComment = [
+  check('comment')
+    .exists({ checkNull: true, checkFalsy: true })
+    .withMessage('Please provide a comment'),
+  errorHanlder,
+];
 module.exports = {
   validateUser,
   validateRecommendation,
   validateCategory,
   validateRating,
   validateEmail,
+  validateComment,
 };
