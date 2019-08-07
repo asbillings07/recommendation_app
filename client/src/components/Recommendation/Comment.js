@@ -15,6 +15,7 @@ const Comment = ({ comments, data, token, id }) => {
   };
 
   const AddComment = e => {
+    // getting issue with using context API. Try with Axios
     e.preventDefault();
     data.createComment(id, token, userComment).then(error => {
       if (error) {
