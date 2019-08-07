@@ -35,6 +35,13 @@ const getAllRecs = () =>
               exclude: ['createdAt', 'updatedAt', 'password'],
             },
           },
+          {
+            model: Comment,
+            as: 'userComments',
+            attributes: {
+              exclude: ['createdAt', 'updatedAt'],
+            },
+          },
         ],
         attributes: {
           exclude: ['createdAt', 'updatedAt'],

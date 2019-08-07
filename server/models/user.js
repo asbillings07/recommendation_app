@@ -59,6 +59,7 @@ module.exports = (sequelize, DataTypes) => {
     });
     User.belongsToMany(models.Recommendation, { through: 'SavedRec' });
     User.hasMany(models.Comment, {
+      as: 'userComments',
       foreignKey: {
         fieldName: 'userid',
         allowNull: false,
