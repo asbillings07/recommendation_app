@@ -7,21 +7,66 @@ const {
   createComment,
   updateComment,
   deleteComment,
-  getComment,
 } = require('../services/commentFunctions');
-const { verifyUser } = require('../services/ratingFunctions');
+const { verifyUser } = require('../services/commentFunctions');
 
 // POST /rec/comment status: 201 - creating a new rating for a given recommendation
 router.post(
   '/rec/:id/comment',
-  validateComment,
   authenticateUser,
+  validateComment,
   asyncHanlder(async (req, res) => {
     const body = req.body;
     const id = req.params.id;
     const user = req.user;
-    const comment = createComment(id, body, user);
-    res.status(200).json(comment);
+    const comment = await createComment(id, body, user);
+    if (comment) {
+      res.status(200).json({ comment });
+    } else {
+      res.status(404).json({ error: '404 Not found' });
+    }
+  })
+);
+
+router.put(
+  '/rec/:id/comment',
+  authenticateUser,
+  validateComment,
+  asyncHanlder(async (req, res) => {
+    const body = req.body;
+    const id = req.params.id;
+    const user = req.user;
+
+    const authedUser = await verifyUser(id);
+
+    if (authedUser.userid === user.id) {
+      const comment = await updateComment(id, body);
+      res.status(201).json(comment);
+    } else {
+      res
+        .status(401)
+        .json({ message: 'You can not update comments you do not own' });
+    }
+  })
+);
+
+router.delete(
+  '/rec/:id/comment',
+  authenticateUser,
+  asyncHanlder(async (req, res) => {
+    const id = +req.params.id;
+    const user = req.user;
+    const authedUser = await verifyUser(id);
+    console.log(authedUser);
+
+    if (authedUser.userid === user.id) {
+      await deleteComment(id);
+      res.status(204).end();
+    } else {
+      res.status(401).json({
+        message: 'You can not delete recommendations that you do not own',
+      });
+    }
   })
 );
 
