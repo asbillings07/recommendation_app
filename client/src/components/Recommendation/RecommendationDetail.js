@@ -6,6 +6,7 @@ import { Container, Row, Card, Button, ButtonGroup } from 'react-bootstrap';
 import Rating from '../Recommendation/Rating';
 import Map from '../Map/Map';
 import notify from 'react-notify-toast';
+import Comment from './Comment';
 
 export default class RecommendationDetail extends Component {
   state = {
@@ -18,6 +19,7 @@ export default class RecommendationDetail extends Component {
     recid: '',
     catid: '',
     user: '',
+    comments: '',
     loading: true,
   };
 
@@ -32,7 +34,7 @@ export default class RecommendationDetail extends Component {
 
       if (data) {
         const rec = data.data;
-        console.log(data.data);
+        console.log(data.data.Comments);
         this.setState({
           loading: false,
           title: rec.title,
@@ -43,6 +45,7 @@ export default class RecommendationDetail extends Component {
           recid: rec.id,
           catid: rec.categoryId,
           user: rec.User,
+          comments: rec.Comments,
         });
       } else {
         this.props.history.push('/notfound');
@@ -63,8 +66,11 @@ export default class RecommendationDetail extends Component {
       catid,
       user,
       loading,
+      comments,
     } = this.state;
     const { authorizedUser } = this.props.context;
+    const { id } = this.props.match.params;
+    const { token, data } = this.props.context;
     // add a Created by First Name & Last Name
 
     if (loading) {
@@ -110,6 +116,12 @@ export default class RecommendationDetail extends Component {
                   <Card.Text>
                     Recommended by: {`${user.firstName} ${user.lastName}`}
                   </Card.Text>
+                  <Comment
+                    comments={comments}
+                    id={id}
+                    token={token}
+                    data={data}
+                  />
                   <Rating /* rating={} */ />
                 </Card.Body>
                 <Map location={location} />

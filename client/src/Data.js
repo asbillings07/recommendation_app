@@ -204,13 +204,13 @@ export default class Data {
 
   // create rating
 
-  async createRating(email, password, rating, id) {
+  async createRating(token, rating, id) {
     const response = await this.api(
       `/rating/recs/${id}`,
       'POST',
       rating,
       true,
-      { email, password }
+      token
     );
     if (response.status === 201) {
       return [];
@@ -248,6 +248,68 @@ export default class Data {
   async deleteRating(token, id) {
     const response = await this.api(
       `/rating/recs/${id}`,
+      'DELETE',
+      null,
+      true,
+      token
+    );
+    if (response.status === 204) {
+      return [];
+    } else if (response.status === 400 || response.status === 403) {
+      return response
+        .json()
+        .then(data => data.errors)
+        .catch(err => console.log(err));
+    } else {
+      throw new Error();
+    }
+  }
+
+  /**Comment Methods */
+
+  async createComment(token, id, comment) {
+    const response = await this.api(
+      `/rec/${id}/comment`,
+      'POST',
+      comment,
+      true,
+      token
+    );
+    if (response.status === 201) {
+      return [];
+    } else if (response.status === 400 || response.status === 403) {
+      return response
+        .json()
+        .then(data => data.errors)
+        .catch(err => console.log(err));
+    } else {
+      throw new Error();
+    }
+  }
+
+  async updateComment(token, id, comment) {
+    const response = await this.api(
+      `/rec/${id}/comment`,
+      'PUT',
+      comment,
+      true,
+      token
+    );
+    if (response.status === 201) {
+      return [];
+    } else if (response.status === 400 || response.status === 403) {
+      return response
+        .json()
+        .then(data => data.errors)
+        .catch(err => console.log(err));
+    } else {
+      throw new Error();
+    }
+  }
+
+  async deleteComment(token, id) {
+    const response = await this.api(
+      `/rec/${id}/comment`,
       'DELETE',
       null,
       true,

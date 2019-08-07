@@ -21,7 +21,7 @@ router.post(
     const user = req.user;
     const comment = await createComment(id, body, user);
     if (comment) {
-      res.status(200).json({ comment });
+      res.status(201).end();
     } else {
       res.status(404).json({ error: '404 Not found' });
     }
@@ -40,11 +40,11 @@ router.put(
     const authedUser = await verifyUser(id);
 
     if (authedUser.userid === user.id) {
-      const comment = await updateComment(id, body);
-      res.status(201).json(comment);
+      await updateComment(id, body);
+      res.status(201).end();
     } else {
       res
-        .status(401)
+        .status(403)
         .json({ message: 'You can not update comments you do not own' });
     }
   })
@@ -63,7 +63,7 @@ router.delete(
       await deleteComment(id);
       res.status(204).end();
     } else {
-      res.status(401).json({
+      res.status(403).json({
         message: 'You can not delete recommendations that you do not own',
       });
     }
