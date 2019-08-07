@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import { Card, Button, ListGroup, Form } from 'react-bootstrap';
 import { notify } from 'react-notify-toast';
+import axios from 'axios';
+import Config from '../../Config';
+import styled from 'styled-components';
 
-const Comment = ({ comments, data, token, id }) => {
+const Comment = ({ comments, token, id }) => {
   const [userComment, setUserComment] = useState('');
   const [error, setError] = useState('');
 
@@ -15,29 +18,39 @@ const Comment = ({ comments, data, token, id }) => {
   };
 
   const AddComment = e => {
-    // getting issue with using context API. Try with Axios
-    e.preventDefault();
-    data.createComment(id, token, userComment).then(error => {
-      if (error) {
-        setError(error);
-      } else {
+    const config = {
+      headers: { Authorization: 'bearer ' + token },
+    };
+
+    const params = {
+      comment: userComment,
+    };
+
+    axios
+      .post(`${Config.apiBaseUrl}/rec/${id}/comment`, params, config)
+      .then(() => {
         notify.show('Comment Added!', 'success', 5000);
-      }
-    });
+      })
+      .catch(error => {
+        if (error) {
+          setError('Please Enter a Comment');
+        }
+      });
   };
 
   return (
     <Card.Footer>
       <Form onSubmit={AddComment}>
-        <div>{error}</div>
+        <H3Error>{error}</H3Error>
         <Form.Label>Comments</Form.Label>
+        {comment()}
         <Form.Control
           type="text"
           placeholder="Enter Comment"
           value={userComment}
           onChange={e => setUserComment(e.target.value)}
         />
-        {comment()}
+
         <Button variant="secondary" type="submit">
           Add Comment
         </Button>
@@ -47,3 +60,9 @@ const Comment = ({ comments, data, token, id }) => {
 };
 
 export default Comment;
+
+const H3Error = styled.h3`
+  font-color: red;
+`;
+
+const Label = styled(Form.Label)``;
