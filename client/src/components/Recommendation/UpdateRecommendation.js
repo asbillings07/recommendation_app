@@ -28,8 +28,8 @@ export default class UpdateRecommendation extends Component {
       const data = await Axios.get(`${Config.apiBaseUrl}/recs/${id}`);
 
       if (data) {
-        const rec = data.data[0];
-        console.log(data.data[0]);
+        const rec = data.data;
+        console.log(data.data);
         this.setState({
           title: rec.title,
           description: rec.description,
@@ -66,44 +66,47 @@ export default class UpdateRecommendation extends Component {
       <Container className="mt-3">
         <Row className="justify-content-md-center">
           <Col xs md lg="auto">
-            <Forms
-              cancel={this.cancel}
-              errors={errors}
-              submit={this.submit}
-              passwordErrors={confirmed}
-              submitButtonText="Update Recommendation"
-              elements={() => (
-                <React.Fragment>
-                  <Form.Group>
-                    <Form.Control
-                      type="text"
-                      name="title"
-                      placeholder=""
-                      value={title}
-                      onChange={this.change}
-                    />
-                  </Form.Group>
-                  <Form.Group>
-                    <Form.Control
-                      type="text"
-                      name="description"
-                      placeholder=""
-                      value={description}
-                      onChange={this.change}
-                    />
-                  </Form.Group>
-                  <Form.Group>
-                    <Form.Control
-                      type="text"
-                      name="location"
-                      value={location}
-                      placeholder=""
-                      onChange={this.change}
-                    />
-                  </Form.Group>
-                </React.Fragment>
-              )}
-            />
+            <>
+              <h1 className="mb-4">Update Your Recommendation</h1>
+              <Forms
+                cancel={this.cancel}
+                errors={errors}
+                submit={this.submit}
+                passwordErrors={confirmed}
+                submitButtonText="Update Recommendation"
+                elements={() => (
+                  <React.Fragment>
+                    <Form.Group>
+                      <Form.Control
+                        type="text"
+                        name="title"
+                        placeholder=""
+                        value={title}
+                        onChange={this.change}
+                      />
+                    </Form.Group>
+                    <Form.Group>
+                      <Form.Control
+                        type="text"
+                        name="description"
+                        placeholder=""
+                        value={description}
+                        onChange={this.change}
+                      />
+                    </Form.Group>
+                    <Form.Group>
+                      <Form.Control
+                        type="text"
+                        name="location"
+                        value={location}
+                        placeholder=""
+                        onChange={this.change}
+                      />
+                    </Form.Group>
+                  </React.Fragment>
+                )}
+              />
+            </>
           </Col>
         </Row>
       </Container>

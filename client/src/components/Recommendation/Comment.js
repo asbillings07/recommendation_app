@@ -18,7 +18,6 @@ const Comment = ({ comments, token, id, authedUser }) => {
   };
 
   const AddComment = e => {
-    e.preventDefault();
     const config = {
       headers: { Authorization: 'bearer ' + token },
     };
@@ -26,36 +25,37 @@ const Comment = ({ comments, token, id, authedUser }) => {
     const params = {
       comment: userComment,
     };
-
-    axios
-      .post(`${Config.apiBaseUrl}/rec/${id}/comment`, params, config)
-      .then(() => {
-        notify.show('Comment Added!', 'success', 5000);
-      })
-      .catch(error => {
-        if (error) {
-          setError('Please Enter a Comment');
-        }
-      });
+    if (userComment) {
+      axios
+        .post(`${Config.apiBaseUrl}/rec/${id}/comment`, params, config)
+        .then(() => {
+          notify.show('Comment Added!', 'success', 5000);
+        })
+        .catch(error => console.log(error));
+      e.target.reset();
+    } else {
+      e.preventDefault();
+      setError('Please Enter a Comment');
+    }
   };
 
   return (
     <Card>
       <HError>{error}</HError>
-      <Form.Label>Comments</Form.Label>
+      <h4>Comments</h4>
       {comment()}
       {authedUser ? (
-        <>
+        <Form onSubmit={AddComment}>
           <Form.Control
             type="text"
             placeholder="Enter Comment"
             value={userComment}
             onChange={e => setUserComment(e.target.value)}
           />
-          <Button variant="secondary" type="submit" onClick={AddComment}>
+          <Button variant="secondary" type="submit">
             Add Comment
           </Button>
-        </>
+        </Form>
       ) : (
         ''
       )}
@@ -69,4 +69,4 @@ const HError = styled.h4`
   color: red;
 `;
 
-const Label = styled(Form.Label)``;
+const Label = styled.h4``;

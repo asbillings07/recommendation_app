@@ -9,11 +9,13 @@ import {
   Button,
   ButtonGroup,
   Col,
+  ButtonToolbar,
 } from 'react-bootstrap';
 import Rating from '../Recommendation/Rating';
 import Map from '../Map/Map';
 import notify from 'react-notify-toast';
 import Comment from './Comment';
+import styled from 'styled-components';
 
 export default class RecommendationDetail extends Component {
   state = {
@@ -92,31 +94,40 @@ export default class RecommendationDetail extends Component {
                   <Card.Body>
                     {authorizedUser && authorizedUser.id === userid ? (
                       <Card.Header>
-                        <ButtonGroup className="mr-2">
-                          <Button href={`/rec/${recid}/update`} variant="info">
+                        <StyledToolBar>
+                          <Button
+                            href={`/category/${catid}`}
+                            variant="secondary"
+                            className="mr-2"
+                          >
+                            Back
+                          </Button>
+                          <Button
+                            href={`/rec/${recid}/update`}
+                            variant="info"
+                            className="mr-2"
+                          >
                             Update
                           </Button>
-                        </ButtonGroup>
-                        <ButtonGroup>
                           <Button
                             variant="danger"
                             onClick={() => this.confirmDelete()}
                           >
                             Delete
                           </Button>
-                        </ButtonGroup>
+                        </StyledToolBar>
                       </Card.Header>
                     ) : (
-                      ''
+                      <Card.Header>
+                        <Button
+                          href={`/category/${catid}`}
+                          variant="secondary"
+                          className="mb-3"
+                        >
+                          Back
+                        </Button>
+                      </Card.Header>
                     )}
-
-                    <Button
-                      href={`/category/${catid}`}
-                      variant="secondary"
-                      className="mb-3"
-                    >
-                      Back
-                    </Button>
 
                     <Card.Title>{title}</Card.Title>
                     <Card.Subtitle className="mt-2 text-muted">
@@ -177,3 +188,7 @@ export default class RecommendationDetail extends Component {
     });
   };
 }
+
+const StyledToolBar = styled(ButtonToolbar)`
+  margin-left: -20px;
+`;
