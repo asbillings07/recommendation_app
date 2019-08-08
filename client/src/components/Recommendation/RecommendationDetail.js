@@ -12,6 +12,7 @@ import {
 } from 'react-bootstrap';
 import Rating from '../Recommendation/Rating';
 import Map from '../Map/Map';
+import GMap from '../Map/GMap';
 import notify from 'react-notify-toast';
 import Comment from './Comment';
 import styled from 'styled-components';
