@@ -33,10 +33,7 @@ export default class Data {
     if (response.status === 200) {
       return response.json().then(data => data);
     } else if (response.status === 401) {
-      return response
-        .json()
-        .then(data => console.log(data.errors))
-        .catch(err => console.log(err));
+      return response.json().then(data => data);
     } else {
       throw new Error();
     }

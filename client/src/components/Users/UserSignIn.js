@@ -83,29 +83,20 @@ export default class UserSignIn extends Component {
     context.actions
       .signIn(email, password)
       .then(user => {
-        if (user) {
-          this.props.history.push(from);
+        console.log(user);
+        if (user.message === 'ok') {
           console.log('User signed In successfully');
-          notify.show(
-            `Hi, ${
-              context.authorizedUser.firstName
-            }! You've signed in Successfully`,
-            'success',
-            10000
-          );
+          this.props.history.push(from);
         } else {
           this.setState(() => {
             return {
-              errors: [
-                'Incorrect Email or Password, check your credentials and try again',
-              ],
+              errors: [user.message],
             };
           });
         }
       })
       .catch(err => {
         console.log(err);
-        this.props.history.push('/errors');
       });
   };
 
