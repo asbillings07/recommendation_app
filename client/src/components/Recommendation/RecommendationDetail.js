@@ -2,7 +2,14 @@ import React, { Component } from 'react';
 import Axios from 'axios';
 import Config from '../../Config';
 import Spinner from '../Spinner';
-import { Container, Row, Card, Button, ButtonGroup } from 'react-bootstrap';
+import {
+  Container,
+  Row,
+  Card,
+  Button,
+  ButtonGroup,
+  Col,
+} from 'react-bootstrap';
 import Rating from '../Recommendation/Rating';
 import Map from '../Map/Map';
 import notify from 'react-notify-toast';
@@ -80,52 +87,61 @@ export default class RecommendationDetail extends Component {
         <>
           <Container className="mt-1">
             <Row className="justify-content-center">
-              <Card style={{ width: '60rem', height: '30rem' }}>
-                <Card.Body>
-                  {authorizedUser && authorizedUser.id === userid ? (
-                    <Card.Header>
-                      <ButtonGroup className="mr-2">
-                        <Button href={`/rec/${recid}/update`} variant="info">
-                          Update
-                        </Button>
-                      </ButtonGroup>
-                      <ButtonGroup>
-                        <Button
-                          variant="danger"
-                          onClick={() => this.confirmDelete()}
-                        >
-                          Delete
-                        </Button>
-                      </ButtonGroup>
-                    </Card.Header>
-                  ) : (
-                    ''
-                  )}
-                  <Card.Header>
-                    <ButtonGroup className="mr-2">
-                      <Button href={`/category/${catid}`} variant="secondary">
-                        Back
-                      </Button>
-                    </ButtonGroup>
-                  </Card.Header>
-                  <Card.Title>{title}</Card.Title>
-                  <Card.Subtitle className="mt-2 text-muted">
-                    {location}
-                  </Card.Subtitle>
-                  <Card.Text>{description}</Card.Text>
-                  <Card.Text>
-                    Recommended by: {`${user.firstName} ${user.lastName}`}
-                  </Card.Text>
-                  <Comment
-                    comments={comments}
-                    id={id}
-                    token={token}
-                    data={data}
-                  />
-                  <Rating /* rating={} */ />
-                </Card.Body>
-                <Map location={location} />
+              <Card style={{ width: '100%', height: '100%' }}>
+                <Col>
+                  <Card.Body>
+                    {authorizedUser && authorizedUser.id === userid ? (
+                      <Card.Header>
+                        <ButtonGroup className="mr-2">
+                          <Button href={`/rec/${recid}/update`} variant="info">
+                            Update
+                          </Button>
+                        </ButtonGroup>
+                        <ButtonGroup>
+                          <Button
+                            variant="danger"
+                            onClick={() => this.confirmDelete()}
+                          >
+                            Delete
+                          </Button>
+                        </ButtonGroup>
+                      </Card.Header>
+                    ) : (
+                      ''
+                    )}
+
+                    <Button
+                      href={`/category/${catid}`}
+                      variant="secondary"
+                      className="mb-3"
+                    >
+                      Back
+                    </Button>
+
+                    <Card.Title>{title}</Card.Title>
+                    <Card.Subtitle className="mt-2 text-muted">
+                      {location}
+                    </Card.Subtitle>
+                    <Card.Text>{description}</Card.Text>
+                    <Card.Text>
+                      Recommended by: {`${user.firstName} ${user.lastName}`}
+                    </Card.Text>
+                    {/* <Rating /> */}
+                  </Card.Body>
+                </Col>
+                <Col sm={8}>
+                  <Card.Body>
+                    <Comment
+                      comments={comments}
+                      id={id}
+                      token={token}
+                      data={data}
+                      authedUser={authorizedUser}
+                    />
+                  </Card.Body>
+                </Col>
               </Card>
+              <Map location={location} />
             </Row>
           </Container>
         </>

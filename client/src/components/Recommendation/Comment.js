@@ -5,7 +5,7 @@ import axios from 'axios';
 import Config from '../../Config';
 import styled from 'styled-components';
 
-const Comment = ({ comments, token, id }) => {
+const Comment = ({ comments, token, id, authedUser }) => {
   const [userComment, setUserComment] = useState('');
   const [error, setError] = useState('');
 
@@ -18,6 +18,7 @@ const Comment = ({ comments, token, id }) => {
   };
 
   const AddComment = e => {
+    e.preventDefault();
     const config = {
       headers: { Authorization: 'bearer ' + token },
     };
@@ -39,30 +40,33 @@ const Comment = ({ comments, token, id }) => {
   };
 
   return (
-    <Card.Footer>
-      <Form onSubmit={AddComment}>
-        <H3Error>{error}</H3Error>
-        <Form.Label>Comments</Form.Label>
-        {comment()}
-        <Form.Control
-          type="text"
-          placeholder="Enter Comment"
-          value={userComment}
-          onChange={e => setUserComment(e.target.value)}
-        />
-
-        <Button variant="secondary" type="submit">
-          Add Comment
-        </Button>
-      </Form>
-    </Card.Footer>
+    <Card>
+      <HError>{error}</HError>
+      <Form.Label>Comments</Form.Label>
+      {comment()}
+      {authedUser ? (
+        <>
+          <Form.Control
+            type="text"
+            placeholder="Enter Comment"
+            value={userComment}
+            onChange={e => setUserComment(e.target.value)}
+          />
+          <Button variant="secondary" type="submit" onClick={AddComment}>
+            Add Comment
+          </Button>
+        </>
+      ) : (
+        ''
+      )}
+    </Card>
   );
 };
 
 export default Comment;
 
-const H3Error = styled.h3`
-  font-color: red;
+const HError = styled.h4`
+  color: red;
 `;
 
 const Label = styled(Form.Label)``;
