@@ -7,7 +7,7 @@ export default class CreateRecommendation extends Component {
   state = {
     title: '',
     description: '',
-    lastVisited: '2019-08-02',
+    lastVisited: '',
     location: '',
     query: '',
     rating: '',
@@ -98,21 +98,13 @@ export default class CreateRecommendation extends Component {
                     />
                   </Form.Group>
                   <Form.Group>
+                    <Form.Label>Location Confirmation</Form.Label>
                     <Form.Control
                       type="text"
                       name="location"
                       value={location}
                       placeholder={location}
                       readOnly
-                    />
-                  </Form.Group>
-                  <Form.Label>Last Visited</Form.Label>
-                  <Form.Group>
-                    <Form.Control
-                      type="date"
-                      name="lastvisted"
-                      value={lastVisited}
-                      onChange={this.change}
                     />
                   </Form.Group>
                 </React.Fragment>
