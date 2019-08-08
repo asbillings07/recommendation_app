@@ -2,10 +2,19 @@ import React, { Component } from 'react';
 import Axios from 'axios';
 import Config from '../../Config';
 import Spinner from '../Spinner';
-import { Container, Row, Card, Button, ButtonGroup } from 'react-bootstrap';
+import {
+  Container,
+  Row,
+  Card,
+  Button,
+  Col,
+  ButtonToolbar,
+} from 'react-bootstrap';
 import Rating from '../Recommendation/Rating';
 import Map from '../Map/Map';
 import notify from 'react-notify-toast';
+import Comment from './Comment';
+import styled from 'styled-components';
 
 export default class RecommendationDetail extends Component {
   state = {
@@ -18,6 +27,7 @@ export default class RecommendationDetail extends Component {
     recid: '',
     catid: '',
     user: '',
+    comments: '',
     loading: true,
   };
 
@@ -32,7 +42,7 @@ export default class RecommendationDetail extends Component {
 
       if (data) {
         const rec = data.data;
-        console.log(data.data);
+        console.log(data.data.Comments);
         this.setState({
           loading: false,
           title: rec.title,
@@ -43,6 +53,7 @@ export default class RecommendationDetail extends Component {
           recid: rec.id,
           catid: rec.categoryId,
           user: rec.User,
+          comments: rec.Comments,
         });
       } else {
         this.props.history.push('/notfound');
@@ -63,8 +74,11 @@ export default class RecommendationDetail extends Component {
       catid,
       user,
       loading,
+      comments,
     } = this.state;
     const { authorizedUser } = this.props.context;
+    const { id } = this.props.match.params;
+    const { token, data } = this.props.context;
     // add a Created by First Name & Last Name
 
     if (loading) {
@@ -74,46 +88,70 @@ export default class RecommendationDetail extends Component {
         <>
           <Container className="mt-1">
             <Row className="justify-content-center">
-              <Card style={{ width: '60rem', height: '30rem' }}>
-                <Card.Body>
-                  {authorizedUser && authorizedUser.id === userid ? (
-                    <Card.Header>
-                      <ButtonGroup className="mr-2">
-                        <Button href={`/rec/${recid}/update`} variant="info">
-                          Update
-                        </Button>
-                      </ButtonGroup>
-                      <ButtonGroup>
+              <Card style={{ width: '100%', height: '100%' }}>
+                <Col>
+                  <Card.Body>
+                    {authorizedUser && authorizedUser.id === userid ? (
+                      <Card.Header>
+                        <StyledToolBar>
+                          <Button
+                            href={`/category/${catid}`}
+                            variant="secondary"
+                            className="mr-2"
+                          >
+                            Back
+                          </Button>
+                          <Button
+                            href={`/rec/${recid}/update`}
+                            variant="info"
+                            className="mr-2"
+                          >
+                            Update
+                          </Button>
+                          <Button
+                            variant="danger"
+                            onClick={() => this.confirmDelete()}
+                          >
+                            Delete
+                          </Button>
+                        </StyledToolBar>
+                      </Card.Header>
+                    ) : (
+                      <Card.Header>
                         <Button
-                          variant="danger"
-                          onClick={() => this.confirmDelete()}
+                          href={`/category/${catid}`}
+                          variant="secondary"
+                          className="mb-3"
                         >
-                          Delete
+                          Back
                         </Button>
-                      </ButtonGroup>
-                    </Card.Header>
-                  ) : (
-                    ''
-                  )}
-                  <Card.Header>
-                    <ButtonGroup className="mr-2">
-                      <Button href={`/category/${catid}`} variant="secondary">
-                        Back
-                      </Button>
-                    </ButtonGroup>
-                  </Card.Header>
-                  <Card.Title>{title}</Card.Title>
-                  <Card.Subtitle className="mt-2 text-muted">
-                    {location}
-                  </Card.Subtitle>
-                  <Card.Text>{description}</Card.Text>
-                  <Card.Text>
-                    Recommended by: {`${user.firstName} ${user.lastName}`}
-                  </Card.Text>
-                  <Rating /* rating={} */ />
-                </Card.Body>
-                <Map location={location} />
+                      </Card.Header>
+                    )}
+
+                    <Card.Title>{title}</Card.Title>
+                    <Card.Subtitle className="mt-2 text-muted">
+                      {location}
+                    </Card.Subtitle>
+                    <Card.Text>{description}</Card.Text>
+                    <Card.Text>
+                      Recommended by: {`${user.firstName} ${user.lastName}`}
+                    </Card.Text>
+                    {/* <Rating /> */}
+                  </Card.Body>
+                </Col>
+                <Col sm={8}>
+                  <Card.Body>
+                    <Comment
+                      comments={comments}
+                      id={id}
+                      token={token}
+                      data={data}
+                      authedUser={authorizedUser}
+                    />
+                  </Card.Body>
+                </Col>
               </Card>
+              <Map location={location} />
             </Row>
           </Container>
         </>
@@ -149,3 +187,7 @@ export default class RecommendationDetail extends Component {
     });
   };
 }
+
+const StyledToolBar = styled(ButtonToolbar)`
+  margin-left: -20px;
+`;
