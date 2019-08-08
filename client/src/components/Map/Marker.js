@@ -8,7 +8,7 @@ const Wrapper = styled.div`
   left: 50%;
   width: 18px;
   height: 18px;
-  background-color: #000;
+  background-color: ${props => props.color};
   border: 2px solid #fff;
   border-radius: 100%;
   user-select: none;
@@ -22,6 +22,7 @@ const Wrapper = styled.div`
 const Marker = props => (
   <Wrapper
     alt={props.text}
+    color={props.color}
     {...(props.onClick ? { onClick: props.onClick } : {})}
   />
 );
