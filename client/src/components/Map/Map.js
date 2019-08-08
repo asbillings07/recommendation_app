@@ -160,8 +160,8 @@ class Map extends Component {
           center={center}
           defaultZoom={zoom}
           options={this.createMapOptions}
-          // yesIWantToUseGoogleMapApiInternals
-          // onGoogleApiLoaded={({ map, maps }) => this.handleApiLoaded(map, maps)}
+          yesIWantToUseGoogleMapApiInternals
+          onGoogleApiLoaded={({ map, maps }) => this.handleApiLoaded(map, maps)}
         >
           <Marker
             lat={recRoute.lat}
