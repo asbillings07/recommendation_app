@@ -152,7 +152,7 @@ export default class RecommendationDetail extends Component {
                   </Card.Body>
                 </Col>
               </Card>
-              <Map location={location} />
+              <GMap location={location} />
             </Row>
           </Container>
         </>
