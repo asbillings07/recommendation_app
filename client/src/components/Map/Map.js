@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import Marker from './Marker';
 import GoogleMapReact from 'google-map-react';
 import Geocode from 'react-geocode';
+import styled from 'styled-components';
+import { Card } from 'react-bootstrap';
 import notify from 'react-notify-toast';
 
 class Map extends Component {
@@ -26,9 +28,27 @@ class Map extends Component {
     this.getCoors(this.props.location);
     this.getUserPosition();
   }
+
   // allows us to access the google maps API directly'
   handleApiLoaded = (map, maps) => {
     const { personCoors, recRoute } = this.state;
+
+    const content = (
+      <Card>
+        <Card.Title>New Pop Up</Card.Title>
+      </Card>
+    );
+
+    const infowindow = maps.InfoWindow({
+      content: content,
+    });
+
+    const marker = maps.Marker({
+      position: personCoors,
+      map: map,
+      title: 'Where You Are Now',
+    });
+
     // use map and maps objects
     const directionsService = new maps.DirectionsService();
     const directionsDisplay = new maps.DirectionsRenderer({
@@ -158,14 +178,16 @@ class Map extends Component {
         <GoogleMapReact
           bootstrapURLKeys={{ key: `${process.env.REACT_APP_MAPS_API_KEY}` }}
           center={center}
+          hoverDistance={5}
           defaultZoom={zoom}
           options={this.createMapOptions}
-          yesIWantToUseGoogleMapApiInternals
+          yesIWantToUseGoogleMapApiInternals={true}
           onGoogleApiLoaded={({ map, maps }) => this.handleApiLoaded(map, maps)}
         >
           <Marker
             lat={recRoute.lat}
             lng={recRoute.lng}
+            onClick={() => console.log('this works')}
             color={'black'}
             text="Other Location"
           />
@@ -187,3 +209,18 @@ export default Map;
 
 Geocode.setApiKey(`${process.env.REACT_APP_MAPS_API_KEY}`);
 Geocode.enableDebug();
+
+const FloatingCard = styled(Card)`
+  position: absolute;
+  width: 5rem;
+  top: 50%;
+  left: 50%;
+  z-index: 5;
+  background-color: #fff;
+  padding: 5px;
+  border: 1px solid #999;
+  text-align: center;
+  font-family: 'Roboto', 'sans-serif';
+  line-height: 30px;
+  padding-left: 10px;
+`;

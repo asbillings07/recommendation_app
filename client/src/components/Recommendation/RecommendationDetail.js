@@ -13,6 +13,7 @@ import {
 import Rating from '../Recommendation/Rating';
 import Map from '../Map/Map';
 import GMap from '../Map/GMap';
+import OGMap from '../Map/OGMap';
 import notify from 'react-notify-toast';
 import Comment from './Comment';
 import styled from 'styled-components';
@@ -152,7 +153,8 @@ export default class RecommendationDetail extends Component {
                   </Card.Body>
                 </Col>
               </Card>
-              <GMap location={location} />
+              <OGMap />
+              {/* <Map location={location} /> */}
             </Row>
           </Container>
         </>

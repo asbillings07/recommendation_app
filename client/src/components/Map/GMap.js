@@ -3,8 +3,7 @@ import {
   GoogleMap,
   LoadScript,
   Marker,
-  DirectionsRenderer,
-  DirectionsService,
+  InfoWindow,
 } from '@react-google-maps/api';
 import Geocode from 'react-geocode';
 import styled from 'styled-components';
@@ -25,43 +24,6 @@ export default class GMap extends Component {
       lat: null,
       lng: null,
     },
-    response: null,
-    travelMode: 'DRIVING',
-  };
-
-  directionsCallback = response => {
-    console.log(response);
-
-    if (response !== null) {
-      if (response.status === 'OK') {
-        this.setState(() => ({
-          response,
-        }));
-      } else {
-        console.log('response: ', response);
-      }
-    }
-  };
-
-  checkDriving = ({ target: { checked } }) => {
-    checked &&
-      this.setState(() => ({
-        travelMode: 'DRIVING',
-      }));
-  };
-
-  checkTransit = ({ target: { checked } }) => {
-    checked &&
-      this.setState(() => ({
-        travelMode: 'TRANSIT',
-      }));
-  };
-
-  checkWalking = ({ target: { checked } }) => {
-    checked &&
-      this.setState(() => ({
-        travelMode: 'WALKING',
-      }));
   };
 
   componentDidMount() {
@@ -110,6 +72,20 @@ export default class GMap extends Component {
     );
   };
 
+  showInfoWindow = () => (
+    <InfoWindow>
+      <div
+        style={{
+          background: `white`,
+          border: `1px solid #ccc`,
+          padding: 15,
+        }}
+      >
+        <h1>InfoWindow</h1>
+      </div>
+    </InfoWindow>
+  );
+
   render() {
     const { zoom, center, personCoors, recRoute } = this.state;
     return (
@@ -128,22 +104,8 @@ export default class GMap extends Component {
           zoom={zoom}
           center={recRoute} //   {...other props }
         >
-          <FloatingCard>
-            <Card.Title>This is a Title</Card.Title>
-          </FloatingCard>
-          <Marker
-            onLoad={marker => {
-              console.log('marker: ', marker);
-            }}
-            position={center}
-          />
-          <Marker
-            onLoad={marker => {
-              console.log('marker: ', marker);
-            }}
-            position={recRoute}
-          />
-          ...Your map components
+          <Marker position={center} />
+          position={recRoute} /> ...Your map components
         </GoogleMap>
       </LoadScript>
     );
