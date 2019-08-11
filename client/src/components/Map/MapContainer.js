@@ -97,6 +97,7 @@ export class MapContainer extends Component {
       zoom,
       center,
       personCoors,
+      recRoute,
     } = this.state;
 
     return (
@@ -105,11 +106,12 @@ export class MapContainer extends Component {
         zoom={zoom}
         style={mapStyles}
         initialCenter={center}
+        center={recRoute}
       >
         <Marker
           onClick={this.onMarkerClick}
-          name={`Tin Lizzy's`}
-          title={`Tin Lizzy's`}
+          name={this.props.title}
+          position={recRoute}
         />
         <Marker
           onClick={this.onMarkerClick}
@@ -123,6 +125,8 @@ export class MapContainer extends Component {
         >
           <div>
             <h4>{selectedPlace.name}</h4>
+            <h6>{this.props.location}</h6>
+            <p>{this.props.description}</p>
           </div>
         </InfoWindow>
       </Map>

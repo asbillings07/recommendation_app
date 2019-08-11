@@ -152,7 +152,11 @@ export default class RecommendationDetail extends Component {
                   </Card.Body>
                 </Col>
               </Card>
-              <MapContainer location={location} />
+              <MapContainer
+                location={location}
+                title={title}
+                description={description}
+              />
             </Row>
           </Container>
         </>
