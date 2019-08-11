@@ -18,7 +18,7 @@ import CreateRecommendation from './components/Recommendation/CreateRecommendati
 import NotFound from './components/Errors/NotFound';
 import UnhandledError from './components/Errors/UnhandledError';
 import Forbidden from './components/Errors/Forbidden';
-import GMap from './components/Map/GMap';
+import MapContainer from './components/Map/MapContainer';
 
 const App = () => {
   const NavigationWithContext = withContext(Navigation);
@@ -56,7 +56,7 @@ const App = () => {
           path="/rec/:id"
           component={RecommendationDetailWithContext}
         />
-        <Route path="/map" component={GMap} />
+        <Route path="/map" component={MapContainer} />
         <PrivateRoute
           path="/rec/:id/update"
           component={UpdateRecommendationWithContext}
