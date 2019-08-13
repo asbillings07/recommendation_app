@@ -12,6 +12,7 @@ import {
   ButtonToolbar,
   ListGroupItem,
 } from 'react-bootstrap';
+import AddRecommendation from './AddRecomendation';
 import Rating from '../Recommendation/Rating';
 import MapContainer from '../Map/MapContainer';
 import notify from 'react-notify-toast';
@@ -84,6 +85,7 @@ export default class RecDetail extends Component {
           <Col>
             <Card>
               <ListGroup>{this.showAllRecs()}</ListGroup>
+              <AddRecommendation />
             </Card>
             {/* <Col sm={8}>
                   <Card.Body>
@@ -96,6 +98,7 @@ export default class RecDetail extends Component {
                     />
                   </Card.Body>
                 </Col> */}
+            {console.log(this.state.recs)}
           </Col>
           <MapContainer recs={this.state.recs} />
         </StyledRow>

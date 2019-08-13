@@ -27,7 +27,7 @@ export class MapContainer extends Component {
   };
 
   componentDidMount() {
-    this.getLocationCoords(this.props.location);
+    this.getLocationCoords(this.props.recs.location);
     this.getUserPosition();
   }
 
@@ -89,6 +89,25 @@ export class MapContainer extends Component {
     }
   };
 
+  locationInfo = () =>
+    this.props.recs.map(rec => (
+      <div key={rec.id}>
+        <h4>{rec.title}</h4>
+        <h6>{rec.location}</h6>
+        <p>{rec.description}</p>
+      </div>
+    ));
+
+  locationMarkers = () =>
+    this.props.recs.map(rec => (
+      <Marker
+        key={rec.id}
+        onClick={this.onMarkerClick}
+        name={rec.title}
+        position={this.getLocationCoords(rec.location)}
+      />
+    ));
+
   render() {
     const {
       activeMarker,
@@ -108,11 +127,9 @@ export class MapContainer extends Component {
         initialCenter={center}
         center={recRoute}
       >
-        <Marker
-          onClick={this.onMarkerClick}
-          name={this.props.title}
-          position={recRoute}
-        />
+        {this.props.recs.map(rec => {
+          return this.getLocationCoords(rec.location);
+        })}
         <Marker
           onClick={this.onMarkerClick}
           name={'Your Location'}
@@ -123,11 +140,7 @@ export class MapContainer extends Component {
           visible={showingInfoWindow}
           onClose={this.onClose}
         >
-          <div>
-            <h4>{selectedPlace.name}</h4>
-            <h6>{this.props.location}</h6>
-            <p>{this.props.description}</p>
-          </div>
+          {this.locationInfo()}
         </InfoWindow>
       </Map>
     );
