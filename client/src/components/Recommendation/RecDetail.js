@@ -8,7 +8,9 @@ import {
   Card,
   Button,
   Col,
+  ListGroup,
   ButtonToolbar,
+  ListGroupItem,
 } from 'react-bootstrap';
 import Rating from '../Recommendation/Rating';
 import MapContainer from '../Map/MapContainer';
@@ -32,12 +34,13 @@ export default class RecDetail extends Component {
   }
 
   getRecById = async () => {
+    const { id } = this.props.match.params;
     try {
-      const data = await Axios.get(`${Config.apiBaseUrl}/recs`);
+      const data = await Axios.get(`${Config.apiBaseUrl}/category/${id}`);
 
       if (data) {
-        const recs = data.data;
-        console.log(data.data);
+        const recs = data.data.category[0].Recommendations;
+        console.log(data.data.category[0].Recommendations);
         this.setState({
           recs,
           title: recs.title,
@@ -58,8 +61,9 @@ export default class RecDetail extends Component {
   showAllRecs = () => {
     const { recs } = this.state;
     return recs.map(rec => (
-      <React.Fragment key={rec.id}>
+      <ListGroupItem key={rec.id}>
         <Card.Title>{rec.title}</Card.Title>
+        {console.log(rec)}
         <Card.Subtitle className="mt-2 text-muted">
           {rec.location}
         </Card.Subtitle>
@@ -67,7 +71,7 @@ export default class RecDetail extends Component {
         <Card.Text>
           Recommended by: {`${rec.User.firstName} ${rec.User.lastName}`}
         </Card.Text>
-      </React.Fragment>
+      </ListGroupItem>
     ));
   };
 
@@ -76,49 +80,11 @@ export default class RecDetail extends Component {
     const { authorizedUser } = this.props.context;
     return (
       <Container className="mt-1">
-        <Row>
-          <Card style={{ height: '100vh' }}>
-            <Col>
-              <Card.Body>
-                {authorizedUser && authorizedUser.id === userid ? (
-                  <Card.Header>
-                    <StyledToolBar>
-                      <Button
-                        href={`/category/${catid}`}
-                        variant="secondary"
-                        className="mr-2"
-                      >
-                        Back
-                      </Button>
-                      <Button
-                        href={`/rec/${recid}/update`}
-                        variant="info"
-                        className="mr-2"
-                      >
-                        Update
-                      </Button>
-                      <Button
-                        variant="danger"
-                        onClick={() => this.confirmDelete()}
-                      >
-                        Delete
-                      </Button>
-                    </StyledToolBar>
-                  </Card.Header>
-                ) : (
-                  <Card.Header>
-                    <Button
-                      href={`/category/${catid}`}
-                      variant="secondary"
-                      className="mb-3"
-                    >
-                      Back
-                    </Button>
-                  </Card.Header>
-                )}
-                {this.showAllRecs()}
-              </Card.Body>
-            </Col>
+        <StyledRow>
+          <Col>
+            <Card>
+              <ListGroup>{this.showAllRecs()}</ListGroup>
+            </Card>
             {/* <Col sm={8}>
                   <Card.Body>
                     <Comment
@@ -130,10 +96,9 @@ export default class RecDetail extends Component {
                     />
                   </Card.Body>
                 </Col> */}
-          </Card>
-          {console.log(location)}
+          </Col>
           <MapContainer recs={this.state.recs} />
-        </Row>
+        </StyledRow>
       </Container>
     );
   }
@@ -141,4 +106,9 @@ export default class RecDetail extends Component {
 
 const StyledToolBar = styled(ButtonToolbar)`
   margin-left: -20px;
+`;
+const StyledRow = styled(Row)`
+  width: 50%;
+  max-height: 350px;
+  overflow: scroll;
 `;
