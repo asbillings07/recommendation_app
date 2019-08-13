@@ -18,7 +18,7 @@ import CreateRecommendation from './components/Recommendation/CreateRecommendati
 import NotFound from './components/Errors/NotFound';
 import UnhandledError from './components/Errors/UnhandledError';
 import Forbidden from './components/Errors/Forbidden';
-import MapContainer from './components/Map/MapContainer';
+import RecDetail from './components/Recommendation/RecDetail';
 
 const App = () => {
   const NavigationWithContext = withContext(Navigation);
@@ -33,6 +33,7 @@ const App = () => {
   const RecommendationDetailWithContext = withContext(RecommendationDetail);
   const UpdateRecommendationWithContext = withContext(UpdateRecommendation);
   const CreateRecommendationWithContext = withContext(CreateRecommendation);
+  const RecDetailWithContext = withContext(RecDetail);
 
   return (
     <Router>
@@ -51,12 +52,12 @@ const App = () => {
           path="/category/:id"
           component={CategoryDetailWithContext}
         />
+        <Route path="/category/:id/recs" component={RecDetailWithContext} />
         <Route
           exact
           path="/rec/:id"
           component={RecommendationDetailWithContext}
         />
-        <Route path="/map" component={MapContainer} />
         <PrivateRoute
           path="/rec/:id/update"
           component={UpdateRecommendationWithContext}
