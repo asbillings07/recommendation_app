@@ -24,8 +24,8 @@ export default class RecDetail extends Component {
     recs: [],
     loading: true,
     title: '',
-    descritpion: '',
-    location: '',
+    description: '',
+    location: [],
     userid: '',
     catid: '',
   };
@@ -41,14 +41,17 @@ export default class RecDetail extends Component {
 
       if (data) {
         const recs = data.data.category[0].Recommendations;
-        console.log(data.data.category[0].Recommendations);
         this.setState({
           recs,
-          title: recs.title,
-          description: recs.description,
-          location: recs.location,
-          userid: recs.userid,
-          catid: recs.categoryId,
+          location: recs.map(rec => {
+            return rec.location;
+          }),
+          title: recs.map(rec => {
+            return rec.title;
+          }),
+          description: recs.map(rec => {
+            return rec.description;
+          }),
         });
       } else {
         this.props.history.push('/notfound');
@@ -64,7 +67,6 @@ export default class RecDetail extends Component {
     return recs.map(rec => (
       <ListGroupItem key={rec.id}>
         <Card.Title>{rec.title}</Card.Title>
-        {console.log(rec)}
         <Card.Subtitle className="mt-2 text-muted">
           {rec.location}
         </Card.Subtitle>
@@ -77,8 +79,8 @@ export default class RecDetail extends Component {
   };
 
   render() {
-    const { userid, catid, recid, location, title, description } = this.state;
     const { authorizedUser } = this.props.context;
+    const { location, title, description } = this.state;
     return (
       <Container className="mt-1">
         <StyledRow>
@@ -98,9 +100,14 @@ export default class RecDetail extends Component {
                     />
                   </Card.Body>
                 </Col> */}
-            {console.log(this.state.recs)}
+            {console.log(location)}
           </Col>
-          <MapContainer recs={this.state.recs} />
+          <MapContainer
+            locations={location}
+            recs={this.state.recs}
+            title={title}
+            description={description}
+          />
         </StyledRow>
       </Container>
     );

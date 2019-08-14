@@ -17,17 +17,13 @@ export class MapContainer extends Component {
       lat: null,
       lng: null,
     },
-    recRoute: {
-      lat: null,
-      lng: null,
-    },
+    recRoute: {},
     showingInfoWindow: false, //Hides or the shows the infoWindow
     activeMarker: {}, //Shows the active marker upon click
     selectedPlace: {}, //Shows the infoWindow to the selected place upon a marker
   };
 
   componentDidMount() {
-    this.getLocationCoords(this.props.recs.location);
     this.getUserPosition();
   }
 
@@ -53,17 +49,11 @@ export class MapContainer extends Component {
   };
 
   // gets coords from location
-  getLocationCoords = address => {
-    Geocode.fromAddress(address).then(
+  getLocationCoords = ([address]) => {
+    //Need to get muliple locations from this...
+    Geocode.fromAddress(...address).then(
       response => {
         const { lat, lng } = response.results[0].geometry.location;
-
-        this.setState({
-          recRoute: {
-            lat,
-            lng,
-          },
-        });
         return { lat, lng };
       },
       error => {
@@ -89,25 +79,6 @@ export class MapContainer extends Component {
     }
   };
 
-  locationInfo = () =>
-    this.props.recs.map(rec => (
-      <div key={rec.id}>
-        <h4>{rec.title}</h4>
-        <h6>{rec.location}</h6>
-        <p>{rec.description}</p>
-      </div>
-    ));
-
-  locationMarkers = () =>
-    this.props.recs.map(rec => (
-      <Marker
-        key={rec.id}
-        onClick={this.onMarkerClick}
-        name={rec.title}
-        position={this.getLocationCoords(rec.location)}
-      />
-    ));
-
   render() {
     const {
       activeMarker,
@@ -119,6 +90,8 @@ export class MapContainer extends Component {
       recRoute,
     } = this.state;
 
+    const { title, locations, description } = this.props;
+
     return (
       <Map
         google={this.props.google}
@@ -127,20 +100,36 @@ export class MapContainer extends Component {
         initialCenter={center}
         center={recRoute}
       >
-        {this.props.recs.map(rec => {
-          return this.getLocationCoords(rec.location);
-        })}
+        {this.props.recs.map(rec => (
+          <Marker
+            key={rec.id}
+            onClick={this.onMarkerClick}
+            name={rec.title}
+            title={rec.title}
+            position={this.getLocationCoords(rec.location)}
+          />
+        ))}
         <Marker
           onClick={this.onMarkerClick}
           name={'Your Location'}
           position={personCoors}
         />
+        <Marker
+          onClick={this.onMarkerClick}
+          name={title[0]}
+          title={title[0]}
+          position={this.getLocationCoords(locations[0])}
+        />
+
         <InfoWindow
           marker={activeMarker}
           visible={showingInfoWindow}
           onClose={this.onClose}
         >
-          {this.locationInfo()}
+          <div>
+            <h4>{title[0]}</h4>
+            <h6>{description[0]}</h6>
+          </div>
         </InfoWindow>
       </Map>
     );
