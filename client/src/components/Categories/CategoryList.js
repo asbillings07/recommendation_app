@@ -33,7 +33,7 @@ class CategoryList extends Component {
   showCategories = () => {
     return this.state.categories.map(category => (
       <Col className="mb-2" sm={4} key={category.id}>
-        <Link to={`/category/${category.id}`}>
+        <Link to={`/category/${category.id}/recs`}>
           <Button variant="primary" size="lg" block>
             {category.title}
           </Button>

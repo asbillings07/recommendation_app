@@ -14,6 +14,7 @@ const Wrapper = styled.div`
   user-select: none;
   transform: translate(-50%, -50%);
   cursor: ${props => (props.onClick ? 'pointer' : 'default')};
+
   &:hover {
     z-index: 1;
   }

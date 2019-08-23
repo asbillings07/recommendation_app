@@ -12,6 +12,7 @@ import {
 } from 'react-bootstrap';
 import Rating from '../Recommendation/Rating';
 import Map from '../Map/Map';
+import MapContainer from '../Map/MapContainer';
 import notify from 'react-notify-toast';
 import Comment from './Comment';
 import styled from 'styled-components';
@@ -87,8 +88,8 @@ export default class RecommendationDetail extends Component {
       return (
         <>
           <Container className="mt-1">
-            <Row className="justify-content-center">
-              <Card style={{ width: '100%', height: '100%' }}>
+            <Row>
+              <Card style={{ height: '100vh' }}>
                 <Col>
                   <Card.Body>
                     {authorizedUser && authorizedUser.id === userid ? (
@@ -151,7 +152,11 @@ export default class RecommendationDetail extends Component {
                   </Card.Body>
                 </Col>
               </Card>
-              <Map location={location} />
+              <MapContainer
+                location={location}
+                title={title}
+                description={description}
+              />
             </Row>
           </Container>
         </>

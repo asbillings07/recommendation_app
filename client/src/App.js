@@ -18,6 +18,7 @@ import CreateRecommendation from './components/Recommendation/CreateRecommendati
 import NotFound from './components/Errors/NotFound';
 import UnhandledError from './components/Errors/UnhandledError';
 import Forbidden from './components/Errors/Forbidden';
+import RecDetail from './components/Recommendation/RecDetail';
 
 const App = () => {
   const NavigationWithContext = withContext(Navigation);
@@ -32,6 +33,7 @@ const App = () => {
   const RecommendationDetailWithContext = withContext(RecommendationDetail);
   const UpdateRecommendationWithContext = withContext(UpdateRecommendation);
   const CreateRecommendationWithContext = withContext(CreateRecommendation);
+  const RecDetailWithContext = withContext(RecDetail);
 
   return (
     <Router>
@@ -47,20 +49,17 @@ const App = () => {
         <Route path="/reset/:token" component={ResetPasswordWithContext} />
         <Route
           exact
-          path="/category/:id"
-          component={CategoryDetailWithContext}
-        />
-        <Route
-          exact
-          path="/rec/:id"
-          component={RecommendationDetailWithContext}
+          path="/category/:id/recs"
+          component={RecDetailWithContext}
         />
         <PrivateRoute
-          path="/rec/:id/update"
+          exact
+          path="/category/:id/recs/update"
           component={UpdateRecommendationWithContext}
         />
         <PrivateRoute
-          path="/category/:id/rec-create"
+          exact
+          path="/category/:id/recs/create"
           component={CreateRecommendationWithContext}
         />
         <Route path="/forbidden" component={Forbidden} />

@@ -1,4 +1,10 @@
-const { Category, User, Recommendation, Rating } = require('../models');
+const {
+  Category,
+  User,
+  Recommendation,
+  Rating,
+  Comment,
+} = require('../models');
 
 // create category
 
@@ -42,12 +48,20 @@ const getCategory = id =>
     },
     include: [
       {
-        model: Recommendation, // possibly get user later?
+        model: Recommendation,
         attributes: {
           exclude: ['updatedAt', 'createdAt'],
         },
+        include: [
+          {
+            model: User,
+          },
+        ],
       },
     ],
+    attributes: {
+      exclude: ['createdAt', 'updatedAt'],
+    },
   });
 
 module.exports = {

@@ -1,20 +1,18 @@
 import React from 'react';
-import { Button } from 'react-bootstrap';
+import { ListGroup } from 'react-bootstrap';
 import styled from 'styled-components';
 
 const AddRecommendation = ({ id }) => {
   return (
-    <AddRecButton href={`/category/${id}/rec-create`} variant="primary">
+    <AddRecommendationLink action href={`/category/${id}/recs/create`}>
       Create Recommendation
-    </AddRecButton>
+    </AddRecommendationLink>
   );
 };
 
 export default AddRecommendation;
 
-const AddRecButton = styled(Button)`
-  height: 11.25rem;
-  margin-top: 20px;
-  width: 18rem;
-  margin-left: 20px;
+const AddRecommendationLink = styled(ListGroup.Item)`
+  height: 4rem;
+  color: cadetblue !important;
 `;
