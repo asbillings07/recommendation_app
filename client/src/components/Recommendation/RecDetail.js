@@ -70,8 +70,9 @@ export default class RecDetail extends Component {
   };
 
   render() {
-    const { authorizedUser } = this.props.context;
-    const { location, selectedRec, loading } = this.state;
+    const { authorizedUser } = this.props;
+
+    const { selectedRec, loading } = this.state;
 
     if (loading) return <Spinner size="8x" spinning="spinning" />;
 
@@ -81,7 +82,7 @@ export default class RecDetail extends Component {
           <Col>
             <Card>
               <ListGroup>{this.showAllRecs()}</ListGroup>
-              <AddRecommendation />
+              <AddRecommendation id={this.props.match.params.id} />
             </Card>
 
             {/* <Col sm={8}>
@@ -103,9 +104,6 @@ export default class RecDetail extends Component {
   }
 }
 
-const StyledToolBar = styled(ButtonToolbar)`
-  margin-left: -20px;
-`;
 const StyledRow = styled(Row)`
   width: 50%;
   max-height: 350px;

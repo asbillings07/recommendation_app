@@ -33,9 +33,7 @@ export default class CreateRecommendation extends Component {
         const coords = response.data.suggestions[0];
         const id = response.data.suggestions[0].locationId;
         console.log(coords);
-        const location = `${address.houseNumber} ${address.street}. ${
-          address.city
-        }, ${address.state} ${address.postalCode}`;
+        const location = `${address.houseNumber} ${address.street}. ${address.city}, ${address.state} ${address.postalCode}`;
 
         this.setState({
           location: location,
@@ -137,13 +135,13 @@ export default class CreateRecommendation extends Component {
         this.setState({ errors });
       } else {
         notify.show('Recommendation Created!', 'success', 10000);
-        this.props.history.push(`/category/${id}`);
+        this.props.history.push(`/category/${id}/recs`);
       }
     });
   };
 
   cancel = () => {
     const { id } = this.props.match.params;
-    this.props.history.push(`/category/${id}`);
+    this.props.history.push(`/category/${id}/recs`);
   };
 }

@@ -49,21 +49,17 @@ const App = () => {
         <Route path="/reset/:token" component={ResetPasswordWithContext} />
         <Route
           exact
-          path="/category/:id"
-          component={CategoryDetailWithContext}
-        />
-        <Route path="/category/:id/recs" component={RecDetailWithContext} />
-        <Route
-          exact
-          path="/rec/:id"
-          component={RecommendationDetailWithContext}
+          path="/category/:id/recs"
+          component={RecDetailWithContext}
         />
         <PrivateRoute
-          path="/rec/:id/update"
+          exact
+          path="/category/:id/recs/update"
           component={UpdateRecommendationWithContext}
         />
         <PrivateRoute
-          path="/category/:id/rec-create"
+          exact
+          path="/category/:id/recs/create"
           component={CreateRecommendationWithContext}
         />
         <Route path="/forbidden" component={Forbidden} />

@@ -57,14 +57,13 @@ export class MapContainer extends Component {
 
   // gets coords from location
   getLocationCoords = () => {
-    //Need to get muliple locations from this...
     if (!this.props.selectedRec.location) return;
 
     Geocode.fromAddress(this.props.selectedRec.location).then(
       response => {
         const { lat, lng } = response.results[0].geometry.location;
         this.setState({
-          recRoute: {
+          recommendationCoordinates: {
             lat,
             lng,
           },
