@@ -5,11 +5,12 @@ import axios from 'axios';
 import Config from '../../Config';
 import styled from 'styled-components';
 
-const Comment = ({ comments, token, id, authedUser }) => {
+const Comment = ({ comments, id, token, authedUser }) => {
   const [userComment, setUserComment] = useState('');
   const [error, setError] = useState('');
 
   const comment = () => {
+    if (!comments) return;
     return comments.map(comment => (
       <ListGroup variant="flush" key={comment.id}>
         <ListGroup.Item>{comment.comment}</ListGroup.Item>

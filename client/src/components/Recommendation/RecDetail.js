@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Axios from 'axios';
 import Config from '../../Config';
 import Spinner from '../Spinner';
+import Comment from './Comment';
 import {
   Container,
   Row,
@@ -35,10 +36,13 @@ export default class RecDetail extends Component {
 
       if (data) {
         const recs = data.data.category[0].Recommendations;
+
         this.setState({
           recs,
           loading: false,
         });
+
+        console.log(this.state.comments);
       } else {
         this.props.history.push('/notfound');
       }
@@ -70,9 +74,9 @@ export default class RecDetail extends Component {
   };
 
   render() {
-    const { authorizedUser } = this.props;
+    const { authorizedUser, token } = this.props;
 
-    const { selectedRec, loading } = this.state;
+    const { selectedRec, loading, comments } = this.state;
 
     if (loading) return <Spinner size="8x" spinning="spinning" />;
 
@@ -84,21 +88,21 @@ export default class RecDetail extends Component {
               <ListGroup>{this.showAllRecs()}</ListGroup>
               <AddRecommendation id={this.props.match.params.id} />
             </Card>
-
-            {/* <Col sm={8}>
-                  <Card.Body>
-                    <Comment
-                      comments={comments}
-                      id={id}
-                      token={token}
-                      data={data}
-                      authedUser={authorizedUser}
-                    />
-                  </Card.Body>
-                </Col> */}
           </Col>
+
+          {console.log(selectedRec)}
           <MapContainer selectedRec={selectedRec} />
         </StyledRow>
+        <Card>
+          <Card.Body>
+            <Comment
+              comments={selectedRec.Comments}
+              token={token}
+              id={selectedRec.id}
+              authedUser={authorizedUser}
+            />
+          </Card.Body>
+        </Card>
       </Container>
     );
   }
@@ -108,4 +112,8 @@ const StyledRow = styled(Row)`
   width: 50%;
   max-height: 350px;
   overflow: scroll;
+`;
+
+const StyledCard = styled(Card)`
+  // will need to make sure this fits with the recommendations
 `;
