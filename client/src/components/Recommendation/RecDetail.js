@@ -6,26 +6,20 @@ import {
   Container,
   Row,
   Card,
-  Button,
   Col,
   ListGroup,
   ButtonToolbar,
   ListGroupItem,
 } from 'react-bootstrap';
 import AddRecommendation from './AddRecomendation';
-import Rating from '../Recommendation/Rating';
 import MapContainer from '../Map/MapContainer';
-import notify from 'react-notify-toast';
-import Comment from './Comment';
 import styled from 'styled-components';
 
 export default class RecDetail extends Component {
   state = {
     recs: [],
     loading: true,
-    title: '',
-    description: '',
-    location: [],
+    selectedRec: {},
     userid: '',
     catid: '',
   };
@@ -43,15 +37,7 @@ export default class RecDetail extends Component {
         const recs = data.data.category[0].Recommendations;
         this.setState({
           recs,
-          location: recs.map(rec => {
-            return rec.location;
-          }),
-          title: recs.map(rec => {
-            return rec.title;
-          }),
-          description: recs.map(rec => {
-            return rec.description;
-          }),
+          loading: false,
         });
       } else {
         this.props.history.push('/notfound');
@@ -62,10 +48,15 @@ export default class RecDetail extends Component {
     }
   };
 
+  // Need to figure out how to make it so that when each of these are clicked the location shows on the map?
   showAllRecs = () => {
     const { recs } = this.state;
     return recs.map(rec => (
-      <ListGroupItem key={rec.id}>
+      <ListGroupItem
+        key={rec.id}
+        action
+        onClick={() => this.setState({ selectedRec: rec })}
+      >
         <Card.Title>{rec.title}</Card.Title>
         <Card.Subtitle className="mt-2 text-muted">
           {rec.location}
@@ -80,7 +71,10 @@ export default class RecDetail extends Component {
 
   render() {
     const { authorizedUser } = this.props.context;
-    const { location, title, description } = this.state;
+    const { location, selectedRec, loading } = this.state;
+
+    if (loading) return <Spinner size="8x" spinning="spinning" />;
+
     return (
       <Container className="mt-1">
         <StyledRow>
@@ -89,6 +83,7 @@ export default class RecDetail extends Component {
               <ListGroup>{this.showAllRecs()}</ListGroup>
               <AddRecommendation />
             </Card>
+
             {/* <Col sm={8}>
                   <Card.Body>
                     <Comment
@@ -100,14 +95,8 @@ export default class RecDetail extends Component {
                     />
                   </Card.Body>
                 </Col> */}
-            {console.log(location)}
           </Col>
-          <MapContainer
-            locations={location}
-            recs={this.state.recs}
-            title={title}
-            description={description}
-          />
+          <MapContainer selectedRec={selectedRec} />
         </StyledRow>
       </Container>
     );

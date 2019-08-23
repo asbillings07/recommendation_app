@@ -9,15 +9,15 @@ const mapStyles = {
 export class MapContainer extends Component {
   state = {
     zoom: 14,
-    center: {
+    centerCoordinates: {
       lat: 33.74709,
       lng: -84.35629,
     },
-    personCoors: {
+    recommendationCoordinates: { lat: null, lng: null },
+    personCoordinates: {
       lat: null,
       lng: null,
     },
-    recRoute: {},
     showingInfoWindow: false, //Hides or the shows the infoWindow
     activeMarker: {}, //Shows the active marker upon click
     selectedPlace: {}, //Shows the infoWindow to the selected place upon a marker
@@ -25,6 +25,13 @@ export class MapContainer extends Component {
 
   componentDidMount() {
     this.getUserPosition();
+    this.getLocationCoords();
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.selectedRec.location !== this.props.selectedRec.location) {
+      this.getLocationCoords();
+    }
   }
 
   // gets the current user postion throught the browser
@@ -36,7 +43,7 @@ export class MapContainer extends Component {
           lng: position.coords.longitude,
         };
         this.setState({
-          personCoors: {
+          personCoordinates: {
             lat: userPostion.lat,
             lng: userPostion.lng,
           },
@@ -49,12 +56,19 @@ export class MapContainer extends Component {
   };
 
   // gets coords from location
-  getLocationCoords = ([address]) => {
+  getLocationCoords = () => {
     //Need to get muliple locations from this...
-    Geocode.fromAddress(...address).then(
+    if (!this.props.selectedRec.location) return;
+
+    Geocode.fromAddress(this.props.selectedRec.location).then(
       response => {
         const { lat, lng } = response.results[0].geometry.location;
-        return { lat, lng };
+        this.setState({
+          recRoute: {
+            lat,
+            lng,
+          },
+        });
       },
       error => {
         console.error(error.message);
@@ -83,42 +97,28 @@ export class MapContainer extends Component {
     const {
       activeMarker,
       showingInfoWindow,
-      selectedPlace,
       zoom,
-      center,
-      personCoors,
-      recRoute,
+      centerCoordinates,
+      recommendationCoordinates,
+      personCoordinates,
     } = this.state;
 
-    const { title, locations, description } = this.props;
+    const { selectedRec } = this.props;
 
     return (
       <Map
         google={this.props.google}
         zoom={zoom}
         style={mapStyles}
-        initialCenter={center}
-        center={recRoute}
+        initialCenter={centerCoordinates}
+        center={recommendationCoordinates}
       >
-        {this.props.recs.map(rec => (
-          <Marker
-            key={rec.id}
-            onClick={this.onMarkerClick}
-            name={rec.title}
-            title={rec.title}
-            position={this.getLocationCoords(rec.location)}
-          />
-        ))}
+        <Marker name={'Your Location'} position={personCoordinates} />
         <Marker
           onClick={this.onMarkerClick}
-          name={'Your Location'}
-          position={personCoors}
-        />
-        <Marker
-          onClick={this.onMarkerClick}
-          name={title[0]}
-          title={title[0]}
-          position={this.getLocationCoords(locations[0])}
+          name={selectedRec.title}
+          title={selectedRec.title}
+          position={recommendationCoordinates}
         />
 
         <InfoWindow
@@ -127,8 +127,8 @@ export class MapContainer extends Component {
           onClose={this.onClose}
         >
           <div>
-            <h4>{title[0]}</h4>
-            <h6>{description[0]}</h6>
+            <h4>{selectedRec.title}</h4>
+            <h6>{selectedRec.description}</h6>
           </div>
         </InfoWindow>
       </Map>
