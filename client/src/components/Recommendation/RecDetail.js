@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Axios from 'axios';
 import Config from '../../Config';
 import Spinner from '../Spinner';
+import Comment from './Comment';
 import {
   Container,
   Row,
@@ -35,10 +36,13 @@ export default class RecDetail extends Component {
 
       if (data) {
         const recs = data.data.category[0].Recommendations;
+
         this.setState({
           recs,
           loading: false,
         });
+
+        console.log(this.state.comments);
       } else {
         this.props.history.push('/notfound');
       }
@@ -70,42 +74,44 @@ export default class RecDetail extends Component {
   };
 
   render() {
-    const { authorizedUser } = this.props;
+    const { authorizedUser, token } = this.props.context;
 
-    const { selectedRec, loading } = this.state;
+    const { selectedRec, loading, comments } = this.state;
 
     if (loading) return <Spinner size="8x" spinning="spinning" />;
 
     return (
-      <Container className="mt-1">
-        <StyledRow>
-          <Col>
+      <StyledContainer>
+        <Row>
+          <StyledCol>
             <Card>
-              <ListGroup>{this.showAllRecs()}</ListGroup>
               <AddRecommendation id={this.props.match.params.id} />
+              <ListGroup>{this.showAllRecs()}</ListGroup>
             </Card>
-
-            {/* <Col sm={8}>
-                  <Card.Body>
-                    <Comment
-                      comments={comments}
-                      id={id}
-                      token={token}
-                      data={data}
-                      authedUser={authorizedUser}
-                    />
-                  </Card.Body>
-                </Col> */}
+          </StyledCol>
+          <Col>
+            <MapContainer selectedRec={selectedRec} />
           </Col>
-          <MapContainer selectedRec={selectedRec} />
-        </StyledRow>
-      </Container>
+        </Row>
+
+        <Comment
+          comments={selectedRec.Comments}
+          token={token}
+          id={selectedRec.id}
+          authedUser={authorizedUser}
+        />
+      </StyledContainer>
     );
   }
 }
 
-const StyledRow = styled(Row)`
-  width: 50%;
-  max-height: 350px;
+const StyledCol = styled(Col)`
+  width: 100vw;
+  height: 78vh;
+  padding-right: 0px !important;
   overflow: scroll;
+`;
+const StyledContainer = styled(Container)`
+  margin-left: -1px !important;
+  margin-top: 0.25rem;
 `;

@@ -1,15 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, Button, ListGroup, Form } from 'react-bootstrap';
 import { notify } from 'react-notify-toast';
 import axios from 'axios';
 import Config from '../../Config';
 import styled from 'styled-components';
 
-const Comment = ({ comments, token, id, authedUser }) => {
+const Comment = ({ comments, id, token, authedUser }) => {
   const [userComment, setUserComment] = useState('');
   const [error, setError] = useState('');
 
   const comment = () => {
+    if (!comments) return;
     return comments.map(comment => (
       <ListGroup variant="flush" key={comment.id}>
         <ListGroup.Item>{comment.comment}</ListGroup.Item>
@@ -40,11 +41,11 @@ const Comment = ({ comments, token, id, authedUser }) => {
   };
 
   return (
-    <Card>
+    <StyledCard>
       <HError>{error}</HError>
       <h4>Comments</h4>
       {comment()}
-      {authedUser ? (
+      {authedUser && comments ? (
         <Form onSubmit={AddComment}>
           <Form.Control
             type="text"
@@ -59,7 +60,7 @@ const Comment = ({ comments, token, id, authedUser }) => {
       ) : (
         ''
       )}
-    </Card>
+    </StyledCard>
   );
 };
 
@@ -70,3 +71,7 @@ const HError = styled.h4`
 `;
 
 const Label = styled.h4``;
+const StyledCard = styled(Card)`
+  width: 50%;
+  text-align: center;
+`;

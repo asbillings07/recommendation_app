@@ -56,6 +56,9 @@ const getCategory = id =>
           {
             model: User,
           },
+          {
+            model: Comment,
+          },
         ],
       },
     ],
