@@ -74,46 +74,44 @@ export default class RecDetail extends Component {
   };
 
   render() {
-    const { authorizedUser, token } = this.props;
+    const { authorizedUser, token } = this.props.context;
 
     const { selectedRec, loading, comments } = this.state;
 
     if (loading) return <Spinner size="8x" spinning="spinning" />;
 
     return (
-      <Container className="mt-1">
-        <StyledRow>
-          <Col>
+      <StyledContainer>
+        <Row>
+          <StyledCol>
             <Card>
-              <ListGroup>{this.showAllRecs()}</ListGroup>
               <AddRecommendation id={this.props.match.params.id} />
+              <ListGroup>{this.showAllRecs()}</ListGroup>
             </Card>
+          </StyledCol>
+          <Col>
+            <MapContainer selectedRec={selectedRec} />
           </Col>
+        </Row>
 
-          {console.log(selectedRec)}
-          <MapContainer selectedRec={selectedRec} />
-        </StyledRow>
-        <Card>
-          <Card.Body>
-            <Comment
-              comments={selectedRec.Comments}
-              token={token}
-              id={selectedRec.id}
-              authedUser={authorizedUser}
-            />
-          </Card.Body>
-        </Card>
-      </Container>
+        <Comment
+          comments={selectedRec.Comments}
+          token={token}
+          id={selectedRec.id}
+          authedUser={authorizedUser}
+        />
+      </StyledContainer>
     );
   }
 }
 
-const StyledRow = styled(Row)`
-  width: 50%;
-  max-height: 350px;
+const StyledCol = styled(Col)`
+  width: 100vw;
+  height: 78vh;
+  padding-right: 0px !important;
   overflow: scroll;
 `;
-
-const StyledCard = styled(Card)`
-  // will need to make sure this fits with the recommendations
+const StyledContainer = styled(Container)`
+  margin-left: -1px !important;
+  margin-top: 0.25rem;
 `;

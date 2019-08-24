@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, Button, ListGroup, Form } from 'react-bootstrap';
 import { notify } from 'react-notify-toast';
 import axios from 'axios';
@@ -41,11 +41,11 @@ const Comment = ({ comments, id, token, authedUser }) => {
   };
 
   return (
-    <Card>
+    <StyledCard>
       <HError>{error}</HError>
       <h4>Comments</h4>
       {comment()}
-      {authedUser ? (
+      {authedUser && comments ? (
         <Form onSubmit={AddComment}>
           <Form.Control
             type="text"
@@ -60,7 +60,7 @@ const Comment = ({ comments, id, token, authedUser }) => {
       ) : (
         ''
       )}
-    </Card>
+    </StyledCard>
   );
 };
 
@@ -71,3 +71,7 @@ const HError = styled.h4`
 `;
 
 const Label = styled.h4``;
+const StyledCard = styled(Card)`
+  width: 50%;
+  text-align: center;
+`;

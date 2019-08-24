@@ -3,7 +3,7 @@ import { Map, Marker, InfoWindow, GoogleApiWrapper } from 'google-maps-react';
 import Geocode from 'react-geocode';
 const mapStyles = {
   width: '50vw',
-  height: '100vh',
+  height: '100%',
 };
 
 export class MapContainer extends Component {
