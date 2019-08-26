@@ -50,7 +50,7 @@ router.post(
 //GET /api/users 200 - Returns the currently authenticated user
 router.get(
   '/users',
-  passport.authenticate('jwt', { session: false }),
+  authenticateUser,
   asyncHandler(async (req, res) => {
     const id = req.user.id;
     console.log(id);
@@ -62,6 +62,7 @@ router.get(
 router.post(
   '/users',
   validateUser,
+  authenticateUser,
   asyncHandler(async (req, res) => {
     const user = req.body;
     await createUser(user);
@@ -77,8 +78,8 @@ router.post(
 // PUT /api/users - updates user and returns no content
 router.put(
   '/users',
-  authenticateUser,
   validateUser,
+  authenticateUser,
   asyncHandler(async (req, res) => {
     const userid = req.user.id;
     const body = req.body;

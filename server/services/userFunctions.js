@@ -1,4 +1,4 @@
-const { User } = require('../models');
+const { User, Recommendation } = require('../models');
 const bcrypt = require('bcryptjs');
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
@@ -57,9 +57,26 @@ const findUserByToken = token =>
 const findUserById = id =>
   User.findOne({
     where: { id },
+    attributes: {
+      exclude: ['createdAt', 'updatedAt', 'password'],
+    },
   });
 
-const findUserByObj = obj => User.findOne({ where: obj });
+const findUserByObj = obj =>
+  User.findOne({
+    where: obj,
+    include: [
+      {
+        model: Recommendation,
+        attributes: {
+          exclude: ['createdAt', 'updatedAt'],
+        },
+      },
+    ],
+    attributes: {
+      exclude: ['createdAt', 'updatedAt', 'password'],
+    },
+  });
 
 module.exports = {
   createUser,
