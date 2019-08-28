@@ -68,9 +68,6 @@ const findUserByObj = obj =>
     include: [
       {
         model: Recommendation,
-        attributes: {
-          exclude: ['createdAt', 'updatedAt'],
-        },
       },
     ],
     attributes: {

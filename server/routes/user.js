@@ -12,6 +12,7 @@ const {
   createUser,
   deleteUser,
   updateUser,
+  findUserByEmail,
   findUserByObj,
 } = require('../services/userFunctions');
 
@@ -22,7 +23,7 @@ router.post(
     const { email, password } = req.body;
 
     if (email && password) {
-      let user = await findUserByObj({ email });
+      let user = await findUserByEmail(email);
       if (user && bcrypt.compareSync(password, user.password)) {
         let payload = { id: user.id };
         let token = jwt.sign(payload, jwtOptions.secretOrKey);

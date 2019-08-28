@@ -17,7 +17,7 @@ import NotFound from './components/Errors/NotFound';
 import UnhandledError from './components/Errors/UnhandledError';
 import Forbidden from './components/Errors/Forbidden';
 import RecDetail from './components/Recommendation/RecDetail';
-import { Profile } from './components/Users/Profile';
+import { Profile } from './components/Profile/Profile';
 
 const App = () => {
   const NavigationWithContext = withContext(Navigation);
