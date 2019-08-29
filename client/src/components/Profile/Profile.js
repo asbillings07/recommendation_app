@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import avatar from '../../images/imgholdr-image.png';
 import Config from '../../Config';
@@ -15,60 +15,52 @@ import {
 } from 'react-bootstrap';
 import styled from 'styled-components';
 
-export class Profile extends Component {
-  state = {
-    user: {},
-    recommendations: [],
-  };
+export const Profile = ({ context }) => {
+  const [user, setUser] = useState({});
+  const [recommendation, setRecommendation] = useState([]);
 
-  componentDidMount() {
-    this.fetchData();
-  }
-
-  fetchData = async () => {
-    const data = await axios.get(`${Config.apiBaseUrl}/users`, {
-      headers: { Authorization: 'bearer ' + this.props.context.token },
-    });
-
-    if (data) {
-      this.setState({
-        user: data.data,
-        recommendations: data.data.Recommendations,
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await axios.get(`${Config.apiBaseUrl}/users`, {
+        headers: { Authorization: 'bearer ' + context.token },
       });
-      console.log(this.state.recommendations);
-    }
-  };
 
-  render() {
-    const { user, recommendations } = this.state;
+      if (data) {
+        setUser(data.data);
+        setRecommendation(data.data.Recommendations);
+      }
+    };
 
-    return (
-      <StyledContainer>
-        <Row>
-          <Col>
-            <StyledCard>
-              <Card.Img variant="top" src={avatar} />
-              <Card.Body>
-                <Card.Text>
-                  This is your profile. You can reset your password, view and
-                  manage all of the recommendations you have created and much
-                  more
-                </Card.Text>
+    fetchData();
+  }, [context.token]);
 
-                <Button variant="primary">Go somewhere</Button>
-              </Card.Body>
-            </StyledCard>
-          </Col>
-          <UserProfileInfo user={user} />
-          <StyledCol>
-            <h1>Your Recommendations</h1>
-            <ProfileRecommendation recommendations={recommendations} />
-          </StyledCol>
-        </Row>
-      </StyledContainer>
-    );
-  }
-}
+  console.log(user);
+
+  return (
+    <StyledContainer>
+      <Row>
+        <Col>
+          <StyledCard>
+            <Card.Img variant="top" src={avatar} />
+            <Card.Body>
+              <Card.Text>
+                This is your profile. You can reset your password, view and
+                manage all of the recommendations you have created and much more
+              </Card.Text>
+
+              <Button variant="primary">Go somewhere</Button>
+            </Card.Body>
+          </StyledCard>
+        </Col>
+        <UserProfileInfo user={user} />
+        <StyledCol>
+          <h1>Your Recommendations</h1>
+          <ProfileRecommendation recommendations={recommendation} />
+        </StyledCol>
+      </Row>
+    </StyledContainer>
+  );
+};
 
 const StyledContainer = styled(Container)`
   position: relative;
