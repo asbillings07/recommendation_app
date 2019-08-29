@@ -39,7 +39,7 @@ export const Profile = ({ context }) => {
   return (
     <StyledContainer>
       <Row>
-        <Col>
+        <Col sm={4}>
           <StyledCard>
             <Card.Img variant="top" src={avatar} />
             <Card.Body>
@@ -51,9 +51,10 @@ export const Profile = ({ context }) => {
               <Button variant="primary">Go somewhere</Button>
             </Card.Body>
           </StyledCard>
+          <UserProfileInfo user={user} />
         </Col>
-        <UserProfileInfo user={user} />
-        <StyledCol>
+
+        <StyledCol sm={8}>
           <h1>Your Recommendations</h1>
           <ProfileRecommendation recommendations={recommendation} />
         </StyledCol>
@@ -68,6 +69,7 @@ const StyledContainer = styled(Container)`
 
 const StyledCard = styled(Card)`
   width: 18rem;
+  margin-bottom: 20px;
 `;
 const StyledCardSubtitle = styled(Card.Subtitle)`
   margin-top: 3px !important;
