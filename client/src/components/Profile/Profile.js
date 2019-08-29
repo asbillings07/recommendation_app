@@ -48,14 +48,14 @@ export const Profile = ({ context }) => {
                 manage all of the recommendations you have created and much more
               </Card.Text>
 
-              <Button variant="primary">Go somewhere</Button>
+              {/* <Button variant="primary">Go somewhere</Button> */}
             </Card.Body>
           </StyledCard>
           <UserProfileInfo user={user} />
         </Col>
 
         <StyledCol sm={8}>
-          <h1>Your Recommendations</h1>
+          <h1>Manage Recommendations</h1>
           <ProfileRecommendation recommendations={recommendation} />
         </StyledCol>
       </Row>

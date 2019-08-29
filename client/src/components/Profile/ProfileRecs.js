@@ -11,7 +11,9 @@ const ProfileRec = ({ recommendations }) => {
       <Card.Subtitle className="mt-2 text-muted">
         Date Created: {new Date(rec.updatedAt).toString()}
       </Card.Subtitle>
-      <Button variant="info">Edit</Button>
+      <Button variant="info" href={`/category/${rec.id}/recs/update`}>
+        Edit
+      </Button>
       <Button className="float-right" variant="danger">
         Delete
       </Button>

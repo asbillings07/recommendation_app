@@ -13,7 +13,9 @@ const ProfileInfo = ({ user }) => {
           Email Status: {user.confirmed ? 'confirmed' : 'Not confirmed'}{' '}
         </Card.Subtitle>
         <ProfileInfoButton>Edit Profile Info</ProfileInfoButton>
-        <ProfileInfoButton>Reset Password</ProfileInfoButton>
+        <ProfileInfoButton href="/forgotpassword">
+          Reset Password
+        </ProfileInfoButton>
       </Card.Body>
     </StyledCard>
   );

@@ -144,6 +144,6 @@ export default class UpdateRecommendation extends Component {
 
   cancel = () => {
     const { id } = this.props.match.params;
-    this.props.history.push(`/rec/${id}`);
+    this.props.history.push(`/profile`);
   };
 }
