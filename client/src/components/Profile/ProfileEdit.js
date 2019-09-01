@@ -4,12 +4,14 @@ import Forms from '../Forms';
 import axios from 'axios';
 import Config from '../../Config';
 import { Form, Container, Row, Col } from 'react-bootstrap';
+import { notify } from 'react-notify-toast';
 
 const ProfileEdit = ({ context, history }) => {
-  const [profileInfo, setProfileInfo] = useState({});
   const [errors, setErrors] = useState([]);
-  const [confirmed, setConfirmed] = useState(true);
-  const [name, setName] = useState('');
+  const [confirmed] = useState(true);
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -18,14 +20,33 @@ const ProfileEdit = ({ context, history }) => {
       });
 
       if (data) {
-        setProfileInfo(data.data);
+        setFirstName(data.data.firstName);
+        setLastName(data.data.lastName);
+        setEmail(data.data.email);
       }
     };
 
     fetchData();
   }, [context.token]);
 
-  const submit = () => {};
+  const submit = () => {
+    const profileInfo = {
+      firstName,
+      lastName,
+      email,
+    };
+    context.data
+      .updateUser(context.token, profileInfo)
+      .then(errors => {
+        if (errors.length) {
+          setErrors([errors[0]]);
+        } else {
+          notify.show('Profile Updated!', 'success', 10000);
+          history.push('/profile');
+        }
+      })
+      .catch(error => console.log(error));
+  };
   const cancel = () => {
     history.push(`/profile`);
   };
@@ -49,8 +70,8 @@ const ProfileEdit = ({ context, history }) => {
                       type="text"
                       name="firstName"
                       placeholder=""
-                      value={profileInfo.firstName}
-                      onChange={e => setName(e.target.value)}
+                      value={firstName}
+                      onChange={e => setFirstName(e.target.value)}
                     />
                   </Form.Group>
                   <Form.Group>
@@ -58,17 +79,17 @@ const ProfileEdit = ({ context, history }) => {
                       type="text"
                       name="lastName"
                       placeholder=""
-                      value={profileInfo.lastName}
-                      onChange={e => setName(e.target.value)}
+                      value={lastName}
+                      onChange={e => setLastName(e.target.value)}
                     />
                   </Form.Group>
                   <Form.Group>
                     <Form.Control
                       type="text"
                       name="email"
-                      value={profileInfo.email}
+                      value={email}
                       placeholder=""
-                      onChange={e => setName(e.target.value)}
+                      onChange={e => setEmail(e.target.value)}
                     />
                   </Form.Group>
                 </React.Fragment>

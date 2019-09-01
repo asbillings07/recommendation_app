@@ -4,7 +4,10 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const passport = require('passport');
 const { app, jwtOptions, authenticateUser } = require('../app');
-const { validateUser } = require('../services/validationChain');
+const {
+  validateUser,
+  validateUpdateUser,
+} = require('../services/validationChain');
 const { collectEmail, confirmEmail } = require('../services/emailController');
 const asyncHandler = require('../services/asyncErrorHanlder');
 const {
@@ -79,7 +82,7 @@ router.post(
 // PUT /api/users - updates user and returns no content
 router.put(
   '/users',
-  validateUser,
+  validateUpdateUser,
   authenticateUser,
   asyncHandler(async (req, res) => {
     const userid = req.user.id;

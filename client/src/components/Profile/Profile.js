@@ -34,8 +34,6 @@ export const Profile = ({ context }) => {
     fetchData();
   }, [context.token]);
 
-  console.log(user);
-
   return (
     <StyledContainer>
       <Row>

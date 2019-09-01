@@ -57,7 +57,7 @@ export default class Data {
   // Update User
   async updateUser(token, user) {
     const response = await this.api('/users', 'PUT', user, true, token);
-    if (response.status === 201) {
+    if (response.status === 204) {
       return [];
     } else if (response.status === 403 || response.status === 400) {
       return response

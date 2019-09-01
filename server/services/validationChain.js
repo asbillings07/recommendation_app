@@ -92,6 +92,19 @@ const validateComment = [
     .withMessage('Please provide a comment'),
   errorHanlder,
 ];
+const validateUpdateUser = [
+  check('firstName')
+    .exists({ checkNull: true, checkFalsy: true })
+    .withMessage('Please provide a value for First Name'),
+  check('lastName')
+    .exists({ checkNull: true, checkFalsy: true })
+    .withMessage('Please provide a value for Last Name'),
+  check('email')
+    .exists({ checkNull: true, checkFalsy: true })
+    .withMessage('Please provide a value for Email Address')
+    .isEmail()
+    .withMessage('Email Address must be formated correctly'),
+];
 module.exports = {
   validateUser,
   validateRecommendation,
@@ -99,4 +112,5 @@ module.exports = {
   validateRating,
   validateEmail,
   validateComment,
+  validateUpdateUser,
 };
