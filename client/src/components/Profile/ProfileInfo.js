@@ -12,7 +12,9 @@ const ProfileInfo = ({ user }) => {
         <Card.Subtitle className="mb-3">
           Email Status: {user.confirmed ? 'confirmed' : 'Not confirmed'}{' '}
         </Card.Subtitle>
-        <ProfileInfoButton>Edit Profile Info</ProfileInfoButton>
+        <ProfileInfoButton href="/profile/edit">
+          Edit Profile Info
+        </ProfileInfoButton>
         <ProfileInfoButton href="/forgotpassword">
           Reset Password
         </ProfileInfoButton>

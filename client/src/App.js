@@ -18,6 +18,7 @@ import UnhandledError from './components/Errors/UnhandledError';
 import Forbidden from './components/Errors/Forbidden';
 import RecDetail from './components/Recommendation/RecDetail';
 import { Profile } from './components/Profile/Profile';
+import ProfileEdit from './components/Profile/ProfileEdit';
 
 const App = () => {
   const NavigationWithContext = withContext(Navigation);
@@ -32,6 +33,7 @@ const App = () => {
   const CreateRecommendationWithContext = withContext(CreateRecommendation);
   const RecDetailWithContext = withContext(RecDetail);
   const ProfileWithContext = withContext(Profile);
+  const ProfileEditWithContext = withContext(ProfileEdit);
 
   return (
     <Router>
@@ -45,7 +47,8 @@ const App = () => {
         <Route path="/signout" component={SignOutWithContext} />
         <Route path="/forgotpassword" component={ForgotPasswordWithContext} />
         <Route path="/reset/:token" component={ResetPasswordWithContext} />
-        <PrivateRoute path="/profile" component={ProfileWithContext} />
+        <PrivateRoute exact path="/profile" component={ProfileWithContext} />
+        <PrivateRoute path="/profile/edit" component={ProfileEditWithContext} />
         <Route
           exact
           path="/category/:id/recs"
