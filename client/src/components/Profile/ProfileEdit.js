@@ -29,6 +29,7 @@ const ProfileEdit = ({ context, history }) => {
     fetchData();
   }, [context.token]);
 
+  // information is not updating need to take a look at what I'm passing in to profileInfo
   const submit = () => {
     const profileInfo = {
       firstName,

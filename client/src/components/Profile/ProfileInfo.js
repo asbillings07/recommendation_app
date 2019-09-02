@@ -9,15 +9,15 @@ const ProfileInfo = ({ user }) => {
         <Card.Title>First Name: {user.firstName}</Card.Title>
         <Card.Title className="mb-3">Last Name: {user.lastName}</Card.Title>
         <Card.Title>Email Address: {user.email}</Card.Title>
-        <Card.Subtitle className="mb-3">
-          Email Status: {user.confirmed ? 'confirmed' : 'Not confirmed'}{' '}
-        </Card.Subtitle>
-        <ProfileInfoButton href="/profile/edit">
+        <ConfirmedSubtitle className="mb-3">
+          Email Status: {user.confirmed ? 'CONFIRMED' : 'NOT CONFIRMED'}{' '}
+        </ConfirmedSubtitle>
+        <Button variant="outline-info" className="mr-2" href="/profile/edit">
           Edit Profile Info
-        </ProfileInfoButton>
-        <ProfileInfoButton href="/forgotpassword">
+        </Button>
+        <Button variant="outline-warning" href="/forgotpassword">
           Reset Password
-        </ProfileInfoButton>
+        </Button>
       </Card.Body>
     </StyledCard>
   );
@@ -29,7 +29,6 @@ const StyledCard = styled(Card)`
   width: 18rem;
 `;
 
-const ProfileInfoButton = styled(Button)`
-  margin-top: 3px;
-  margin-right: 3px;
+const ConfirmedSubtitle = styled(Card.Subtitle)`
+  ${props => (props.confirmed ? 'color: red;' : 'color: green;')}
 `;

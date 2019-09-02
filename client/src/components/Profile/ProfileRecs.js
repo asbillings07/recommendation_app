@@ -5,12 +5,9 @@ import styled from 'styled-components';
 const ProfileRec = ({ recommendations }) => {
   return recommendations.map(rec => (
     <ListGroupItem key={rec.id}>
-      <Card.Title>{rec.title}</Card.Title>
-      <Card.Title>{rec.location}</Card.Title>
-      <Card.Text>{rec.description}</Card.Text>
-      <Card.Subtitle className="mt-2 text-muted">
-        Date Created: {new Date(rec.updatedAt).toString()}
-      </Card.Subtitle>
+      <CardTitle>{rec.title}</CardTitle>
+      <Card.Text>Location: {rec.location}</Card.Text>
+      <Card.Text>Description: {rec.description}</Card.Text>
       <Button variant="info" href={`/category/${rec.id}/recs/update`}>
         Edit
       </Button>
@@ -20,6 +17,11 @@ const ProfileRec = ({ recommendations }) => {
     </ListGroupItem>
   ));
 };
+
+const CardTitle = styled(Card.Title)`
+  color: blue;
+  font-size: 20px;
+`;
 
 export default ProfileRec;
 

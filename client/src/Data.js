@@ -13,6 +13,7 @@ export default class Data {
 
     if (body !== null) {
       options.body = JSON.stringify(body);
+      console.log(options.body);
     }
 
     if (requiresAuth) {
@@ -57,7 +58,7 @@ export default class Data {
   // Update User
   async updateUser(token, user) {
     const response = await this.api('/users', 'PUT', user, true, token);
-    if (response.status === 204) {
+    if (response.status === 204 || response.status === 200) {
       return [];
     } else if (response.status === 403 || response.status === 400) {
       return response

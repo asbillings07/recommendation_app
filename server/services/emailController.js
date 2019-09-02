@@ -4,7 +4,7 @@ const messages = require('./emailMessages');
 const template = require('./emailTemplates');
 const asyncHandler = require('./asyncErrorHanlder');
 
-exports.collectEmail = asyncHandler(async (req, res) => {
+exports.collectEmail = asyncHandler(async (req, res, next) => {
   const { email } = req.body;
 
   const user = await findUserByEmail(email);
@@ -13,8 +13,10 @@ exports.collectEmail = asyncHandler(async (req, res) => {
     sendEmail(template.confirm(user.id, user.email), messages.confirm).catch(
       err => console.log(err)
     );
+    next();
   } else {
     res.json({ message: messages.alreadyConfirmed });
+    next();
   }
 });
 

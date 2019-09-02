@@ -67,6 +67,7 @@ router.post(
   '/users',
   validateUser,
   authenticateUser,
+  collectEmail,
   asyncHandler(async (req, res) => {
     const user = req.body;
     await createUser(user);
@@ -84,6 +85,7 @@ router.put(
   '/users',
   validateUpdateUser,
   authenticateUser,
+  collectEmail,
   asyncHandler(async (req, res) => {
     const userid = req.user.id;
     const body = req.body;
@@ -105,7 +107,7 @@ router.delete(
   })
 );
 
-router.post('/email', collectEmail);
+// router.post('/email', collectEmail);
 router.get('/email/confirm/:id', confirmEmail);
 
 module.exports = router;
