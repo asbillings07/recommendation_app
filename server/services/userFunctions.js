@@ -68,6 +68,7 @@ const findUserByObj = obj =>
         model: Recommendation,
       },
     ],
+    order: [[{ model: Recommendation }, 'updatedAt', 'DESC']],
     attributes: {
       exclude: ['createdAt', 'updatedAt', 'password'],
     },

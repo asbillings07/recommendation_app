@@ -56,6 +56,29 @@ export default class Confirm extends Component {
           </Row>
         </Container>
       );
+    } else if (this.context.authorizedUser) {
+      return (
+        <Container className="mt-3">
+          <Row className="justify-content-md-center">
+            <Col xs md lg="auto">
+              <Alert variant="success">
+                <Alert.Heading>{message}</Alert.Heading>
+                <p>
+                  Yay! Your email is confirmed. Click the link below to go to
+                  your Profile or Home to browse categories.
+                </p>
+                <hr />
+                <Alert.Link href="/profile" className="mb-0">
+                  Profile
+                </Alert.Link>
+                <Alert.Link href="/" className="mb-0">
+                  Home
+                </Alert.Link>
+              </Alert>
+            </Col>
+          </Row>
+        </Container>
+      );
     } else {
       return (
         <Container className="mt-3">

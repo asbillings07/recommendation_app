@@ -136,14 +136,13 @@ export default class UpdateRecommendation extends Component {
           this.setState({ errors: errors.message });
         } else {
           notify.show('Recommendation Updated!', 'success', 10000);
-          this.props.history.push(`/rec/${id}`);
+          this.props.history.push(`/profile`);
         }
       })
       .catch(error => console.log(error.message));
   };
 
   cancel = () => {
-    const { id } = this.props.match.params;
     this.props.history.push(`/profile`);
   };
 }

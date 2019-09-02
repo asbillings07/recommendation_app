@@ -13,6 +13,7 @@ const ProfileEdit = ({ context, history }) => {
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
 
+  // fetch data from database with JWT to get user info
   useEffect(() => {
     const fetchData = async () => {
       const data = await axios.get(`${Config.apiBaseUrl}/users`, {
@@ -29,7 +30,7 @@ const ProfileEdit = ({ context, history }) => {
     fetchData();
   }, [context.token]);
 
-  // information is not updating need to take a look at what I'm passing in to profileInfo
+  // submits update user info to database
   const submit = () => {
     const profileInfo = {
       firstName,
