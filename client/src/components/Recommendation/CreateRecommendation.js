@@ -18,6 +18,12 @@ export default class CreateRecommendation extends Component {
     confirmed: true,
   };
 
+  /**
+   * When user inputs name of place, options within a certain mile radius will show for the user.
+   * The user can then click on one of these and it will fill out the address for them.
+   *
+   */
+
   onQuery = e => {
     const query = e.target.value;
     if (query.length > 0) {
