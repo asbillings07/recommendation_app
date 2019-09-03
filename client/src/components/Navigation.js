@@ -1,10 +1,11 @@
 import React from 'react';
 import { Navbar, Nav } from 'react-bootstrap';
+import styled from 'styled-components';
 
 const Navigation = ({ context }) => {
   const authorizedUser = context.authorizedUser;
   return (
-    <div>
+    <NavDiv>
       <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
         <Navbar.Brand href="/">Recommend It!</Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
@@ -16,7 +17,7 @@ const Navigation = ({ context }) => {
               </Nav>
 
               <Nav>
-                <Nav.Link href="#profile">Profile</Nav.Link>
+                <Nav.Link href="/profile">Profile</Nav.Link>
                 <Nav.Link href="/signout">Sign Out</Nav.Link>
               </Nav>
             </React.Fragment>
@@ -31,8 +32,12 @@ const Navigation = ({ context }) => {
           )}
         </Navbar.Collapse>
       </Navbar>
-    </div>
+    </NavDiv>
   );
 };
 
 export default Navigation;
+
+const NavDiv = styled.div`
+  margin-bottom: 30px;
+`;

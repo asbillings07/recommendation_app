@@ -54,9 +54,6 @@ const getAllRecs = () =>
         },
       },
     ],
-    attributes: {
-      exclude: ['createdAt', 'updatedAt'],
-    },
   });
 
 // get one Recommendation with id and include User and Ratings
@@ -86,9 +83,6 @@ const getRecWithUser = id =>
         },
       },
     ],
-    attributes: {
-      exclude: ['createdAt', 'updatedAt'],
-    },
   });
 
 // Update one Recommendation by Id

@@ -1,4 +1,4 @@
-const { User } = require('../models');
+const { User, Recommendation } = require('../models');
 const bcrypt = require('bcryptjs');
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
@@ -17,13 +17,11 @@ const createUser = user => {
 
 // Finds authed user by id then updates user and hashes password if needed
 const updateUser = (id, body) => {
-  body.password = bcrypt.hashSync(body.password);
   User.findOne({ where: { id } }).then(user =>
     user.update({
       firstName: body.firstName,
       lastName: body.lastName,
       email: body.email,
-      password: body.password,
     })
   );
 };
@@ -57,9 +55,24 @@ const findUserByToken = token =>
 const findUserById = id =>
   User.findOne({
     where: { id },
+    attributes: {
+      exclude: ['createdAt', 'updatedAt', 'password'],
+    },
   });
 
-const findUserByObj = obj => User.findOne({ where: obj });
+const findUserByObj = obj =>
+  User.findOne({
+    where: obj,
+    include: [
+      {
+        model: Recommendation,
+      },
+    ],
+    order: [[{ model: Recommendation }, 'updatedAt', 'DESC']],
+    attributes: {
+      exclude: ['createdAt', 'updatedAt', 'password'],
+    },
+  });
 
 module.exports = {
   createUser,

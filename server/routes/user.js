@@ -4,7 +4,10 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const passport = require('passport');
 const { app, jwtOptions, authenticateUser } = require('../app');
-const { validateUser } = require('../services/validationChain');
+const {
+  validateUser,
+  validateUpdateUser,
+} = require('../services/validationChain');
 const { collectEmail, confirmEmail } = require('../services/emailController');
 const asyncHandler = require('../services/asyncErrorHanlder');
 const {
@@ -12,6 +15,7 @@ const {
   createUser,
   deleteUser,
   updateUser,
+  findUserByEmail,
   findUserByObj,
 } = require('../services/userFunctions');
 
@@ -22,7 +26,7 @@ router.post(
     const { email, password } = req.body;
 
     if (email && password) {
-      let user = await findUserByObj({ email });
+      let user = await findUserByEmail(email);
       if (user && bcrypt.compareSync(password, user.password)) {
         let payload = { id: user.id };
         let token = jwt.sign(payload, jwtOptions.secretOrKey);
@@ -50,7 +54,7 @@ router.post(
 //GET /api/users 200 - Returns the currently authenticated user
 router.get(
   '/users',
-  passport.authenticate('jwt', { session: false }),
+  authenticateUser,
   asyncHandler(async (req, res) => {
     const id = req.user.id;
     console.log(id);
@@ -62,6 +66,8 @@ router.get(
 router.post(
   '/users',
   validateUser,
+  authenticateUser,
+  collectEmail,
   asyncHandler(async (req, res) => {
     const user = req.body;
     await createUser(user);
@@ -77,8 +83,9 @@ router.post(
 // PUT /api/users - updates user and returns no content
 router.put(
   '/users',
+  validateUpdateUser,
   authenticateUser,
-  validateUser,
+  collectEmail,
   asyncHandler(async (req, res) => {
     const userid = req.user.id;
     const body = req.body;
@@ -100,7 +107,7 @@ router.delete(
   })
 );
 
-router.post('/email', collectEmail);
+// router.post('/email', collectEmail);
 router.get('/email/confirm/:id', confirmEmail);
 
 module.exports = router;

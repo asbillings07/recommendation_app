@@ -3,6 +3,7 @@ import Axios from 'axios';
 import Config from '../../Config';
 import Spinner from '../Spinner';
 import Comment from './Comment';
+import Rating from './Rating';
 import {
   Container,
   Row,
@@ -41,8 +42,6 @@ export default class RecDetail extends Component {
           recs,
           loading: false,
         });
-
-        console.log(this.state.comments);
       } else {
         this.props.history.push('/notfound');
       }
@@ -66,6 +65,7 @@ export default class RecDetail extends Component {
           {rec.location}
         </Card.Subtitle>
         <Card.Text>{rec.description}</Card.Text>
+        {/* <Rating /> */}
         <Card.Text>
           Recommended by: {`${rec.User.firstName} ${rec.User.lastName}`}
         </Card.Text>
