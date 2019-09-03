@@ -54,7 +54,10 @@ export const Profile = ({ context }) => {
 
         <StyledCol sm={8}>
           <h1>Manage Recommendations</h1>
-          <ProfileRecommendation recommendations={recommendation} />
+          <ProfileRecommendation
+            recommendations={recommendation}
+            context={context}
+          />
         </StyledCol>
       </Row>
     </StyledContainer>
