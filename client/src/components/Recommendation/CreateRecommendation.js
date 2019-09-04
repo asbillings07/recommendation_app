@@ -14,6 +14,7 @@ export default class CreateRecommendation extends Component {
     userid: '',
     locationId: '',
     recid: '',
+    personCoordinates: { lat: null, lng: null },
     errors: [],
     confirmed: true,
   };
@@ -24,29 +25,44 @@ export default class CreateRecommendation extends Component {
    *
    */
 
-  onQuery = e => {
-    const query = e.target.value;
-    if (query.length > 0) {
-      Axios.get('https://autocomplete.geocoder.api.here.com/6.2/suggest.json', {
+  componentDidMount() {
+    this.getUserPosition();
+  }
+
+  getUserPosition = () => {
+    if ('geolocation' in navigator) {
+      navigator.geolocation.getCurrentPosition(position => {
+        const userPostion = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+        };
+        this.setState({
+          personCoordinates: {
+            lat: userPostion.lat,
+            lng: userPostion.lng,
+          },
+        });
+        console.log(userPostion);
+        return userPostion;
+      });
+    } else {
+      console.log('geolocation is not avaiable');
+    }
+  };
+
+  findPlace = e => {
+    const { personCoordinates } = this.state;
+    const place = e.target.value;
+
+    if (place.length > 0) {
+      Axios.get(`https://places.cit.api.here.com/places/v1/autosuggest`, {
         params: {
+          at: `${personCoordinates.lat},${personCoordinates.lng}`,
           app_id: `${process.env.REACT_APP_ID}`,
           app_code: `${process.env.REACT_APP_CODE}`,
-          query: query,
-          maxresults: 10,
+          q: place,
         },
-      }).then(response => {
-        const address = response.data.suggestions[0].address;
-        const coords = response.data.suggestions[0];
-        const id = response.data.suggestions[0].locationId;
-        console.log(coords);
-        const location = `${address.houseNumber} ${address.street}. ${address.city}, ${address.state} ${address.postalCode}`;
-
-        this.setState({
-          location: location,
-          query: query,
-          locationId: id,
-        });
-      });
+      }).then(response => console.log(response.data.results));
     }
   };
 
@@ -80,8 +96,7 @@ export default class CreateRecommendation extends Component {
                       type="text"
                       name="title"
                       placeholder="What's the name of this place?"
-                      value={title}
-                      onChange={this.change}
+                      onBlur={this.findPlace}
                     />
                   </Form.Group>
                   <Form.Group>
@@ -97,18 +112,8 @@ export default class CreateRecommendation extends Component {
                     <Form.Control
                       type="text"
                       name="location"
-                      placeholder="What's the address?"
-                      onBlur={this.onQuery}
-                    />
-                  </Form.Group>
-                  <Form.Group>
-                    <Form.Label>Location Confirmation</Form.Label>
-                    <Form.Control
-                      type="text"
-                      name="location"
-                      value={location}
-                      placeholder={location}
-                      readOnly
+                      placeholder="Location"
+                      onChange={this.change}
                     />
                   </Form.Group>
                 </React.Fragment>
