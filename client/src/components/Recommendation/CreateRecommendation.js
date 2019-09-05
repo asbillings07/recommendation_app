@@ -3,6 +3,7 @@ import Forms from '../Forms';
 import { Form, Container, Row, Col } from 'react-bootstrap';
 import { notify } from 'react-notify-toast';
 import Axios from 'axios';
+import { CreateRecListing } from './CreateRecListing';
 export default class CreateRecommendation extends Component {
   state = {
     title: '',
@@ -15,6 +16,7 @@ export default class CreateRecommendation extends Component {
     locationId: '',
     recid: '',
     personCoordinates: { lat: null, lng: null },
+    recommendationListing: [],
     errors: [],
     confirmed: true,
   };
@@ -62,7 +64,12 @@ export default class CreateRecommendation extends Component {
           app_code: `${process.env.REACT_APP_CODE}`,
           q: place,
         },
-      }).then(response => console.log(response.data.results));
+      }).then(response => {
+        console.log(response.data.results);
+        this.setState({
+          recommendationListing: response.data.results,
+        });
+      });
     }
   };
 
@@ -97,6 +104,9 @@ export default class CreateRecommendation extends Component {
                       name="title"
                       placeholder="What's the name of this place?"
                       onBlur={this.findPlace}
+                    />
+                    <CreateRecListing
+                      recommendationListing={this.state.recommendationListing}
                     />
                   </Form.Group>
                   <Form.Group>
