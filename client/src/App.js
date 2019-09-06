@@ -12,7 +12,7 @@ import PrivateRoute from './PrivateRoute';
 import ForgotPassword from './components/Users/ForgotPassword';
 import ResetPassword from './components/Users/ResetPassword';
 import UpdateRecommendation from './components/Recommendation/UpdateRecommendation';
-import CreateRecommendation from './components/Recommendation/CreateRecommendation';
+import { CreateRecommendation } from './components/Recommendation/CreateRecommendation';
 import NotFound from './components/Errors/NotFound';
 import UnhandledError from './components/Errors/UnhandledError';
 import Forbidden from './components/Errors/Forbidden';

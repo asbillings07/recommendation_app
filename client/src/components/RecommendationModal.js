@@ -1,24 +1,30 @@
 import React from 'react';
-import useState from 'react';
-import { Button, Modal } from 'react-bootstrap';
+import { Button, Modal, Form } from 'react-bootstrap';
 
-export const RecommendationModal = () => {
-  const [show, setShow] = useState(false);
+export const RecommendationModal = ({ shouldShow, recList }) => {
+  const handleClose = () => shouldShow(false);
 
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const recommendationListing = () => {
+    return recList.map((rec, i) => (
+      <option key={i}>
+        {rec.title}, {rec.vicinity}
+      </option>
+    ));
+  };
 
   return (
     <>
-      <Button variant="primary" onClick={handleShow}>
-        Launch demo modal
-      </Button>
-
-      <Modal show={show} onHide={handleClose}>
+      <Modal shouldShow={shouldShow} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Modal heading</Modal.Title>
         </Modal.Header>
-        <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
+        <Modal.Body>
+          <Form>
+            <Form.Control as="select" multiple>
+              {recommendationListing()}
+            </Form.Control>
+          </Form>
+        </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
             Close
