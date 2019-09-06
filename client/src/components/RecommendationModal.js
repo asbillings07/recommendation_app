@@ -1,29 +1,31 @@
 import React from 'react';
-import { Button, Modal, Form } from 'react-bootstrap';
+import { Button, Modal, ListGroup } from 'react-bootstrap';
 
-export const RecommendationModal = ({ shouldShow, recList }) => {
-  const handleClose = () => shouldShow(false);
+export const RecommendationModal = ({
+  shouldShow,
+  setShow,
+  recList,
+  setRec,
+}) => {
+  const handleClose = () => setShow(false);
 
+  // maps through list of nearby recommendations
   const recommendationListing = () => {
     return recList.map((rec, i) => (
-      <option key={i}>
+      <ListGroup.Item action onClick={() => setRec(rec)} key={i}>
         {rec.title}, {rec.vicinity}
-      </option>
+      </ListGroup.Item>
     ));
   };
 
   return (
     <>
-      <Modal shouldShow={shouldShow} onHide={handleClose}>
+      <Modal show={shouldShow} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Modal heading</Modal.Title>
+          <Modal.Title>Places Nearby</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form>
-            <Form.Control as="select" multiple>
-              {recommendationListing()}
-            </Form.Control>
-          </Form>
+          <ListGroup>{recommendationListing()}</ListGroup>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>

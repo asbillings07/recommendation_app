@@ -3,23 +3,23 @@ import Forms from '../Forms';
 import { Form, Container, Row, Col } from 'react-bootstrap';
 import { notify } from 'react-notify-toast';
 import Axios from 'axios';
-import { CreateRecListing } from './CreateRecListing';
 import { RecommendationModal } from '../RecommendationModal';
 export const CreateRecommendation = ({ context, match, history }) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [lastVisited, setLastVisited] = useState('');
   const [location, setLocation] = useState('');
-  const [locationId, setLocationId] = useState('');
+  const [lastVisited, setLastVisited] = useState('');
+  const [recommendation, setRecommendation] = useState({});
   const [recid, setRecid] = useState('');
   const [shouldShow, setShouldShow] = useState(false);
   const [personCoordinates, setPersonCoordinates] = useState({
     lat: null,
     lng: null,
   });
+
   const [recommendationListing, setRecommendationListing] = useState([]);
   const [errors, setErrors] = useState('');
-  const [confirmed, setConfirmed] = useState(true);
+  const [confirmed] = useState(true);
 
   /**
    * When user inputs name of place, options within a certain mile radius will show for the user.
@@ -39,8 +39,6 @@ export const CreateRecommendation = ({ context, match, history }) => {
             lat: userPostion.lat,
             lng: userPostion.lng,
           });
-
-          return userPostion;
         });
       } else {
         console.log('geolocation is not avaiable');
@@ -65,6 +63,7 @@ export const CreateRecommendation = ({ context, match, history }) => {
       }).then(response => {
         console.log(response.data.results);
         setRecommendationListing(response.data.results);
+        setShouldShow(true);
       });
     }
   };
@@ -108,9 +107,7 @@ export const CreateRecommendation = ({ context, match, history }) => {
                     placeholder="What's the name of this place?"
                     onBlur={findPlace}
                   />
-                  {/* <CreateRecListing
-                      recommendationListing={this.state.recommendationListing}
-                    /> */}
+                  {console.log(recommendation)}
                 </Form.Group>
                 <Form.Group>
                   <Form.Control
@@ -134,7 +131,9 @@ export const CreateRecommendation = ({ context, match, history }) => {
           />
           <RecommendationModal
             shouldShow={shouldShow}
+            setShow={setShouldShow}
             recList={recommendationListing}
+            setRec={setRecommendation}
           />
         </Col>
       </Row>
