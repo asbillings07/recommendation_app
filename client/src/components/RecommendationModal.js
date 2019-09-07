@@ -9,7 +9,7 @@ export const RecommendationModal = ({
 }) => {
   const handleClose = () => setShow(false);
 
-  // maps through list of nearby recommendations
+  //maps through list of nearby recommendations
   const recommendationListing = () => {
     return recList.map((rec, i) => (
       <ListGroup.Item action onClick={() => setRec(rec)} key={i}>

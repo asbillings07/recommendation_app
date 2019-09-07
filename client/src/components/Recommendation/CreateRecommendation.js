@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Forms from '../Forms';
-import { Form, Container, Row, Col } from 'react-bootstrap';
+import { Form, Container, Row, Col, Button } from 'react-bootstrap';
 import { notify } from 'react-notify-toast';
 import Axios from 'axios';
 import { RecommendationModal } from '../RecommendationModal';
@@ -20,6 +20,7 @@ export const CreateRecommendation = ({ context, match, history }) => {
     background-repeat: no-repeat;
     background-size: cover;
     margin-top: -16px;
+    padding-top: 50px;
   `;
 
   const StyledH1 = styled.h1`
@@ -32,10 +33,25 @@ export const CreateRecommendation = ({ context, match, history }) => {
     color: #0b438c;
   `;
   const StyledCol = styled(Col)`
-    background: white;
+    background-color: ${props => (props.secondary ? '#F25C05' : 'white')};
     opacity: 0.9;
     margin-top: 9px;
+    padding-top: 25px;
+    margin-left: 1em;
+    height: 25em;
     text-align: center;
+  `;
+
+  const ButtonDiv = styled.div`
+    margin-top: 6em;
+    margin-left: 24em;
+  `;
+
+  const StyledButton = styled(Button)`
+    margin-right: 1px;
+    background-color: ${props =>
+      props.secondary ? 'red' : '#0b438c'}!important;
+    color: white;
   `;
 
   /** State & Effect Hooks */
@@ -86,7 +102,8 @@ export const CreateRecommendation = ({ context, match, history }) => {
           at: `${personCoordinates.lat},${personCoordinates.lng}`,
           app_id: `${process.env.REACT_APP_ID}`,
           app_code: `${process.env.REACT_APP_CODE}`,
-          q: place,
+          q: `${place}`,
+          tf: 'plain',
         },
       }).then(response => {
         console.log(response.data.results);
@@ -121,7 +138,7 @@ export const CreateRecommendation = ({ context, match, history }) => {
     <DivContainer>
       <Container className="mt-3">
         <Row className="justify-content-md-center">
-          <Col sm={5}>
+          <StyledCol secondary="true" sm={4}>
             <StyledH1>Create Your Recommendation!</StyledH1>
             <StyledP>
               Fill out the title field with the name of your recommended place,
@@ -130,7 +147,7 @@ export const CreateRecommendation = ({ context, match, history }) => {
               recommendation. Once you're done hit 'Create Recommendation' and
               we will add it to the list so others can view it!{' '}
             </StyledP>
-          </Col>
+          </StyledCol>
           <StyledCol sm={7}>
             <StyledH4>Fill in the following information</StyledH4>
             <Forms
@@ -138,6 +155,7 @@ export const CreateRecommendation = ({ context, match, history }) => {
               errors={errors}
               submit={submit}
               passwordErrors={confirmed}
+              buttons={true}
               submitButtonText="Create Recommendation"
               elements={() => (
                 <React.Fragment>
@@ -145,42 +163,49 @@ export const CreateRecommendation = ({ context, match, history }) => {
                     <Form.Control
                       type="text"
                       name="title"
-                      placeholder="Put in the name of your place"
+                      placeholder="Enter the name of your place"
                       onBlur={findPlace}
-                    />
-                    {console.log(recommendation)}
-                  </Form.Group>
-                  <Form.Group>
-                    <Form.Control
-                      type="text"
-                      name="title"
-                      placeholder="What's the name of this place?"
-                      value={recommendation.title || ''}
-                      readOnly
-                    />
-                    {console.log(recommendation)}
-                  </Form.Group>
-                  <Form.Group>
-                    <Form.Control
-                      type="text"
-                      name="location"
-                      placeholder="Location"
-                      value={recommendation.vicinity || ''}
-                      readOnly
                     />
                   </Form.Group>
                   <Form.Group>
                     <Form.Control
                       type="text"
                       name="description"
-                      placeholder="Tell others about what makes it great"
+                      placeholder="What's great about this place?"
                       value={description}
                       onChange={e => setDescription(e.target.value)}
                     />
                   </Form.Group>
+                  <p>{recommendation.title}</p>
+                  <p>{recommendation.vicinity}</p>
+                  {/* <Form.Group>
+                    <Form.Control
+                      type="text"
+                      name="title"
+                      value={recommendation.title || ''}
+                      plaintext
+                      readOnly
+                    />
+                    <Form.Control
+                      type="text"
+                      name="location"
+                      value={recommendation.vicinity || ''}
+                      plaintext
+                      readOnly
+                    />
+                  </Form.Group> */}
                 </React.Fragment>
               )}
             />
+            <ButtonDiv>
+              <StyledButton onClick={submit}>
+                Create Recommendation
+              </StyledButton>
+              <StyledButton secondary="true" onClick={cancel}>
+                Cancel
+              </StyledButton>
+            </ButtonDiv>
+
             <RecommendationModal
               shouldShow={shouldShow}
               setShow={setShouldShow}
