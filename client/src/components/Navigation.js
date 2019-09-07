@@ -39,5 +39,5 @@ const Navigation = ({ context }) => {
 export default Navigation;
 
 const NavDiv = styled.div`
-  margin-bottom: 30px;
+  margin-bottom: 0px;
 `;

@@ -4,10 +4,43 @@ import { Form, Container, Row, Col } from 'react-bootstrap';
 import { notify } from 'react-notify-toast';
 import Axios from 'axios';
 import { RecommendationModal } from '../RecommendationModal';
+import styled from 'styled-components';
+import city from '../../images/city.jpg';
+
 export const CreateRecommendation = ({ context, match, history }) => {
-  const [title, setTitle] = useState('');
+  /**Styled Components */
+
+  const DivContainer = styled.div`
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    width: 100vw;
+    background-image: url(${city});
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    margin-top: -16px;
+  `;
+
+  const StyledH1 = styled.h1`
+    color: white;
+  `;
+  const StyledP = styled.p`
+    color: white;
+  `;
+  const StyledH4 = styled.h4`
+    color: #0b438c;
+  `;
+  const StyledCol = styled(Col)`
+    background: white;
+    opacity: 0.9;
+    margin-top: 9px;
+    text-align: center;
+  `;
+
+  /** State & Effect Hooks */
+
   const [description, setDescription] = useState('');
-  const [location, setLocation] = useState('');
   const [lastVisited, setLastVisited] = useState('');
   const [recommendation, setRecommendation] = useState({});
   const [recid, setRecid] = useState('');
@@ -16,16 +49,9 @@ export const CreateRecommendation = ({ context, match, history }) => {
     lat: null,
     lng: null,
   });
-
   const [recommendationListing, setRecommendationListing] = useState([]);
   const [errors, setErrors] = useState('');
   const [confirmed] = useState(true);
-
-  /**
-   * When user inputs name of place, options within a certain mile radius will show for the user.
-   * The user can then click on one of these and it will fill out the address for them.
-   *
-   */
 
   useEffect(() => {
     const getUserPosition = () => {
@@ -49,6 +75,8 @@ export const CreateRecommendation = ({ context, match, history }) => {
 
   console.log(personCoordinates);
 
+  /** Helper Functions */
+
   const findPlace = e => {
     const place = e.target.value;
 
@@ -71,6 +99,8 @@ export const CreateRecommendation = ({ context, match, history }) => {
   const submit = () => {
     const { id } = match.params;
     const { token, data } = context;
+    const title = recommendation.title;
+    const location = recommendation.vicinity;
     const rec = { title, description, location, lastVisited };
     data.createRecommendation(token, rec, id).then(errors => {
       if (errors) {
@@ -88,62 +118,78 @@ export const CreateRecommendation = ({ context, match, history }) => {
   };
 
   return (
-    <Container className="mt-3">
-      <Row className="justify-content-md-center">
-        <Col xs md lg="auto">
-          <h1>Create Your Recommendation!</h1>
-          <Forms
-            cancel={cancel}
-            errors={errors}
-            submit={submit}
-            passwordErrors={confirmed}
-            submitButtonText="Create Recommendation"
-            elements={() => (
-              <React.Fragment>
-                <Form.Group>
-                  <Form.Control
-                    type="text"
-                    name="title"
-                    placeholder="What's the name of this place?"
-                    onBlur={findPlace}
-                  />
-                  {console.log(recommendation)}
-                </Form.Group>
-                <Form.Group>
-                  <Form.Control
-                    type="text"
-                    name="description"
-                    placeholder="Tell others about what makes it great"
-                    value={description}
-                    onChange={e => setDescription(e.target.value)}
-                  />
-                </Form.Group>
-                <Form.Group>
-                  <Form.Control
-                    type="text"
-                    name="location"
-                    placeholder="Location"
-                    onChange={e => setLocation(e.target.value)}
-                  />
-                </Form.Group>
-              </React.Fragment>
-            )}
-          />
-          <RecommendationModal
-            shouldShow={shouldShow}
-            setShow={setShouldShow}
-            recList={recommendationListing}
-            setRec={setRecommendation}
-          />
-        </Col>
-      </Row>
-    </Container>
+    <DivContainer>
+      <Container className="mt-3">
+        <Row className="justify-content-md-center">
+          <Col sm={5}>
+            <StyledH1>Create Your Recommendation!</StyledH1>
+            <StyledP>
+              Fill out the title field with the name of your recommended place,
+              we will then search your location for that place. Then choose from
+              the list in the modal. Then add why others should visit your
+              recommendation. Once you're done hit 'Create Recommendation' and
+              we will add it to the list so others can view it!{' '}
+            </StyledP>
+          </Col>
+          <StyledCol sm={7}>
+            <StyledH4>Fill in the following information</StyledH4>
+            <Forms
+              cancel={cancel}
+              errors={errors}
+              submit={submit}
+              passwordErrors={confirmed}
+              submitButtonText="Create Recommendation"
+              elements={() => (
+                <React.Fragment>
+                  <Form.Group>
+                    <Form.Control
+                      type="text"
+                      name="title"
+                      placeholder="Put in the name of your place"
+                      onBlur={findPlace}
+                    />
+                    {console.log(recommendation)}
+                  </Form.Group>
+                  <Form.Group>
+                    <Form.Control
+                      type="text"
+                      name="title"
+                      placeholder="What's the name of this place?"
+                      value={recommendation.title || ''}
+                      readOnly
+                    />
+                    {console.log(recommendation)}
+                  </Form.Group>
+                  <Form.Group>
+                    <Form.Control
+                      type="text"
+                      name="location"
+                      placeholder="Location"
+                      value={recommendation.vicinity || ''}
+                      readOnly
+                    />
+                  </Form.Group>
+                  <Form.Group>
+                    <Form.Control
+                      type="text"
+                      name="description"
+                      placeholder="Tell others about what makes it great"
+                      value={description}
+                      onChange={e => setDescription(e.target.value)}
+                    />
+                  </Form.Group>
+                </React.Fragment>
+              )}
+            />
+            <RecommendationModal
+              shouldShow={shouldShow}
+              setShow={setShouldShow}
+              recList={recommendationListing}
+              setRec={setRecommendation}
+            />
+          </StyledCol>
+        </Row>
+      </Container>
+    </DivContainer>
   );
-
-  /**
-   *
-   * <Modal
-   * ShouldShow={}
-   *  />
-   */
 };
