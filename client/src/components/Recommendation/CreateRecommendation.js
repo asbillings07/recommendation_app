@@ -52,7 +52,7 @@ export function CreateRecommendation({ context, match, history }) {
   const StyledButton = styled(Button)`
     margin-right: 1px;
     background-color: ${props =>
-      props.secondary ? 'red' : '#0b438c'}!important;
+      props.secondary ? '#F21905' : '#1168D9'}!important;
     color: white;
   `;
 
