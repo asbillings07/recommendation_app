@@ -26,6 +26,7 @@ export default function RecDetail({ context, match, history }) {
   useEffect(() => {
     const getRecById = async () => {
       const { id } = match.params;
+      setCatid(id);
       try {
         const data = await Axios.get(`${Config.apiBaseUrl}/category/${id}`);
 
@@ -43,7 +44,7 @@ export default function RecDetail({ context, match, history }) {
       }
     };
     getRecById();
-  }, []);
+  }, [history, match.params]);
 
   const showAllRecs = () => {
     return recs.map(rec => (
@@ -81,6 +82,7 @@ export default function RecDetail({ context, match, history }) {
         comments={selectedRec.Comments}
         token={context.token}
         id={selectedRec.id}
+        catId={catid}
         authedUser={context.authorizedUser}
       />
     </StyledContainer>

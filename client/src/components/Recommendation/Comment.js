@@ -5,7 +5,7 @@ import axios from 'axios';
 import Config from '../../Config';
 import styled from 'styled-components';
 
-const Comment = ({ comments, id, token, authedUser }) => {
+const Comment = ({ comments, id, token, authedUser, catId, history }) => {
   const [userComment, setUserComment] = useState('');
   const [error, setError] = useState('');
 
@@ -18,7 +18,8 @@ const Comment = ({ comments, id, token, authedUser }) => {
     ));
   };
 
-  const AddComment = e => {
+  function AddComment(e) {
+    e.preventDefault();
     const config = {
       headers: { Authorization: 'bearer ' + token },
     };
@@ -29,16 +30,12 @@ const Comment = ({ comments, id, token, authedUser }) => {
     if (userComment) {
       axios
         .post(`${Config.apiBaseUrl}/rec/${id}/comment`, params, config)
-        .then(() => {
-          notify.show('Comment Added!', 'success', 5000);
-        })
+        .then(() => notify.show('Comment Added!', 'success', 5000))
         .catch(error => console.log(error));
-      e.target.reset();
     } else {
-      e.preventDefault();
       setError('Please Enter a Comment');
     }
-  };
+  }
 
   return (
     <StyledCard>
