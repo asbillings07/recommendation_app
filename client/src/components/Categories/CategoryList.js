@@ -1,67 +1,45 @@
-import React, { Component } from 'react';
-import Axios from 'axios';
-import Config from '../../Config';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { Container, Button, Row, Col } from 'react-bootstrap';
 import styled from 'styled-components';
 import Spinner from '../Spinner';
 
-class CategoryList extends Component {
-  state = {
-    categories: [],
-    loading: true,
-  };
-
-  componentDidMount() {
-    this.getAllCategories();
-  }
-
-  getAllCategories = async () => {
-    try {
-      const categories = await Axios.get(`${Config.apiBaseUrl}/category`).catch(
-        err => console.log(err)
-      );
-      if (categories) {
-        this.setState({ categories: categories.data.category, loading: false });
-      }
-    } catch (err) {
-      console.log(err);
-      this.props.history.push('/notfound');
-    }
-  };
-
-  showCategories = () => {
-    return this.state.categories.map(category => (
+export default function CategoryList({ categories, loading }) {
+  const showCategories = () => {
+    return categories.map(category => (
       <Col className="mb-2" sm={4} key={category.id}>
         <Link to={`/category/${category.id}/recs`}>
-          <Button variant="primary" size="lg" block>
+          <CategoryButton size="lg" block>
             {category.title}
-          </Button>
+          </CategoryButton>
         </Link>
       </Col>
     ));
   };
 
-  render() {
-    if (this.state.loading) {
-      return <Spinner size="4x" spinning="spinning" />;
-    } else {
-      return (
-        <React.Fragment>
-          <H2>Browse Categories</H2>
-          <Container className="mb-9 mt-3">
-            <Row>{this.showCategories()}</Row>
-          </Container>
-        </React.Fragment>
-      );
-    }
+  if (loading) {
+    return <Spinner size="4x" spinning="spinning" />;
+  } else {
+    return (
+      <React.Fragment>
+        <H2>Browse Categories</H2>
+        <CategoryContainer>
+          <Row>{showCategories()}</Row>
+        </CategoryContainer>
+      </React.Fragment>
+    );
   }
 }
-
-export default CategoryList;
 
 const H2 = styled.h2`
   display: flex;
   justify-content: center;
   font-family: 'Oswald', sans-serif;
+`;
+const CategoryContainer = styled(Container)`
+  margin-bottom: 9px;
+  margin-top: 3px;
+`;
+const CategoryButton = styled(Button)`
+  background-color: #1168d9 !important;
 `;
