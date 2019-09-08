@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import Axios from 'axios';
 import Config from '../../Config';
 import Spinner from '../Spinner';
@@ -10,56 +10,45 @@ import {
   Card,
   Col,
   ListGroup,
-  ButtonToolbar,
   ListGroupItem,
 } from 'react-bootstrap';
 import AddRecommendation from './AddRecomendation';
 import MapContainer from '../Map/MapContainer';
 import styled from 'styled-components';
 
-export default class RecDetail extends Component {
-  state = {
-    recs: [],
-    loading: true,
-    selectedRec: {},
-    userid: '',
-    catid: '',
-  };
+export default function RecDetail({ context, match, history }) {
+  const [recs, setRecs] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedRec, setSelectedRec] = useState({});
+  const [userid, setUserid] = useState('');
+  const [catid, setCatid] = useState('');
 
-  componentDidMount() {
-    this.getRecById();
-  }
+  useEffect(() => {
+    const getRecById = async () => {
+      const { id } = match.params;
+      setCatid(id);
+      try {
+        const data = await Axios.get(`${Config.apiBaseUrl}/category/${id}`);
 
-  getRecById = async () => {
-    const { id } = this.props.match.params;
-    try {
-      const data = await Axios.get(`${Config.apiBaseUrl}/category/${id}`);
+        if (data) {
+          const recs = data.data.category[0].Recommendations;
 
-      if (data) {
-        const recs = data.data.category[0].Recommendations;
-
-        this.setState({
-          recs,
-          loading: false,
-        });
-      } else {
-        this.props.history.push('/notfound');
+          setRecs(recs);
+          setLoading(false);
+        } else {
+          history.push('/notfound');
+        }
+      } catch (err) {
+        console.log(err);
+        //   this.props.history.push('/notfound');
       }
-    } catch (err) {
-      console.log(err);
-      //   this.props.history.push('/notfound');
-    }
-  };
+    };
+    getRecById();
+  }, [history, match.params]);
 
-  // Need to figure out how to make it so that when each of these are clicked the location shows on the map?
-  showAllRecs = () => {
-    const { recs } = this.state;
+  const showAllRecs = () => {
     return recs.map(rec => (
-      <ListGroupItem
-        key={rec.id}
-        action
-        onClick={() => this.setState({ selectedRec: rec })}
-      >
+      <ListGroupItem key={rec.id} action onClick={() => setSelectedRec(rec)}>
         <Card.Title>{rec.title}</Card.Title>
         <Card.Subtitle className="mt-2 text-muted">
           {rec.location}
@@ -73,36 +62,31 @@ export default class RecDetail extends Component {
     ));
   };
 
-  render() {
-    const { authorizedUser, token } = this.props.context;
+  if (loading) return <Spinner size="8x" spinning="spinning" />;
 
-    const { selectedRec, loading, comments } = this.state;
+  return (
+    <StyledContainer>
+      <Row>
+        <StyledCol>
+          <Card>
+            <AddRecommendation id={match.params.id} />
+            <ListGroup>{showAllRecs()}</ListGroup>
+          </Card>
+        </StyledCol>
+        <Col>
+          <MapContainer selectedRec={selectedRec} />
+        </Col>
+      </Row>
 
-    if (loading) return <Spinner size="8x" spinning="spinning" />;
-
-    return (
-      <StyledContainer>
-        <Row>
-          <StyledCol>
-            <Card>
-              <AddRecommendation id={this.props.match.params.id} />
-              <ListGroup>{this.showAllRecs()}</ListGroup>
-            </Card>
-          </StyledCol>
-          <Col>
-            <MapContainer selectedRec={selectedRec} />
-          </Col>
-        </Row>
-
-        <Comment
-          comments={selectedRec.Comments}
-          token={token}
-          id={selectedRec.id}
-          authedUser={authorizedUser}
-        />
-      </StyledContainer>
-    );
-  }
+      <Comment
+        comments={selectedRec.Comments}
+        token={context.token}
+        id={selectedRec.id}
+        catId={catid}
+        authedUser={context.authorizedUser}
+      />
+    </StyledContainer>
+  );
 }
 
 const StyledCol = styled(Col)`

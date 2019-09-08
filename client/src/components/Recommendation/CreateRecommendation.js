@@ -1,147 +1,217 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import Forms from '../Forms';
-import { Form, Container, Row, Col } from 'react-bootstrap';
+import { Form, Container, Row, Col, Button } from 'react-bootstrap';
 import { notify } from 'react-notify-toast';
 import Axios from 'axios';
-export default class CreateRecommendation extends Component {
-  state = {
-    title: '',
-    description: '',
-    lastVisited: '',
-    location: '',
-    query: '',
-    rating: '',
-    userid: '',
-    locationId: '',
-    recid: '',
-    errors: [],
-    confirmed: true,
-  };
+import { RecommendationModal } from '../RecommendationModal';
+import styled from 'styled-components';
+import city from '../../images/city.jpg';
 
-  onQuery = e => {
-    const query = e.target.value;
-    if (query.length > 0) {
-      Axios.get('https://autocomplete.geocoder.api.here.com/6.2/suggest.json', {
+export function CreateRecommendation({ context, match, history }) {
+  /**Styled Components */
+
+  const DivContainer = styled.div`
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    width: 100vw;
+    background-image: url(${city});
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    margin-top: -16px;
+    padding-top: 50px;
+  `;
+
+  const StyledH1 = styled.h1`
+    color: white;
+  `;
+  const StyledP = styled.p`
+    color: white;
+  `;
+  const InputP = styled.p``;
+
+  const StyledH4 = styled.h4`
+    color: #0b438c;
+  `;
+  const StyledCol = styled(Col)`
+    background-color: ${props => (props.secondary ? '#F25C05' : 'white')};
+    opacity: 0.9;
+    margin-top: 9px;
+    padding-top: 25px;
+    margin-left: 1em;
+    height: 25em;
+    text-align: center;
+  `;
+
+  const ButtonDiv = styled.div`
+    margin-top: 6em;
+    margin-left: 24em;
+  `;
+
+  const StyledButton = styled(Button)`
+    margin-right: 1px;
+    background-color: ${props =>
+      props.secondary ? '#F21905' : '#1168D9'}!important;
+    color: white;
+  `;
+
+  /** State & Effect Hooks */
+
+  const [description, setDescription] = useState('');
+  const [title, setTitle] = useState('');
+  const [lastVisited, setLastVisited] = useState('');
+  const [recommendation, setRecommendation] = useState({});
+  const [input, setInput] = useState('');
+  const [recid, setRecid] = useState('');
+  const [shouldShow, setShouldShow] = useState(false);
+  const [personCoordinates, setPersonCoordinates] = useState({
+    lat: null,
+    lng: null,
+  });
+  const [recommendationListing, setRecommendationListing] = useState([]);
+  const [errors, setErrors] = useState('');
+  const [confirmed] = useState(true);
+
+  useEffect(() => {
+    const getUserPosition = () => {
+      if ('geolocation' in navigator) {
+        navigator.geolocation.getCurrentPosition(position => {
+          const userPostion = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          };
+          setPersonCoordinates({
+            lat: userPostion.lat,
+            lng: userPostion.lng,
+          });
+        });
+      } else {
+        console.log('geolocation is not avaiable');
+      }
+    };
+    getUserPosition();
+  }, []);
+
+  /** Helper Functions */
+
+  const findPlace = e => {
+    const place = e.target.value;
+
+    if (place.length > 0) {
+      Axios.get(`https://places.cit.api.here.com/places/v1/discover/search`, {
         params: {
+          at: `${personCoordinates.lat},${personCoordinates.lng}`,
           app_id: `${process.env.REACT_APP_ID}`,
           app_code: `${process.env.REACT_APP_CODE}`,
-          query: query,
-          maxresults: 10,
+          q: `${place}`,
+          tf: 'plain',
+          size: '5',
         },
       }).then(response => {
-        const address = response.data.suggestions[0].address;
-        const coords = response.data.suggestions[0];
-        const id = response.data.suggestions[0].locationId;
-        console.log(coords);
-        const location = `${address.houseNumber} ${address.street}. ${address.city}, ${address.state} ${address.postalCode}`;
-
-        this.setState({
-          location: location,
-          query: query,
-          locationId: id,
-        });
+        console.log(response.data.results.items);
+        setRecommendationListing(response.data.results.items);
+        setShouldShow(true);
       });
     }
   };
 
-  render() {
-    const {
-      title,
-      description,
-      location,
-      errors,
-      confirmed,
-      lastVisited,
-      rating,
-      recid,
-    } = this.state;
+  const submit = () => {
+    const { id } = match.params;
+    const { token, data } = context;
+    const title = recommendation.title;
+    const location = recommendation.vicinity;
+    const rec = { title, description, location, lastVisited };
+    data.createRecommendation(token, rec, id).then(errors => {
+      if (errors) {
+        setErrors(errors);
+      } else {
+        notify.show('Recommendation Created!', 'success', 10000);
+        history.push(`/category/${id}/recs`);
+      }
+    });
+  };
 
-    return (
+  const cancel = () => {
+    const { id } = match.params;
+    history.push(`/category/${id}/recs`);
+  };
+
+  const onChange = e => {
+    const name = e.target.name;
+    const value = e.target.value;
+    setInput({
+      [name]: value,
+    });
+  };
+
+  return (
+    <DivContainer>
       <Container className="mt-3">
         <Row className="justify-content-md-center">
-          <Col xs md lg="auto">
-            <h1>Create Your Recommendation!</h1>
+          <StyledCol secondary="true" sm={4}>
+            <StyledH1>Create Your Recommendation!</StyledH1>
+            <StyledP>
+              Fill out the title field with the name of your recommended place,
+              we will then search your location for that place. Then choose from
+              the list in the modal. Then add why others should visit your
+              recommendation. Once you're done hit 'Create Recommendation' and
+              we will add it to the list so others can view it!{' '}
+            </StyledP>
+          </StyledCol>
+          <StyledCol sm={7}>
+            <StyledH4>Fill in the following information</StyledH4>
             <Forms
-              cancel={this.cancel}
+              cancel={cancel}
               errors={errors}
-              submit={this.submit}
+              submit={submit}
               passwordErrors={confirmed}
+              buttons={true}
               submitButtonText="Create Recommendation"
               elements={() => (
-                <React.Fragment>
+                <>
                   <Form.Group>
                     <Form.Control
                       type="text"
                       name="title"
-                      placeholder="What's the name of this place?"
-                      value={title}
-                      onChange={this.change}
+                      placeholder="Enter the name of your place"
+                      onBlur={findPlace}
+                      disabled={personCoordinates ? false : true}
                     />
                   </Form.Group>
                   <Form.Group>
                     <Form.Control
                       type="text"
                       name="description"
-                      placeholder="Tell others about what makes it great"
+                      placeholder="What's great about this place?"
                       value={description}
-                      onChange={this.change}
+                      onChange={e => setDescription(e.target.value)}
+                      //  need to figure out why this keeps rerendering on change
                     />
                   </Form.Group>
-                  <Form.Group>
-                    <Form.Control
-                      type="text"
-                      name="location"
-                      placeholder="What's the address?"
-                      onBlur={this.onQuery}
-                    />
-                  </Form.Group>
-                  <Form.Group>
-                    <Form.Label>Location Confirmation</Form.Label>
-                    <Form.Control
-                      type="text"
-                      name="location"
-                      value={location}
-                      placeholder={location}
-                      readOnly
-                    />
-                  </Form.Group>
-                </React.Fragment>
+                  <p>{recommendation.title}</p>
+                  <p>{recommendation.vicinity}</p>
+                </>
               )}
             />
-          </Col>
+            <ButtonDiv>
+              <StyledButton onClick={submit}>
+                Create Recommendation
+              </StyledButton>
+              <StyledButton secondary="true" onClick={cancel}>
+                Cancel
+              </StyledButton>
+            </ButtonDiv>
+
+            <RecommendationModal
+              shouldShow={shouldShow}
+              setShow={setShouldShow}
+              recList={recommendationListing}
+              setRec={setRecommendation}
+            />
+          </StyledCol>
         </Row>
       </Container>
-    );
-  }
-
-  change = event => {
-    const name = event.target.name;
-    const value = event.target.value;
-
-    this.setState(() => {
-      return {
-        [name]: value,
-      };
-    });
-  };
-
-  submit = () => {
-    const { id } = this.props.match.params;
-    const { token, data } = this.props.context;
-    const { title, description, location, lastVisited } = this.state;
-    const rec = { title, description, location, lastVisited };
-    data.createRecommendation(token, rec, id).then(errors => {
-      if (errors) {
-        this.setState({ errors });
-      } else {
-        notify.show('Recommendation Created!', 'success', 10000);
-        this.props.history.push(`/category/${id}/recs`);
-      }
-    });
-  };
-
-  cancel = () => {
-    const { id } = this.props.match.params;
-    this.props.history.push(`/category/${id}/recs`);
-  };
+    </DivContainer>
+  );
 }

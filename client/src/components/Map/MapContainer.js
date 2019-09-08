@@ -28,7 +28,7 @@ export class MapContainer extends Component {
     this.getLocationCoords();
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps, _prevState) {
     if (prevProps.selectedRec.location !== this.props.selectedRec.location) {
       this.getLocationCoords();
     }

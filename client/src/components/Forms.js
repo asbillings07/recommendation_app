@@ -9,6 +9,8 @@ const UserForm = ({
   submit,
   submitButtonText,
   elements,
+  buttons,
+  button,
   passwordErrors,
 }) => {
   function handleSubmit(event) {
@@ -26,18 +28,23 @@ const UserForm = ({
       <ErrorsDisplay errors={errors} passwordErrors={passwordErrors} />
       <Form onSubmit={handleSubmit}>
         {elements()}
-
-        <Button
-          className="mr-1"
-          variant="primary"
-          type="submit"
-          style={{ width: '13rem' }}
-        >
-          {submitButtonText}
-        </Button>
-        <Button className="mr-1" variant="secondary" onClick={handleCancel}>
-          Cancel
-        </Button>
+        {buttons ? (
+          ''
+        ) : (
+          <>
+            <Button
+              className="mr-1"
+              variant="primary"
+              type="submit"
+              style={{ width: '13rem' }}
+            >
+              {submitButtonText}
+            </Button>
+            <Button className="mr-1" variant="secondary" onClick={handleCancel}>
+              Cancel
+            </Button>
+          </>
+        )}
       </Form>
     </>
   );

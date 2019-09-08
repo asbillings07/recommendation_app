@@ -66,7 +66,7 @@ const ProfileEdit = ({ context, history }) => {
               passwordErrors={confirmed}
               submitButtonText="Update Profile"
               elements={() => (
-                <React.Fragment>
+                <>
                   <Form.Group>
                     <Form.Control
                       type="text"
@@ -94,7 +94,7 @@ const ProfileEdit = ({ context, history }) => {
                       onChange={e => setEmail(e.target.value)}
                     />
                   </Form.Group>
-                </React.Fragment>
+                </>
               )}
             />
           </>
