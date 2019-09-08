@@ -12,7 +12,14 @@ export const RecommendationModal = ({
   //maps through list of nearby recommendations
   const recommendationListing = () => {
     return recList.map((rec, i) => (
-      <ListGroup.Item action onClick={() => setRec(rec)} key={i}>
+      <ListGroup.Item
+        action
+        onClick={() => {
+          setRec(rec);
+          handleClose();
+        }}
+        key={rec.id ? rec.id : i}
+      >
         {rec.title}, {rec.vicinity}
       </ListGroup.Item>
     ));
@@ -27,14 +34,14 @@ export const RecommendationModal = ({
         <Modal.Body>
           <ListGroup>{recommendationListing()}</ListGroup>
         </Modal.Body>
-        <Modal.Footer>
+        {/* <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
           <Button variant="primary" onClick={handleClose}>
             Save Changes
           </Button>
-        </Modal.Footer>
+        </Modal.Footer> */}
       </Modal>
     </>
   );

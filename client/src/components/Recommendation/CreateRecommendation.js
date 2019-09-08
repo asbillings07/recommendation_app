@@ -7,7 +7,7 @@ import { RecommendationModal } from '../RecommendationModal';
 import styled from 'styled-components';
 import city from '../../images/city.jpg';
 
-export const CreateRecommendation = ({ context, match, history }) => {
+export function CreateRecommendation({ context, match, history }) {
   /**Styled Components */
 
   const DivContainer = styled.div`
@@ -29,6 +29,8 @@ export const CreateRecommendation = ({ context, match, history }) => {
   const StyledP = styled.p`
     color: white;
   `;
+  const InputP = styled.p``;
+
   const StyledH4 = styled.h4`
     color: #0b438c;
   `;
@@ -57,8 +59,10 @@ export const CreateRecommendation = ({ context, match, history }) => {
   /** State & Effect Hooks */
 
   const [description, setDescription] = useState('');
+  const [title, setTitle] = useState('');
   const [lastVisited, setLastVisited] = useState('');
   const [recommendation, setRecommendation] = useState({});
+  const [input, setInput] = useState('');
   const [recid, setRecid] = useState('');
   const [shouldShow, setShouldShow] = useState(false);
   const [personCoordinates, setPersonCoordinates] = useState({
@@ -89,25 +93,24 @@ export const CreateRecommendation = ({ context, match, history }) => {
     getUserPosition();
   }, []);
 
-  console.log(personCoordinates);
-
   /** Helper Functions */
 
   const findPlace = e => {
     const place = e.target.value;
 
     if (place.length > 0) {
-      Axios.get(`https://places.cit.api.here.com/places/v1/autosuggest`, {
+      Axios.get(`https://places.cit.api.here.com/places/v1/discover/search`, {
         params: {
           at: `${personCoordinates.lat},${personCoordinates.lng}`,
           app_id: `${process.env.REACT_APP_ID}`,
           app_code: `${process.env.REACT_APP_CODE}`,
           q: `${place}`,
           tf: 'plain',
+          size: '5',
         },
       }).then(response => {
-        console.log(response.data.results);
-        setRecommendationListing(response.data.results);
+        console.log(response.data.results.items);
+        setRecommendationListing(response.data.results.items);
         setShouldShow(true);
       });
     }
@@ -134,6 +137,14 @@ export const CreateRecommendation = ({ context, match, history }) => {
     history.push(`/category/${id}/recs`);
   };
 
+  const onChange = e => {
+    const name = e.target.name;
+    const value = e.target.value;
+    setInput({
+      [name]: value,
+    });
+  };
+
   return (
     <DivContainer>
       <Container className="mt-3">
@@ -158,13 +169,14 @@ export const CreateRecommendation = ({ context, match, history }) => {
               buttons={true}
               submitButtonText="Create Recommendation"
               elements={() => (
-                <React.Fragment>
+                <>
                   <Form.Group>
                     <Form.Control
                       type="text"
                       name="title"
                       placeholder="Enter the name of your place"
                       onBlur={findPlace}
+                      disabled={personCoordinates ? false : true}
                     />
                   </Form.Group>
                   <Form.Group>
@@ -174,27 +186,12 @@ export const CreateRecommendation = ({ context, match, history }) => {
                       placeholder="What's great about this place?"
                       value={description}
                       onChange={e => setDescription(e.target.value)}
+                      //  need to figure out why this keeps rerendering on change
                     />
                   </Form.Group>
                   <p>{recommendation.title}</p>
                   <p>{recommendation.vicinity}</p>
-                  {/* <Form.Group>
-                    <Form.Control
-                      type="text"
-                      name="title"
-                      value={recommendation.title || ''}
-                      plaintext
-                      readOnly
-                    />
-                    <Form.Control
-                      type="text"
-                      name="location"
-                      value={recommendation.vicinity || ''}
-                      plaintext
-                      readOnly
-                    />
-                  </Form.Group> */}
-                </React.Fragment>
+                </>
               )}
             />
             <ButtonDiv>
@@ -217,4 +214,4 @@ export const CreateRecommendation = ({ context, match, history }) => {
       </Container>
     </DivContainer>
   );
-};
+}
