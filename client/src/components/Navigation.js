@@ -6,8 +6,8 @@ const Navigation = ({ context }) => {
   const authorizedUser = context.authorizedUser;
   return (
     <NavDiv>
-      <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
-        <Navbar.Brand href="/">Recommend It!</Navbar.Brand>
+      <NavBar collapseOnSelect expand="lg">
+        <NavBarTitle href="/">Recommend It!</NavBarTitle>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           {authorizedUser ? (
@@ -17,21 +17,21 @@ const Navigation = ({ context }) => {
               </Nav>
 
               <Nav>
-                <Nav.Link href="/profile">Profile</Nav.Link>
-                <Nav.Link href="/signout">Sign Out</Nav.Link>
+                <NavLink href="/profile">Profile</NavLink>
+                <NavLink href="/signout">Sign Out</NavLink>
               </Nav>
             </React.Fragment>
           ) : (
             <React.Fragment>
               <Nav className="mr-auto">
-                {/* <Nav.Link href="#friends">Friends</Nav.Link> */}
-                <Nav.Link href="/signin">SignIn</Nav.Link>
-                <Nav.Link href="/signup">SignUp</Nav.Link>
+                {/* <NavLink href="#friends">Friends</NavLink> */}
+                <NavLink href="/signin">SignIn</NavLink>
+                <NavLink href="/signup">SignUp</NavLink>
               </Nav>
             </React.Fragment>
           )}
         </Navbar.Collapse>
-      </Navbar>
+      </NavBar>
     </NavDiv>
   );
 };
@@ -40,4 +40,13 @@ export default Navigation;
 
 const NavDiv = styled.div`
   margin-bottom: 0px;
+`;
+const NavBar = styled(Navbar)`
+  background-color: #0b438c !important;
+`;
+const NavBarTitle = styled(NavBar.Brand)`
+  color: white !important;
+`;
+const NavLink = styled(Nav.Link)`
+  color: white !important;
 `;
