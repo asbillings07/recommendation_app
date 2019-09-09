@@ -11,24 +11,27 @@ const Navigation = ({ context }) => {
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           {authorizedUser ? (
-            <React.Fragment>
-              <Nav className="mr-auto">
-                {/* <Nav.Link href="#friends">Friends</Nav.Link> */}
+            <>
+              <Nav className="mr-auto"></Nav>
+              <Nav variant="pills">
+                <NavLink user="true">{`Welcome, ${authorizedUser.firstName}!`}</NavLink>
+                <Nav.Item>
+                  <NavLink href="/profile">Profile</NavLink>
+                </Nav.Item>
+                <Nav.Item>
+                  <NavLink href="/signout">Sign Out</NavLink>
+                </Nav.Item>
               </Nav>
-
-              <Nav>
-                <NavLink href="/profile">Profile</NavLink>
-                <NavLink href="/signout">Sign Out</NavLink>
-              </Nav>
-            </React.Fragment>
+            </>
           ) : (
-            <React.Fragment>
-              <Nav className="mr-auto">
-                {/* <NavLink href="#friends">Friends</NavLink> */}
+            <>
+              <Nav className="mr-auto"></Nav>
+              <Nav>
+                <NavLink user="true">Welcome, User!</NavLink>
                 <NavLink href="/signin">SignIn</NavLink>
                 <NavLink href="/signup">SignUp</NavLink>
               </Nav>
-            </React.Fragment>
+            </>
           )}
         </Navbar.Collapse>
       </NavBar>
@@ -48,5 +51,5 @@ const NavBarTitle = styled(NavBar.Brand)`
   color: white !important;
 `;
 const NavLink = styled(Nav.Link)`
-  color: white !important;
+  color: ${props => (props.user ? 'black' : 'white')} !important;
 `;
