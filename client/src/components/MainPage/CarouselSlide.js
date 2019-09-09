@@ -6,37 +6,27 @@ import city4 from '../../images/city4.jpg';
 import city5 from '../../images/city5.jpg';
 import styled from 'styled-components';
 
-export default function CarouselSlide({ authUser }) {
+export default function CarouselSlide() {
   return (
-    <Carousel>
+    <Carousel className="mb-5">
       <Carousel.Item>
         <StyledImg src={city5} alt="First slide" />
         <Carousel.Caption>
-          {authUser ? (
-            <h1>Welcome, {authUser.firstName}!</h1>
-          ) : (
-            <h1>Welcome, User!</h1>
-          )}
-
-          <p>Browse Recommendations or create your own!</p>
+          <h3>Welcome to RecommendIt!</h3>
         </Carousel.Caption>
       </Carousel.Item>
       <Carousel.Item>
         <StyledImg src={city3} alt="Third slide" />
 
         <Carousel.Caption>
-          <h3>Second slide label</h3>
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+          <h3>Browse categories for recommendations or create your own!</h3>
         </Carousel.Caption>
       </Carousel.Item>
       <Carousel.Item>
         <StyledImg src={city4} alt="Third slide" />
 
         <Carousel.Caption>
-          <h3>Third slide label</h3>
-          <p>
-            Praesent commodo cursus magna, vel scelerisque nisl consectetur.
-          </p>
+          <h3>Comment on recommendations!</h3>
         </Carousel.Caption>
       </Carousel.Item>
     </Carousel>

@@ -9,7 +9,7 @@ export default function CategoryList({ categories, loading }) {
     return categories.map(category => (
       <Col className="mb-2" sm={4} key={category.id}>
         <Link to={`/category/${category.id}/recs`}>
-          <CategoryButton size="lg" block>
+          <CategoryButton variant="outline-primary" size="lg" block>
             {category.title}
           </CategoryButton>
         </Link>
@@ -41,5 +41,9 @@ const CategoryContainer = styled(Container)`
   margin-top: 3px;
 `;
 const CategoryButton = styled(Button)`
-  background-color: #1168d9 !important;
+  outline-color: #1168d9 !important;
+
+  :hover {
+    background-color: #1168d9 !important;
+  }
 `;

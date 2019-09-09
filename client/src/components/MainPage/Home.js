@@ -4,7 +4,7 @@ import Axios from 'axios';
 import Config from '../../Config';
 import SearchBar from './SearchBar';
 import styled from 'styled-components';
-import { Jumbotron, Container } from 'react-bootstrap';
+import { Jumbotron } from 'react-bootstrap';
 import CarouselSlide from './CarouselSlide';
 
 export default function Home({ context, history }) {
