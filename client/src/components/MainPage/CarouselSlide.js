@@ -1,6 +1,5 @@
 import React from 'react';
 import { Carousel } from 'react-bootstrap';
-import city2 from '../../images/city2.jpg';
 import city3 from '../../images/city3.jpg';
 import city4 from '../../images/city4.jpg';
 import city5 from '../../images/city5.jpg';

@@ -3,8 +3,6 @@ import CategoryList from '../Categories/CategoryList';
 import Axios from 'axios';
 import Config from '../../Config';
 import SearchBar from './SearchBar';
-import styled from 'styled-components';
-import { Jumbotron } from 'react-bootstrap';
 import CarouselSlide from './CarouselSlide';
 
 export default function Home({ context, history }) {
@@ -31,17 +29,6 @@ export default function Home({ context, history }) {
 
   return (
     <>
-      {/* <StyledJumbotron fluid>
-        <Container>
-          {authUser ? (
-            <h1>Welcome, {authUser.firstName}!</h1>
-          ) : (
-            <h1>Welcome, User!</h1>
-          )}
-
-          <p>Browse Recommendations or create your own!</p>
-        </Container>
-      </StyledJumbotron> */}
       <CarouselSlide authUser={context.authorizedUser} />
       <SearchBar />
 
@@ -50,13 +37,13 @@ export default function Home({ context, history }) {
   );
 }
 
-const StyledJumbotron = styled(Jumbotron)`
-  background-image: url('https://images.unsplash.com/photo-1444852538915-ac95232916dd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80');
-  width: 100%;
-  height: 200px;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
-  text-align: center;
-  color: white;
-`;
+// const StyledJumbotron = styled(Jumbotron)`
+//   background-image: url('https://images.unsplash.com/photo-1444852538915-ac95232916dd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80');
+//   width: 100%;
+//   height: 200px;
+//   background-repeat: no-repeat;
+//   background-position: center;
+//   background-size: cover;
+//   text-align: center;
+//   color: white;
+// `;
