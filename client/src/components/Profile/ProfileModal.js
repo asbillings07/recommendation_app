@@ -1,29 +1,41 @@
 import React, { useState } from 'react';
 import { Button, Modal } from 'react-bootstrap';
+import { notify } from 'react-notify-toast';
+export default function ProfileModal({ showModal, setModal, context, recId }) {
+  const handleClose = () => setModal(false);
 
-export default function ProfileModal() {
-  const [show, setShow] = useState(false);
-
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-
+  // Deletes recommendation
+  const deleteRecommendation = id => {
+    context.data.deleteRecommendation(context.token, id).then(error => {
+      if (error.length) {
+        console.log(error);
+      } else {
+        notify.show('Recommendation Deleted!', 'danger', 10000);
+      }
+    });
+  };
   return (
     <>
-      <Button variant="primary" onClick={handleShow}>
-        Launch demo modal
-      </Button>
-
-      <Modal show={show} onHide={handleClose}>
+      <Modal show={showModal} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Modal heading</Modal.Title>
+          <Modal.Title>Delete Recommendation?</Modal.Title>
         </Modal.Header>
-        <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
+        <Modal.Body>
+          Are you sure you want to delete this recommendation? Once this is
+          done, there is no going back.
+        </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
-            Close
+            Go back
           </Button>
-          <Button variant="primary" onClick={handleClose}>
-            Save Changes
+          <Button
+            variant="danger"
+            onClick={() => {
+              handleClose();
+              deleteRecommendation(recId);
+            }}
+          >
+            Yes, do it
           </Button>
         </Modal.Footer>
       </Modal>

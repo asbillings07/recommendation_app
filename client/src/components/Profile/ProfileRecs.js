@@ -1,28 +1,11 @@
 import React, { useState } from 'react';
 import { ListGroupItem, Card, Button } from 'react-bootstrap';
 import styled from 'styled-components';
-import { notify } from 'react-notify-toast';
 import ProfileModal from './ProfileModal';
 
 const ProfileRec = ({ recommendations, context }) => {
   const [showModal, setShowModal] = useState(false);
-
-  // Deletes recommendation
-  const deleteRecommendation = id => {
-    const deleteIt = window.confirm(
-      'Careful...Are you sure you want to delete this recommendation? There is no going back.'
-    );
-    if (deleteIt) {
-      context.data.deleteRecommendation(context.token, id).then(error => {
-        if (error.length) {
-          console.log(error);
-        } else {
-          notify.show('Recommendation Deleted!', 'Danger', 10000);
-        }
-      });
-    } else {
-    }
-  };
+  const [recid, setRecid] = useState('');
 
   const profileRecs = () =>
     recommendations.map(rec => (
@@ -34,7 +17,10 @@ const ProfileRec = ({ recommendations, context }) => {
           Edit
         </Button>
         <Button
-          onClick={() => deleteRecommendation(rec.id)}
+          onClick={() => {
+            setShowModal(true);
+            setRecid(rec.id);
+          }}
           className="float-right"
           variant="danger"
         >
@@ -46,7 +32,12 @@ const ProfileRec = ({ recommendations, context }) => {
   return (
     <>
       {profileRecs()}
-      <ProfileModal />
+      <ProfileModal
+        showModal={showModal}
+        setModal={setShowModal}
+        context={context}
+        recId={recid}
+      />
     </>
   );
 };
