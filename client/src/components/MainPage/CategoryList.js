@@ -8,8 +8,13 @@ export default function CategoryList({ categories, loading }) {
   const showCategories = () => {
     return categories.map(category => (
       <Col className="mb-2" sm={4} key={category.id}>
-        <Link to={`/category/${category.id}/recs`}>
-          <CategoryButton variant="outline-primary" size="lg" block>
+        <Link data-testid="category-link" to={`/category/${category.id}/recs`}>
+          <CategoryButton
+            aria-label={`navigate to ${category.title}`}
+            variant="outline-primary"
+            size="lg"
+            block
+          >
             {category.title}
           </CategoryButton>
         </Link>
@@ -21,12 +26,12 @@ export default function CategoryList({ categories, loading }) {
     return <Spinner size="4x" spinning="spinning" />;
   } else {
     return (
-      <React.Fragment>
-        <H2>Browse Categories</H2>
+      <>
+        <H2 aria-label="Browse Categories">Browse Categories</H2>
         <CategoryContainer>
           <Row>{showCategories()}</Row>
         </CategoryContainer>
-      </React.Fragment>
+      </>
     );
   }
 }

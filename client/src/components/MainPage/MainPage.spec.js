@@ -4,10 +4,12 @@ import { Provider } from '../../Context';
 import Home from './Home';
 import CarouselSlide from './CarouselSlide';
 import Navigation from './Navigation';
+import CategoryList from './CategoryList';
+import { MemoryRouter } from 'react-router-dom';
 
 global.fetch = require('jest-fetch-mock');
 
-describe('All components in <Home/> renders correctly', () => {
+describe('All components in on the Main(landing) page render correctly', () => {
   afterEach(cleanup);
   const context = {
     authorizedUser: {
@@ -15,6 +17,25 @@ describe('All components in <Home/> renders correctly', () => {
       lastName: 'Billings',
     },
   };
+
+  const category = [
+    {
+      id: 1,
+      title: 'Resturant',
+      Recommendations: [],
+    },
+    {
+      id: 2,
+      title: 'Outdoor Activities',
+      Recommendations: [],
+    },
+    {
+      id: 3,
+      title: 'Automotive',
+      Recommendations: [],
+    },
+  ];
+
   test('<Home/>', () => {
     const { container } = render(
       <Provider>
@@ -42,5 +63,18 @@ describe('All components in <Home/> renders correctly', () => {
       queryAllByLabelText('This link displays the Profile page')
     ).toBeTruthy();
     expect(queryAllByLabelText('This link logs you out')).toBeTruthy();
+  });
+
+  test('<CategoryList/>', () => {
+    fetch.mockResponseOnce(JSON.stringify(category));
+
+    const { debug, queryByLabelText, getAllByTestId } = render(
+      <MemoryRouter>
+        <CategoryList categories={category} />
+      </MemoryRouter>
+    );
+
+    expect(queryByLabelText(`navigate to ${category.title}`));
+    expect(getAllByTestId('category-link')).toBeTruthy();
   });
 });

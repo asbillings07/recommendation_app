@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import CategoryList from '../Categories/CategoryList';
+import CategoryList from './CategoryList';
 import Axios from 'axios';
 import Config from '../../Config';
 import SearchBar from './SearchBar';

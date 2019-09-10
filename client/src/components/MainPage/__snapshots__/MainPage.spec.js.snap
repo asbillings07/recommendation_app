@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`All components in <Home/> renders correctly <Home/> 1`] = `
+exports[`All components in on the Main(landing) page render correctly <Home/> 1`] = `
 <div
   aria-label="carousel slide"
   class="mb-5 carousel slide"
