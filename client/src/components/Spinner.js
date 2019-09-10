@@ -5,7 +5,7 @@ import { Container, Row, Col } from 'react-bootstrap';
 import styled from 'styled-components';
 
 export default props => (
-  <Container className="mt-5">
+  <Container aria-label="loading page" className="mt-5">
     <Row className="justify-content-md-center">
       <Col xs md lg="auto">
         <FontAwesomeIcon

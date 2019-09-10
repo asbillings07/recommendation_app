@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ListGroupItem, Card, Button } from 'react-bootstrap';
 import styled from 'styled-components';
 import ProfileModal from './ProfileModal';
 
-const ProfileRec = ({ recommendations, context }) => {
+const ProfileRec = ({ recommendations, context, onRefresh }) => {
   const [showModal, setShowModal] = useState(false);
   const [recid, setRecid] = useState('');
 
@@ -37,6 +37,7 @@ const ProfileRec = ({ recommendations, context }) => {
         setModal={setShowModal}
         context={context}
         recId={recid}
+        refresh={onRefresh}
       />
     </>
   );
@@ -48,6 +49,3 @@ const CardTitle = styled(Card.Title)`
 `;
 
 export default ProfileRec;
-
-// title color blue as an H1 or H2
-// date-created smaller text

@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 export default function SearchBar() {
   return (
-    <ContainerDiv>
+    <ContainerDiv aria-label="search bar">
       <InputGroup className="mb-3">
         <FormControl placeholder="Search" />
         <InputGroup.Append>

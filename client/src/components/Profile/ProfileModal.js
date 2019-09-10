@@ -1,7 +1,13 @@
 import React, { useState } from 'react';
 import { Button, Modal } from 'react-bootstrap';
 import { notify } from 'react-notify-toast';
-export default function ProfileModal({ showModal, setModal, context, recId }) {
+export default function ProfileModal({
+  showModal,
+  setModal,
+  context,
+  recId,
+  refresh,
+}) {
   const handleClose = () => setModal(false);
 
   // Deletes recommendation
@@ -33,6 +39,8 @@ export default function ProfileModal({ showModal, setModal, context, recId }) {
             onClick={() => {
               handleClose();
               deleteRecommendation(recId);
+              debugger;
+              refresh();
             }}
           >
             Yes, do it

@@ -7,24 +7,24 @@ import styled from 'styled-components';
 
 export default function CarouselSlide() {
   return (
-    <Carousel className="mb-5">
+    <Carousel aria-label="carousel slide" className="mb-5">
       <Carousel.Item>
         <StyledImg src={city5} alt="First slide" />
-        <Carousel.Caption>
+        <Carousel.Caption aria-label="first slide caption says">
           <h3>Welcome to RecommendIt!</h3>
         </Carousel.Caption>
       </Carousel.Item>
       <Carousel.Item>
-        <StyledImg src={city3} alt="Third slide" />
+        <StyledImg src={city3} alt="Second slide" />
 
-        <Carousel.Caption>
+        <Carousel.Caption aria-label="second slide caption says">
           <h3>Browse categories for recommendations or create your own!</h3>
         </Carousel.Caption>
       </Carousel.Item>
       <Carousel.Item>
         <StyledImg src={city4} alt="Third slide" />
 
-        <Carousel.Caption>
+        <Carousel.Caption aria-label="third slide caption says">
           <h3>Comment on recommendations!</h3>
         </Carousel.Caption>
       </Carousel.Item>
