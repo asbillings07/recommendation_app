@@ -4,35 +4,27 @@ import avatar from '../../images/imgholdr-image.png';
 import Config from '../../Config';
 import ProfileRecommendation from './ProfileRecs';
 import UserProfileInfo from './ProfileInfo';
-import {
-  Container,
-  Row,
-  Col,
-  Card,
-  Button,
-  ListGroupItem,
-  ListGroup,
-} from 'react-bootstrap';
+import { Container, Row, Col, Card } from 'react-bootstrap';
 import styled from 'styled-components';
 
 export const Profile = ({ context }) => {
   const [user, setUser] = useState({});
   const [recommendation, setRecommendation] = useState([]);
 
+  const fetchData = async () => {
+    const data = await axios.get(`${Config.apiBaseUrl}/users`, {
+      headers: { Authorization: 'bearer ' + context.token },
+    });
+
+    if (data) {
+      setUser(data.data);
+      setRecommendation(data.data.Recommendations);
+    }
+  };
+
   useEffect(() => {
-    const fetchData = async () => {
-      const data = await axios.get(`${Config.apiBaseUrl}/users`, {
-        headers: { Authorization: 'bearer ' + context.token },
-      });
-
-      if (data) {
-        setUser(data.data);
-        setRecommendation(data.data.Recommendations);
-      }
-    };
-
     fetchData();
-  }, [context.token]);
+  }, []);
 
   return (
     <StyledContainer>
@@ -57,6 +49,7 @@ export const Profile = ({ context }) => {
           <ProfileRecommendation
             recommendations={recommendation}
             context={context}
+            onRefresh={fetchData}
           />
         </StyledCol>
       </Row>

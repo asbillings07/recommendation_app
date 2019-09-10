@@ -3,7 +3,7 @@ import Forms from '../Forms';
 import { Form, Container, Row, Col, Button } from 'react-bootstrap';
 import { notify } from 'react-notify-toast';
 import Axios from 'axios';
-import { RecommendationModal } from '../RecommendationModal';
+import { RecommendationModal } from './RecommendationModal';
 import styled from 'styled-components';
 import city from '../../images/city.jpg';
 

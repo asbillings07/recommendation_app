@@ -1,8 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import withContext from './Context';
-import Home from './components/Home';
-import Navigation from './components/Navigation';
+import Home from './components/MainPage/Home';
+import Navigation from './components/MainPage/Navigation';
 import UserSignIn from './components/Users/UserSignIn';
 import UserSignUp from './components/Users/UserSignUp';
 import UserSignOut from './components/Users/UserSignOut';

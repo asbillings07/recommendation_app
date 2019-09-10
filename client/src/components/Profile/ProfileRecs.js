@@ -1,43 +1,46 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { ListGroupItem, Card, Button } from 'react-bootstrap';
 import styled from 'styled-components';
-import { notify } from 'react-notify-toast';
+import ProfileModal from './ProfileModal';
 
-const ProfileRec = ({ recommendations, context }) => {
-  // Deletes recommendation - need to figure out how to ensure recommendations are update when one is deleted
-  const deleteRecommendation = id => {
-    const deleteIt = window.confirm(
-      'Careful...Are you sure you want to delete this recommendation? There is no going back.'
-    );
-    if (deleteIt) {
-      context.data.deleteRecommendation(context.token, id).then(error => {
-        if (error.length) {
-          console.log(error);
-        } else {
-          notify.show('Recommendation Deleted!', 'Danger', 10000);
-        }
-      });
-    } else {
-    }
-  };
+const ProfileRec = ({ recommendations, context, onRefresh }) => {
+  const [showModal, setShowModal] = useState(false);
+  const [recid, setRecid] = useState('');
 
-  return recommendations.map(rec => (
-    <ListGroupItem key={rec.id}>
-      <CardTitle>{rec.title}</CardTitle>
-      <Card.Text>Location: {rec.location}</Card.Text>
-      <Card.Text>Description: {rec.description}</Card.Text>
-      <Button variant="info" href={`/category/${rec.id}/recs/update`}>
-        Edit
-      </Button>
-      <Button
-        onClick={() => deleteRecommendation(rec.id)}
-        className="float-right"
-        variant="danger"
-      >
-        Delete
-      </Button>
-    </ListGroupItem>
-  ));
+  const profileRecs = () =>
+    recommendations.map(rec => (
+      <ListGroupItem key={rec.id}>
+        <CardTitle>{rec.title}</CardTitle>
+        <Card.Text>Location: {rec.location}</Card.Text>
+        <Card.Text>Description: {rec.description}</Card.Text>
+        <Button variant="info" href={`/category/${rec.id}/recs/update`}>
+          Edit
+        </Button>
+        <Button
+          onClick={() => {
+            setShowModal(true);
+            setRecid(rec.id);
+          }}
+          className="float-right"
+          variant="danger"
+        >
+          Delete
+        </Button>
+      </ListGroupItem>
+    ));
+
+  return (
+    <>
+      {profileRecs()}
+      <ProfileModal
+        showModal={showModal}
+        setModal={setShowModal}
+        context={context}
+        recId={recid}
+        refresh={onRefresh}
+      />
+    </>
+  );
 };
 
 const CardTitle = styled(Card.Title)`
@@ -46,6 +49,3 @@ const CardTitle = styled(Card.Title)`
 `;
 
 export default ProfileRec;
-
-// title color blue as an H1 or H2
-// date-created smaller text
