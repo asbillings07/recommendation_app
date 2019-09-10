@@ -7,19 +7,31 @@ const Navigation = ({ context }) => {
   return (
     <NavDiv>
       <NavBar collapseOnSelect expand="lg">
-        <NavBarTitle href="/">Recommend It!</NavBarTitle>
+        <NavBarTitle aria-label="App Title is RecommendIt" href="/">
+          Recommend It!
+        </NavBarTitle>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           {authorizedUser ? (
             <>
               <Nav className="mr-auto"></Nav>
               <Nav variant="pills">
-                <NavLink user="true">{`Welcome, ${authorizedUser.firstName}!`}</NavLink>
+                <NavLink
+                  aria-label={`Welcome, ${authorizedUser.firstName}!`}
+                  user="true"
+                >{`Welcome, ${authorizedUser.firstName}!`}</NavLink>
                 <Nav.Item>
-                  <NavLink href="/profile">Profile</NavLink>
+                  <NavLink
+                    aria-label="This link displays the Profile page"
+                    href="/profile"
+                  >
+                    Profile
+                  </NavLink>
                 </Nav.Item>
                 <Nav.Item>
-                  <NavLink href="/signout">Sign Out</NavLink>
+                  <NavLink aria-label="This link logs you out" href="/signout">
+                    Sign Out
+                  </NavLink>
                 </Nav.Item>
               </Nav>
             </>
@@ -27,9 +39,21 @@ const Navigation = ({ context }) => {
             <>
               <Nav className="mr-auto"></Nav>
               <Nav>
-                <NavLink user="true">Welcome, User!</NavLink>
-                <NavLink href="/signin">SignIn</NavLink>
-                <NavLink href="/signup">SignUp</NavLink>
+                <NavLink aria-label="Welcome, User!" user="true">
+                  Welcome, User!
+                </NavLink>
+                <NavLink
+                  aria-label="This link displays the signIn page"
+                  href="/signin"
+                >
+                  SignIn
+                </NavLink>
+                <NavLink
+                  aria-label="This link displays the signup page"
+                  href="/signup"
+                >
+                  SignUp
+                </NavLink>
               </Nav>
             </>
           )}

@@ -36,14 +36,3 @@ export default function Home({ context, history }) {
     </>
   );
 }
-
-// const StyledJumbotron = styled(Jumbotron)`
-//   background-image: url('https://images.unsplash.com/photo-1444852538915-ac95232916dd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80');
-//   width: 100%;
-//   height: 200px;
-//   background-repeat: no-repeat;
-//   background-position: center;
-//   background-size: cover;
-//   text-align: center;
-//   color: white;
-// `;
