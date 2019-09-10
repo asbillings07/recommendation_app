@@ -30,7 +30,7 @@ export const Profile = ({ context }) => {
     <StyledContainer>
       <Row>
         <Col sm={4}>
-          <StyledCard>
+          <StyledCard aria-label="profile description">
             <Card.Img variant="top" src={avatar} />
             <Card.Body>
               <Card.Text>

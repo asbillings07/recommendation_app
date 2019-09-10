@@ -5,6 +5,7 @@ import Home from './Home';
 import CarouselSlide from './CarouselSlide';
 import Navigation from './Navigation';
 import CategoryList from './CategoryList';
+import SearchBar from './SearchBar';
 import { MemoryRouter } from 'react-router-dom';
 
 global.fetch = require('jest-fetch-mock');
@@ -53,6 +54,12 @@ describe('All components in on the Main(landing) page render correctly', () => {
     expect(queryAllByText('third slide caption says')).toBeTruthy();
   });
 
+  test('<SearchBar/>', () => {
+    const { debug, getByPlaceholderText } = render(<SearchBar />);
+
+    expect(getByPlaceholderText('Search')).toBeTruthy();
+  });
+
   test('<Navigation/>', () => {
     const { queryAllByLabelText } = render(<Navigation context={context} />);
     expect(queryAllByLabelText('App Title is RecommendIt')).toBeTruthy();
@@ -68,7 +75,7 @@ describe('All components in on the Main(landing) page render correctly', () => {
   test('<CategoryList/>', () => {
     fetch.mockResponseOnce(JSON.stringify(category));
 
-    const { debug, queryByLabelText, getAllByTestId } = render(
+    const { queryByLabelText, getAllByTestId } = render(
       <MemoryRouter>
         <CategoryList categories={category} />
       </MemoryRouter>

@@ -2,28 +2,49 @@ import React from 'react';
 import { Card, Button } from 'react-bootstrap';
 import styled from 'styled-components';
 
-const ProfileInfo = ({ user }) => {
+export default function ProfileInfo({ user }) {
   return (
-    <StyledCard>
+    <StyledCard aria-label="Update Profile Information">
       <Card.Body>
-        <Card.Title>First Name: {user.firstName}</Card.Title>
-        <Card.Title className="mb-3">Last Name: {user.lastName}</Card.Title>
-        <Card.Title>Email Address: {user.email}</Card.Title>
-        <ConfirmedSubtitle className="mb-3">
+        <Card.Title aria-label={`The first name is ${user.firstName}`}>
+          First Name: {user.firstName}
+        </Card.Title>
+        <Card.Title
+          aria-label={`The last name is ${user.lastName}`}
+          className="mb-3"
+        >
+          Last Name: {user.lastName}
+        </Card.Title>
+        <Card.Title aria-label={`The email is ${user.email}`}>
+          Email Address: {user.email}
+        </Card.Title>
+        <ConfirmedSubtitle
+          aria-label={`Your email is ${
+            user.confirmed ? 'CONFIRMED' : 'NOT CONFIRMED'
+          }`}
+          className="mb-3"
+        >
           Email Status: {user.confirmed ? 'CONFIRMED' : 'NOT CONFIRMED'}{' '}
         </ConfirmedSubtitle>
-        <Button variant="outline-info" className="mr-2" href="/profile/edit">
+        <Button
+          data-testid="profile-edit"
+          variant="outline-info"
+          className="mr-2"
+          href="/profile/edit"
+        >
           Edit Profile Info
         </Button>
-        <Button variant="outline-warning" href="/forgotpassword">
+        <Button
+          data-testid="forgotpassword"
+          variant="outline-warning"
+          href="/forgotpassword"
+        >
           Reset Password
         </Button>
       </Card.Body>
     </StyledCard>
   );
-};
-
-export default ProfileInfo;
+}
 
 const StyledCard = styled(Card)`
   width: 18rem;
