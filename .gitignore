@@ -4,7 +4,6 @@ nodemon.json
 .env
 .db
 notes
-test
 Todo
 env.js
 .DS_Store
