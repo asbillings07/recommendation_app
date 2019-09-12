@@ -17,6 +17,7 @@ export default function ProfileModal({
         console.log(error);
       } else {
         notify.show('Recommendation Deleted!', 'danger', 10000);
+        refresh();
       }
     });
   };
@@ -39,8 +40,6 @@ export default function ProfileModal({
             onClick={() => {
               handleClose();
               deleteRecommendation(recId);
-              debugger;
-              refresh();
             }}
           >
             Yes, do it

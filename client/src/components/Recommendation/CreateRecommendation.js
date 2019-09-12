@@ -184,7 +184,7 @@ export function CreateRecommendation({ context, match, history }) {
                       type="text"
                       name="description"
                       placeholder="What's great about this place?"
-                      value={description}
+                      defaultValue={description}
                       onChange={e => setDescription(e.target.value)}
                       //  need to figure out why this keeps rerendering on change
                     />

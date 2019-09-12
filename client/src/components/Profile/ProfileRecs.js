@@ -10,9 +10,15 @@ const ProfileRec = ({ recommendations, context, onRefresh }) => {
   const profileRecs = () =>
     recommendations.map(rec => (
       <ListGroupItem key={rec.id}>
-        <CardTitle>{rec.title}</CardTitle>
-        <Card.Text>Location: {rec.location}</Card.Text>
-        <Card.Text>Description: {rec.description}</Card.Text>
+        <CardTitle aria-label={`The title of the recommendation`}>
+          {rec.title}
+        </CardTitle>
+        <Card.Text aria-label={`The location of the recommendation`}>
+          Location: {rec.location}
+        </Card.Text>
+        <Card.Text aria-label={`The description of the recommendation`}>
+          Description: {rec.description}
+        </Card.Text>
         <Button variant="info" href={`/category/${rec.id}/recs/update`}>
           Edit
         </Button>

@@ -87,7 +87,7 @@ const getRecWithUser = id =>
 
 // Update one Recommendation by Id
 const updateRecs = (id, body) =>
-  Recommendation.findByPk(id).then(rec =>
+  Recommendation.findOne({ where: { id } }).then(rec =>
     rec.update({
       categoryId: body.categoryId,
       title: body.title,
@@ -99,7 +99,7 @@ const updateRecs = (id, body) =>
 
 // Delete Recommendation by Id
 const deleteRecs = id =>
-  Recommendation.findByPk(id).then(rec => {
+  Recommendation.findOne({ where: { id } }).then(rec => {
     if (rec) {
       return rec.destroy();
     } else {

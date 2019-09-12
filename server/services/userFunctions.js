@@ -16,7 +16,7 @@ const createUser = user => {
 };
 
 // Finds authed user by id then updates user and hashes password if needed
-const updateUser = (id, body) => {
+const updateUser = (id, body) =>
   User.findOne({ where: { id } }).then(user =>
     user.update({
       firstName: body.firstName,
@@ -24,7 +24,7 @@ const updateUser = (id, body) => {
       email: body.email,
     })
   );
-};
+
 // finds an authed user id then deletes a user
 const deleteUser = currentUser =>
   User.findOne({
