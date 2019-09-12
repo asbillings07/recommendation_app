@@ -43,7 +43,7 @@ export default class Data {
   // create users
   async createUser(user) {
     const response = await this.api('/users', 'POST', user);
-    if (response.status === 201) {
+    if (response.status === 201 || response.status === 200) {
       return [];
     } else if (response.status === 400) {
       return response
