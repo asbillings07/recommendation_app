@@ -66,7 +66,6 @@ router.get(
 router.post(
   '/users',
   validateUser,
-  authenticateUser,
   collectEmail,
   asyncHandler(async (req, res) => {
     const user = req.body;
