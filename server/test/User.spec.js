@@ -119,6 +119,6 @@ describe('User Model Functions', () => {
       photoUrl: 'NinjaPhotoUrl',
     };
     const userPhoto = await updateUserPhoto(id, body);
-    console.log(userPhoto);
+    expect(userPhoto).toBeUndefined();
   });
 });
