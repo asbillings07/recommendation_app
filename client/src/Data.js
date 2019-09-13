@@ -70,6 +70,28 @@ export default class Data {
     }
   }
 
+  // Update User Photo
+
+  async updateUserPhoto(token, photoData) {
+    const response = await this.api(
+      '/userphoto',
+      'POST',
+      photoData,
+      true,
+      token
+    );
+    if (response.status === 204 || response.status === 201) {
+      return [];
+    } else if (response.status === 400) {
+      return response
+        .json()
+        .then(data => data.errors)
+        .catch(err => console.log(err));
+    } else {
+      throw new Error('Something else went wrong');
+    }
+  }
+
   // Delete User
   async deleteUser(token) {
     const response = await this.api(

@@ -29,8 +29,17 @@ module.exports = {
       confirmed: {
         type: Sequelize.BOOLEAN,
       },
-      photo: {
+      photoName: {
         type: Sequelize.STRING,
+      },
+      cloudImage: {
+        type: Sequelize.STRING,
+      },
+      imageId: {
+        type: Sequelize.STRING,
+      },
+      postDate: {
+        type: Sequelize.DATE,
       },
       isAdmin: {
         type: Sequelize.BOOLEAN,

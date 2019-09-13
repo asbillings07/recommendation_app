@@ -9,6 +9,7 @@ Sentry.init({
 // The request handler must be the first middleware on the app
 
 const { PORT, CLIENT_ORIGIN } = require('./Config');
+const formData = require('express-form-data');
 // required to show HTTP requests in console
 const morgan = require('morgan');
 const cors = require('cors');
@@ -60,6 +61,7 @@ const corsOptions = {
 };
 
 app.use(cors());
+app.use(formData.parse());
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(passport.initialize());
@@ -85,6 +87,15 @@ app.get('/', (req, res, next) => {
     message: 'Welcome to the recommendation App!',
   });
 });
+
+// POST - Uploads photos to cloudinary storage
+// app.post('/api/profile-upload', (req, res) => {
+//   const values = req.files;
+
+//   cloudinary.uploader.upload(values.path, (error, result) =>
+//     console.log(result, error)
+//   );
+// });
 
 // Sentry Error Hanlder
 app.use(

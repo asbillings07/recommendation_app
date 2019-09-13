@@ -5,6 +5,11 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './css/App.css';
 import { Provider } from './Context';
 import * as serviceWorker from './serviceWorker';
+import * as Sentry from '@sentry/browser';
+
+Sentry.init({
+  dsn: 'https://6ae03774cdff4bfabdbcd523e89d61b0@sentry.io/1726112',
+});
 
 ReactDOM.render(
   <Provider>
