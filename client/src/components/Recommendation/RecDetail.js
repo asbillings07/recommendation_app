@@ -29,7 +29,7 @@ export default function RecDetail({ context, match, history }) {
       setCatid(id);
       try {
         const data = await Axios.get(`${Config.apiBaseUrl}/category/${id}`);
-
+        console.log(data);
         if (data) {
           const recs = data.data.category[0].Recommendations;
 
