@@ -6,7 +6,18 @@ export default function ProfileModal({
   setModal,
   profilePhotos,
   setPhoto,
+  context,
 }) {
+  const sendAvatarToDB = photo => {
+    context.data.updateUserPhoto(context.token, photo).then(error => {
+      if (error) {
+        console.log(error);
+      } else {
+        console.log('pushed to DB');
+      }
+    });
+  };
+
   const handleClose = () => setModal(false);
 
   const showAvatars = () => {
@@ -19,6 +30,7 @@ export default function ProfileModal({
             onClick={() => {
               setPhoto(photo.photoUrl);
               handleClose();
+              sendAvatarToDB(photo);
             }}
             variant="primary"
           >

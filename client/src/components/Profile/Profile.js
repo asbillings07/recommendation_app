@@ -5,7 +5,7 @@ import Config from '../../Config';
 import ProfileRecommendation from './ProfileRecs';
 import UserProfileInfo from './ProfileInfo';
 import ProfilePhotoModal from './ProfilePhotoModal';
-import { Container, Row, Col, Card, Button, Form } from 'react-bootstrap';
+import { Container, Row, Col, Card, Button } from 'react-bootstrap';
 import {
   Image,
   Video,
@@ -38,22 +38,22 @@ export const Profile = ({ context }) => {
 
   const profilePhotos = [
     {
-      name: 'Ninja Turtle Avatar',
+      photoName: 'Ninja Turtle Avatar',
       photoUrl:
         'https://res.cloudinary.com/hw8mbm47q/image/upload/v1568401759/ninja-turtle.png',
     },
     {
-      name: 'Penguin Avatar',
+      photoName: 'Penguin Avatar',
       photoUrl:
         'https://res.cloudinary.com/hw8mbm47q/image/upload/v1568401755/penguin-avatar.png',
     },
     {
-      name: 'Fox Avatar',
+      photoName: 'Fox Avatar',
       photoUrl:
         'https://res.cloudinary.com/hw8mbm47q/image/upload/v1568401753/fox-avatar.png',
     },
     {
-      name: 'Ninja Avatar',
+      photoName: 'Ninja Avatar',
       photoUrl:
         'https://res.cloudinary.com/hw8mbm47q/image/upload/v1568401753/ninja-avatar.png',
     },
@@ -65,16 +65,20 @@ export const Profile = ({ context }) => {
         <Row>
           <Col sm={4}>
             <StyledCard aria-label="profile description">
-              <Image publicId={photo} width="286" crop="scale" />
+              <Image
+                publicId={user.imageId ? user.imageId : photo}
+                width="286"
+                crop="scale"
+              />
               <Card.Body>
                 <Card.Text>
                   This is your profile. You can reset your password, view and
-                  manage all of the recommendations you have created and much
-                  more
+                  manage all of the recommendations you have created and choose
+                  a profile Avatar
                 </Card.Text>
 
                 <Button onClick={() => setShowModal(true)} variant="primary">
-                  Choose a Profile Photo
+                  Update Profile Avatar
                 </Button>
               </Card.Body>
             </StyledCard>
@@ -96,6 +100,7 @@ export const Profile = ({ context }) => {
         setModal={setShowModal}
         showModal={showModal}
         setPhoto={setPhoto}
+        context={context}
       />
     </CloudinaryContext>
   );
