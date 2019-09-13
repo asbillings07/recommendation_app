@@ -4,6 +4,7 @@ const {
   updateUser,
   deleteUser,
   findUserByObj,
+  updateUserPhoto,
 } = require('../services/userFunctions');
 
 jest.mock('../models/user.js', () => () => {
@@ -14,7 +15,8 @@ jest.mock('../models/user.js', () => () => {
     firstName: 'Billy',
     lastName: 'Bob',
     password: 'test12345',
-    comments: [],
+    photoName: '',
+    imageId: '',
   });
 
   return User;
@@ -100,15 +102,23 @@ describe('User Model Functions', () => {
     const currentUser = {
       id: 1,
     };
-    const user = deleteUser(currentUser);
-    expect(user.firstName).toBeUndefined();
-    expect(user.lastName).toBeUndefined();
-    expect(user.email).toBeUndefined();
+    const user = await deleteUser(currentUser);
+    expect(user).toBeUndefined();
   });
 
   test('find user in DB by Obj', async () => {
     const user = await findUserByObj({ email: 'test@test.com' });
     expect(user.firstName).toBe('Billy');
     expect(user.lastName).toBe('Bob');
+  });
+
+  test('should update user photo with new information provided by the user', async () => {
+    const id = 2;
+    const body = {
+      photoName: 'Ninja-Photo',
+      photoUrl: 'NinjaPhotoUrl',
+    };
+    const userPhoto = await updateUserPhoto(id, body);
+    console.log(userPhoto);
   });
 });
