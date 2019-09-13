@@ -7,13 +7,15 @@ export default function ProfileModal({
   profilePhotos,
   setPhoto,
   context,
+  refresh,
 }) {
   const sendAvatarToDB = photo => {
     context.data.updateUserPhoto(context.token, photo).then(error => {
-      if (error) {
+      if (error.length) {
         console.log(error);
       } else {
-        console.log('pushed to DB');
+        refresh();
+        notify.show('Profile Avatar Uploaded!', 'success', 10000);
       }
     });
   };

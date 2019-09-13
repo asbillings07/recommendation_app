@@ -65,7 +65,7 @@ export const Profile = ({ context }) => {
         <Row>
           <Col sm={4}>
             <StyledCard aria-label="profile description">
-              <Image
+              <StyledImage
                 publicId={user.imageId ? user.imageId : photo}
                 width="286"
                 crop="scale"
@@ -101,6 +101,7 @@ export const Profile = ({ context }) => {
         showModal={showModal}
         setPhoto={setPhoto}
         context={context}
+        refresh={fetchData}
       />
     </CloudinaryContext>
   );
@@ -108,6 +109,7 @@ export const Profile = ({ context }) => {
 
 const StyledContainer = styled(Container)`
   position: relative;
+  margin-top: 10px;
 `;
 
 const StyledCard = styled(Card)`
@@ -122,6 +124,11 @@ const StyledCol = styled(Col)`
   height: 43rem;
   width: 33rem;
   overflow: scroll;
+`;
+const StyledImage = styled(Image)`
+  padding-left: 5px;
+  padding-right: 5px;
+  padding-top: 5px;
 `;
 
 // const addProfilePhoto = () => {
