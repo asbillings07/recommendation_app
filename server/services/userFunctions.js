@@ -25,6 +25,14 @@ const updateUser = (id, body) =>
     })
   );
 
+const updateUserPhoto = (id, body) =>
+  User.findOne({ where: { id } }).then(user => {
+    user.update({
+      photoName: body.photoName,
+      imageId: body.photoUrl,
+    });
+  });
+
 // finds an authed user id then deletes a user
 const deleteUser = currentUser =>
   User.findOne({
@@ -82,4 +90,5 @@ module.exports = {
   findUserByToken,
   findUserById,
   findUserByObj,
+  updateUserPhoto,
 };
