@@ -1,5 +1,13 @@
 require('newrelic');
 const express = require('express');
+const Sentry = require('@sentry/node');
+
+Sentry.init({
+  dsn: 'https://646a0f42f7b54b3db2377c78174bdb4f@sentry.io/1726096',
+});
+
+// The request handler must be the first middleware on the app
+
 const { PORT, CLIENT_ORIGIN } = require('./Config');
 // required to show HTTP requests in console
 const morgan = require('morgan');
@@ -10,6 +18,10 @@ require('jsonwebtoken');
 require('dotenv').config();
 const passportJWT = require('passport-jwt');
 const { findUserByObj } = require('./services/userFunctions');
+
+const app = express();
+exports.app = app;
+app.use(Sentry.Handlers.requestHandler());
 
 // Passport JWT Authentication
 let ExtractJwt = passportJWT.ExtractJwt;
@@ -47,8 +59,6 @@ const corsOptions = {
   },
 };
 
-const app = express();
-exports.app = app;
 app.use(cors());
 app.use(morgan('dev'));
 app.use(express.json());
@@ -75,6 +85,20 @@ app.get('/', (req, res, next) => {
     message: 'Welcome to the recommendation App!',
   });
 });
+
+// Sentry Error Hanlder
+app.use(
+  Sentry.Handlers.errorHandler({
+    shouldHandleError(error) {
+      // Capture all 404 and 500 errors
+      if (error.status >= 100 && error.status < 600) {
+        return true;
+      }
+      return false;
+    },
+  })
+);
+
 // global error handler
 app.use((req, res, next) => {
   const err = new Error('Not Found');

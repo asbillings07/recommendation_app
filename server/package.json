@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/asbillings07/recommendation_app#readme",
   "dependencies": {
+    "@sentry/node": "^5.6.2",
     "basic-auth": "^2.0.1",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
