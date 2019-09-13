@@ -8,3 +8,4 @@ test
 Todo
 env.js
 .DS_Store
+newrelic_agent.log

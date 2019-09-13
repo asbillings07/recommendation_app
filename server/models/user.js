@@ -28,8 +28,17 @@ module.exports = (sequelize, DataTypes) => {
       confirmed: {
         type: DataTypes.BOOLEAN,
       },
-      photo: {
+      photoName: {
         type: DataTypes.STRING,
+      },
+      cloudImage: {
+        type: DataTypes.STRING,
+      },
+      imageId: {
+        type: DataTypes.STRING,
+      },
+      postDate: {
+        type: DataTypes.DATE,
       },
       isAdmin: {
         type: DataTypes.BOOLEAN,
