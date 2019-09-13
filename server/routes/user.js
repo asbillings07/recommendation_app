@@ -17,6 +17,7 @@ const {
   updateUser,
   findUserByEmail,
   findUserByObj,
+  updateUserPhoto,
 } = require('../services/userFunctions');
 
 // Authentication Route
@@ -88,6 +89,17 @@ router.put(
     const userid = req.user.id;
     const body = req.body;
     await updateUser(userid, body);
+    res.status(204).end();
+  })
+);
+
+router.post(
+  '/userphoto',
+  authenticateUser,
+  asyncHandler(async (req, res) => {
+    const userid = req.user.id;
+    const body = req.body;
+    await updateUserPhoto(userid, body);
     res.status(204).end();
   })
 );
