@@ -66,7 +66,6 @@ router.get(
 router.post(
   '/users',
   validateUser,
-  collectEmail,
   asyncHandler(async (req, res) => {
     const user = req.body;
     await createUser(user);

@@ -1,3 +1,4 @@
+require('newrelic');
 const express = require('express');
 const { PORT, CLIENT_ORIGIN } = require('./Config');
 // required to show HTTP requests in console
