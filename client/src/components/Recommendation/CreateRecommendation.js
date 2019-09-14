@@ -58,12 +58,9 @@ export function CreateRecommendation({ context, match, history }) {
 
   /** State & Effect Hooks */
 
-  const [description, setDescription] = useState('');
-  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState();
   const [lastVisited, setLastVisited] = useState('');
   const [recommendation, setRecommendation] = useState({});
-  const [input, setInput] = useState('');
-  const [recid, setRecid] = useState('');
   const [shouldShow, setShouldShow] = useState(false);
   const [personCoordinates, setPersonCoordinates] = useState({
     lat: null,
@@ -87,7 +84,6 @@ export function CreateRecommendation({ context, match, history }) {
           });
         });
       } else {
-        console.log('geolocation is not avaiable');
       }
     };
     getUserPosition();
@@ -109,7 +105,6 @@ export function CreateRecommendation({ context, match, history }) {
           size: '5',
         },
       }).then(response => {
-        console.log(response.data.results.items);
         setRecommendationListing(response.data.results.items);
         setShouldShow(true);
       });
@@ -131,18 +126,10 @@ export function CreateRecommendation({ context, match, history }) {
       }
     });
   };
-
+  console.log(description);
   const cancel = () => {
     const { id } = match.params;
     history.push(`/category/${id}/recs`);
-  };
-
-  const onChange = e => {
-    const name = e.target.name;
-    const value = e.target.value;
-    setInput({
-      [name]: value,
-    });
   };
 
   return (
@@ -176,7 +163,7 @@ export function CreateRecommendation({ context, match, history }) {
                       name="title"
                       placeholder="Enter the name of your place"
                       onBlur={findPlace}
-                      disabled={personCoordinates ? false : true}
+                      disabled={recommendation.title ? true : false}
                     />
                   </Form.Group>
                   <Form.Group>
@@ -184,7 +171,7 @@ export function CreateRecommendation({ context, match, history }) {
                       type="text"
                       name="description"
                       placeholder="What's great about this place?"
-                      defaultValue={description}
+                      value={description}
                       onChange={e => setDescription(e.target.value)}
                       //  need to figure out why this keeps rerendering on change
                     />
