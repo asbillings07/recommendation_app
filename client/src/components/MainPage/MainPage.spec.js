@@ -7,8 +7,9 @@ import Navigation from './Navigation';
 import CategoryList from './CategoryList';
 import SearchBar from './SearchBar';
 import { MemoryRouter } from 'react-router-dom';
+import { categories } from '../../data/mockCategory';
 
-global.fetch = require('jest-fetch-mock');
+global.console.error = jest.fn();
 
 describe('All components in on the Main(landing) page render correctly', () => {
   afterEach(cleanup);
@@ -55,7 +56,11 @@ describe('All components in on the Main(landing) page render correctly', () => {
   });
 
   test('<SearchBar/>', () => {
-    const { debug, getByPlaceholderText } = render(<SearchBar />);
+    const setCategories = jest.fn();
+
+    const { debug, getByPlaceholderText } = render(
+      <SearchBar setCategories={setCategories} />
+    );
 
     expect(getByPlaceholderText('Search')).toBeTruthy();
   });
@@ -73,11 +78,10 @@ describe('All components in on the Main(landing) page render correctly', () => {
   });
 
   test('<CategoryList/>', () => {
-    fetch.mockResponseOnce(JSON.stringify(category));
-
+    const setCategories = jest.fn();
     const { queryByLabelText, getAllByTestId } = render(
       <MemoryRouter>
-        <CategoryList categories={category} />
+        <CategoryList setCategories={setCategories} categories={categories} />
       </MemoryRouter>
     );
 
