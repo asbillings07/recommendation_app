@@ -180,7 +180,15 @@ export function CreateRecommendation({ context, match, history }) {
                       placeholder="What's great about this place?"
                       defaultValue={description}
                       onBlur={e => setDescription(e.target.value)}
-                      //  need to figure out why this keeps rerendering on change
+                    />
+                  </Form.Group>
+                  <Form.Group>
+                    <Form.Control
+                      type="text"
+                      name="lastVisted"
+                      placeholder="When did you last visit this place?"
+                      defaultValue={lastVisited}
+                      onBlur={e => setLastVisited(e.target.value)}
                     />
                   </Form.Group>
                   <p>{recommendation.title}</p>

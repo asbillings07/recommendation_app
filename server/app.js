@@ -60,7 +60,7 @@ const corsOptions = {
   },
 };
 
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(formData.parse());
 app.use(morgan('dev'));
 app.use(express.json());
