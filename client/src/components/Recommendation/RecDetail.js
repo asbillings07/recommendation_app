@@ -67,24 +67,23 @@ export default function RecDetail({ context, match, history }) {
   return (
     <StyledContainer>
       <Row>
-        <StyledCol>
+        <StyledCol sm={6} xs={12}>
           <Card>
             <AddRecommendation id={match.params.id} />
             <ListGroup>{showAllRecs()}</ListGroup>
           </Card>
+          <Comment
+            comments={selectedRec.Comments}
+            token={context.token}
+            id={selectedRec.id}
+            catId={catid}
+            authedUser={context.authorizedUser}
+          />
         </StyledCol>
-        <Col>
+        <Col sm={6} xs={12}>
           <MapContainer selectedRec={selectedRec} />
         </Col>
       </Row>
-
-      <Comment
-        comments={selectedRec.Comments}
-        token={context.token}
-        id={selectedRec.id}
-        catId={catid}
-        authedUser={context.authorizedUser}
-      />
     </StyledContainer>
   );
 }
@@ -95,7 +94,8 @@ const StyledCol = styled(Col)`
   padding-right: 0px !important;
   overflow: scroll;
 `;
-const StyledContainer = styled(Container)`
+const StyledContainer = styled.div`
+  width: 100vw;
   margin-left: -1px !important;
   margin-top: 0.25rem;
 `;

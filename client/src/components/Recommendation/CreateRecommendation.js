@@ -29,7 +29,6 @@ export function CreateRecommendation({ context, match, history }) {
   const StyledP = styled.p`
     color: white;
   `;
-  const InputP = styled.p``;
 
   const StyledH4 = styled.h4`
     color: #0b438c;
@@ -42,18 +41,6 @@ export function CreateRecommendation({ context, match, history }) {
     margin-left: 1em;
     height: 25em;
     text-align: center;
-  `;
-
-  const ButtonDiv = styled.div`
-    margin-top: 6em;
-    margin-left: 24em;
-  `;
-
-  const StyledButton = styled(Button)`
-    margin-right: 1px;
-    background-color: ${props =>
-      props.secondary ? '#F21905' : '#1168D9'}!important;
-    color: white;
   `;
 
   /** State & Effect Hooks */

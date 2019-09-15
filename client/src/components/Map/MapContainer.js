@@ -3,8 +3,7 @@ import { Map, Marker, InfoWindow, GoogleApiWrapper } from 'google-maps-react';
 import Geocode from 'react-geocode';
 import styled from 'styled-components';
 const mapStyles = {
-  width: '50vw',
-  height: '100%',
+  height: '100vh',
 };
 
 export class MapContainer extends Component {
@@ -151,3 +150,10 @@ Geocode.enableDebug();
 const Container = styled.div`
   align-items: center;
 `;
+
+// const StyledMap = styled(Map)`
+//   @media (max-width: 768px) {
+//     flex-direction: column;
+//     width: 100vw;
+//   }
+// `;
