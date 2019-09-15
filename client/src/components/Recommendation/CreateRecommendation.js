@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Forms from '../Forms';
-import { Form, Container, Row, Col, Button } from 'react-bootstrap';
+import { Form, Container, Row, Col, Button, Spinner } from 'react-bootstrap';
 import { notify } from 'react-notify-toast';
 import Axios from 'axios';
 import { RecommendationModal } from './RecommendationModal';
@@ -62,10 +62,7 @@ export function CreateRecommendation({ context, match, history }) {
   const [lastVisited, setLastVisited] = useState('');
   const [recommendation, setRecommendation] = useState({});
   const [shouldShow, setShouldShow] = useState(false);
-  const [personCoordinates, setPersonCoordinates] = useState({
-    lat: null,
-    lng: null,
-  });
+  const [personCoordinates, setPersonCoordinates] = useState(null);
   const [recommendationListing, setRecommendationListing] = useState([]);
   const [errors, setErrors] = useState('');
   const [confirmed] = useState(true);
@@ -158,21 +155,31 @@ export function CreateRecommendation({ context, match, history }) {
               elements={() => (
                 <>
                   <Form.Group>
-                    <Form.Control
-                      type="text"
-                      name="title"
-                      placeholder="Enter the name of your place"
-                      onBlur={findPlace}
-                      disabled={recommendation.title ? true : false}
-                    />
+                    {personCoordinates ? (
+                      <Form.Control
+                        type="text"
+                        name="title"
+                        placeholder="Enter the name of your place"
+                        onBlur={findPlace}
+                      />
+                    ) : (
+                      <>
+                        <Spinner animation="border" role="status">
+                          <span className="sr-only">
+                            Getting your location....
+                          </span>
+                        </Spinner>
+                        <p>Getting your location....</p>
+                      </>
+                    )}
                   </Form.Group>
                   <Form.Group>
                     <Form.Control
                       type="text"
                       name="description"
                       placeholder="What's great about this place?"
-                      value={description}
-                      onChange={e => setDescription(e.target.value)}
+                      defaultValue={description}
+                      onBlur={e => setDescription(e.target.value)}
                       //  need to figure out why this keeps rerendering on change
                     />
                   </Form.Group>

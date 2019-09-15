@@ -8,6 +8,7 @@ describe('App Component', () => {
     cleanup();
   });
   console.error = jest.fn();
+
   test('<App/> renders correctly', () => {
     const { queryByLabelText } = render(
       <Provider>
