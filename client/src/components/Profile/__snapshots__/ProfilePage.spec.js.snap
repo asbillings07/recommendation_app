@@ -1,0 +1,71 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Profile with all of its children render correctly <ProfileEdit/> 1`] = `
+<div
+  class="mt-3 container"
+>
+  <div
+    class="justify-content-md-center row"
+  >
+    <div
+      class="col-lg-auto col-md col"
+    >
+      <h1
+        class="mb-4"
+      >
+        Update Your Profile
+      </h1>
+      <form
+        class=""
+      >
+        <div
+          class="form-group"
+        >
+          <input
+            class="form-control"
+            name="firstName"
+            placeholder=""
+            type="text"
+            value=""
+          />
+        </div>
+        <div
+          class="form-group"
+        >
+          <input
+            class="form-control"
+            name="lastName"
+            placeholder=""
+            type="text"
+            value=""
+          />
+        </div>
+        <div
+          class="form-group"
+        >
+          <input
+            class="form-control"
+            name="email"
+            placeholder=""
+            type="text"
+            value=""
+          />
+        </div>
+        <button
+          class="mr-1 btn btn-primary"
+          style="width: 13rem;"
+          type="submit"
+        >
+          Update Profile
+        </button>
+        <button
+          class="mr-1 btn btn-secondary"
+          type="button"
+        >
+          Cancel
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+`;

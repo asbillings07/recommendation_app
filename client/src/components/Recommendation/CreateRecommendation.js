@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Forms from '../Forms';
-import { Form, Container, Row, Col, Button } from 'react-bootstrap';
+import { Form, Container, Row, Col, Button, Spinner } from 'react-bootstrap';
 import { notify } from 'react-notify-toast';
 import Axios from 'axios';
 import { RecommendationModal } from './RecommendationModal';
@@ -58,17 +58,11 @@ export function CreateRecommendation({ context, match, history }) {
 
   /** State & Effect Hooks */
 
-  const [description, setDescription] = useState('');
-  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState();
   const [lastVisited, setLastVisited] = useState('');
   const [recommendation, setRecommendation] = useState({});
-  const [input, setInput] = useState('');
-  const [recid, setRecid] = useState('');
   const [shouldShow, setShouldShow] = useState(false);
-  const [personCoordinates, setPersonCoordinates] = useState({
-    lat: null,
-    lng: null,
-  });
+  const [personCoordinates, setPersonCoordinates] = useState(null);
   const [recommendationListing, setRecommendationListing] = useState([]);
   const [errors, setErrors] = useState('');
   const [confirmed] = useState(true);
@@ -87,7 +81,6 @@ export function CreateRecommendation({ context, match, history }) {
           });
         });
       } else {
-        console.log('geolocation is not avaiable');
       }
     };
     getUserPosition();
@@ -109,7 +102,6 @@ export function CreateRecommendation({ context, match, history }) {
           size: '5',
         },
       }).then(response => {
-        console.log(response.data.results.items);
         setRecommendationListing(response.data.results.items);
         setShouldShow(true);
       });
@@ -131,18 +123,10 @@ export function CreateRecommendation({ context, match, history }) {
       }
     });
   };
-
+  console.log(description);
   const cancel = () => {
     const { id } = match.params;
     history.push(`/category/${id}/recs`);
-  };
-
-  const onChange = e => {
-    const name = e.target.name;
-    const value = e.target.value;
-    setInput({
-      [name]: value,
-    });
   };
 
   return (
@@ -171,13 +155,23 @@ export function CreateRecommendation({ context, match, history }) {
               elements={() => (
                 <>
                   <Form.Group>
-                    <Form.Control
-                      type="text"
-                      name="title"
-                      placeholder="Enter the name of your place"
-                      onBlur={findPlace}
-                      disabled={personCoordinates ? false : true}
-                    />
+                    {personCoordinates ? (
+                      <Form.Control
+                        type="text"
+                        name="title"
+                        placeholder="Enter the name of your place"
+                        onBlur={findPlace}
+                      />
+                    ) : (
+                      <>
+                        <Spinner animation="border" role="status">
+                          <span className="sr-only">
+                            Getting your location....
+                          </span>
+                        </Spinner>
+                        <p>Getting your location....</p>
+                      </>
+                    )}
                   </Form.Group>
                   <Form.Group>
                     <Form.Control
@@ -185,8 +179,16 @@ export function CreateRecommendation({ context, match, history }) {
                       name="description"
                       placeholder="What's great about this place?"
                       defaultValue={description}
-                      onChange={e => setDescription(e.target.value)}
-                      //  need to figure out why this keeps rerendering on change
+                      onBlur={e => setDescription(e.target.value)}
+                    />
+                  </Form.Group>
+                  <Form.Group>
+                    <Form.Control
+                      type="text"
+                      name="lastVisted"
+                      placeholder="When did you last visit this place?"
+                      defaultValue={lastVisited}
+                      onBlur={e => setLastVisited(e.target.value)}
                     />
                   </Form.Group>
                   <p>{recommendation.title}</p>

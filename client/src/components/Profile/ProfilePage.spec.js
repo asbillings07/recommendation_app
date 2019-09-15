@@ -111,10 +111,11 @@ describe('Profile with all of its children render correctly', () => {
   });
 
   test('<ProfileEdit/>', () => {
-    const { debug } = render(
+    const { container } = render(
       <Provider>
         <ProfileEdit context={context} user={user} />
       </Provider>
     );
+    expect(container.firstChild).toMatchSnapshot();
   });
 });

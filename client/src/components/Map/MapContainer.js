@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Map, Marker, InfoWindow, GoogleApiWrapper } from 'google-maps-react';
 import Geocode from 'react-geocode';
+import styled from 'styled-components';
 const mapStyles = {
   width: '50vw',
   height: '100%',
@@ -112,7 +113,11 @@ export class MapContainer extends Component {
         initialCenter={centerCoordinates}
         center={recommendationCoordinates}
       >
-        <Marker name={'Your Location'} position={personCoordinates} />
+        <Marker
+          name="Your Location"
+          title="Your Location"
+          position={personCoordinates}
+        />
         <Marker
           onClick={this.onMarkerClick}
           name={selectedRec.title}
@@ -125,10 +130,11 @@ export class MapContainer extends Component {
           visible={showingInfoWindow}
           onClose={this.onClose}
         >
-          <div>
-            <h4>{selectedRec.title}</h4>
+          <Container>
+            <h3>{selectedRec.title}</h3>
             <h6>{selectedRec.description}</h6>
-          </div>
+            <button href="#">{selectedRec.location}</button>
+          </Container>
         </InfoWindow>
       </Map>
     );
@@ -141,3 +147,7 @@ export default GoogleApiWrapper({
 
 Geocode.setApiKey(`${process.env.REACT_APP_MAPS_API_KEY}`);
 Geocode.enableDebug();
+
+const Container = styled.div`
+  align-items: center;
+`;

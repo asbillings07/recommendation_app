@@ -13,7 +13,6 @@ export default class Data {
 
     if (body !== null) {
       options.body = JSON.stringify(body);
-      console.log(options.body);
     }
 
     if (requiresAuth) {

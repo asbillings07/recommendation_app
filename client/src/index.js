@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './css/App.css';
+import 'formol/lib/default.css';
 import { Provider } from './Context';
 import * as serviceWorker from './serviceWorker';
 import * as Sentry from '@sentry/browser';

@@ -19,6 +19,7 @@ export default function ProfileInfo({ user }) {
           Email Address: {user.email}
         </Card.Title>
         <ConfirmedSubtitle
+          confirmed={user.confirmed ? 'truthy' : undefined}
           aria-label={`Your email is ${
             user.confirmed ? 'CONFIRMED' : 'NOT CONFIRMED'
           }`}
@@ -51,5 +52,5 @@ const StyledCard = styled(Card)`
 `;
 
 const ConfirmedSubtitle = styled(Card.Subtitle)`
-  ${props => (props.confirmed ? 'color: red;' : 'color: green;')}
+  ${props => (props.confirmed ? 'color: green;' : 'color: red;')}
 `;
