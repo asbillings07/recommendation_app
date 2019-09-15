@@ -18,7 +18,6 @@ describe('App Component', () => {
     // expect(console.error).toHaveBeenCalled();
     expect(queryByLabelText('Toggle navigation')).toBeTruthy(); // ensures Nav renders
     expect(queryByLabelText('carousel slide')).toBeTruthy(); // ensures carousel slide renders
-    expect(queryByLabelText('search bar')).toBeTruthy(); // ensures searchbar renders
     expect(queryByLabelText('loading page')).toBeTruthy(); // spinner renders when needed
   });
 });

@@ -3,6 +3,7 @@ package-lock.json
 nodemon.json
 .env
 .db
+.netlify/
 notes
 test
 Todo
