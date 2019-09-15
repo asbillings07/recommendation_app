@@ -1,10 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Container, Button, Row, Col } from 'react-bootstrap';
+import SearchBar from './SearchBar';
 import styled from 'styled-components';
 import Spinner from '../Spinner';
 
-export default function CategoryList({ categories, loading }) {
+export default function CategoryList({
+  data,
+  categories,
+  setCategories,
+  loading,
+}) {
   const showCategories = () => {
     return categories.map(category => (
       <Col className="mb-2" sm={4} key={category.id}>
@@ -27,6 +33,7 @@ export default function CategoryList({ categories, loading }) {
   } else {
     return (
       <>
+        <SearchBar categories={data} setCategories={setCategories} />
         <H2 aria-label="Browse Categories">Browse Categories</H2>
         <CategoryContainer>
           <Row>{showCategories()}</Row>
