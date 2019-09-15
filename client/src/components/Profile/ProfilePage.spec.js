@@ -12,8 +12,6 @@ import ProfileRecs from './ProfileRecs';
 import ProfileEdit from './ProfileEdit';
 import ProfileModal from './ProfileModal';
 
-global.fetch = require('jest-fetch-mock');
-
 describe('Profile with all of its children render correctly', () => {
   afterEach(cleanup);
 
@@ -90,8 +88,6 @@ describe('Profile with all of its children render correctly', () => {
   });
 
   test('<ProfileRecs/>', () => {
-    fetch.mockResponseOnce(JSON.stringify(recommendations));
-
     const { queryAllByLabelText, queryAllByText } = render(
       <ProfileRecs recommendations={recommendations} />
     );
