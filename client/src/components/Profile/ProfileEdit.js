@@ -43,7 +43,11 @@ const ProfileEdit = ({ context, history }) => {
         if (errors.length) {
           setErrors([errors[0]]);
         } else {
-          notify.show('Profile Updated!', 'success', 10000);
+          notify.show(
+            'Profile Updated! Name in banner will update on next login',
+            'success',
+            10000
+          );
           history.push('/profile');
         }
       })

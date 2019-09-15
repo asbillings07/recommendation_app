@@ -84,9 +84,7 @@ export default class UserSignIn extends Component {
     context.actions
       .signIn(email, password)
       .then(user => {
-        console.log(user);
         if (user.message === 'ok') {
-          console.log('User signed In successfully');
           this.props.history.push(from);
         } else {
           this.setState(() => {
@@ -96,9 +94,7 @@ export default class UserSignIn extends Component {
           });
         }
       })
-      .catch(err => {
-        console.log(err);
-      });
+      .catch(err => {});
   };
 
   cancel = () => {
