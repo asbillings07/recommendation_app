@@ -150,7 +150,6 @@ export function CreateRecommendation({ context, match, history }) {
               errors={errors}
               submit={submit}
               passwordErrors={confirmed}
-              buttons={true}
               submitButtonText="Create Recommendation"
               elements={() => (
                 <>
@@ -196,14 +195,14 @@ export function CreateRecommendation({ context, match, history }) {
                 </>
               )}
             />
-            <ButtonDiv>
+            {/* <ButtonDiv>
               <StyledButton onClick={submit}>
                 Create Recommendation
               </StyledButton>
               <StyledButton secondary="true" onClick={cancel}>
                 Cancel
               </StyledButton>
-            </ButtonDiv>
+            </ButtonDiv> */}
 
             <RecommendationModal
               shouldShow={shouldShow}
