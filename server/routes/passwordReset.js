@@ -29,7 +29,7 @@ router.post(
       });
 
       const email = user.email;
-      const passwordResetLink = `http://localhost:3000/reset/${token}`;
+      const passwordResetLink = `https://recommendit.netlify.com/reset/${token}`;
 
       // email template with reset link and message
 
