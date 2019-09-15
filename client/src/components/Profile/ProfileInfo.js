@@ -19,7 +19,7 @@ export default function ProfileInfo({ user }) {
           Email Address: {user.email}
         </Card.Title>
         <ConfirmedSubtitle
-          confirmed={user.confirmed ? true : false}
+          confirmed={user.confirmed ? 'truthy' : undefined}
           aria-label={`Your email is ${
             user.confirmed ? 'CONFIRMED' : 'NOT CONFIRMED'
           }`}

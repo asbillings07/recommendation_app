@@ -20,6 +20,7 @@
     "immutable": "^4.0.0-rc.12",
     "indicative": "^7.2.0",
     "js-cookie": "^2.2.0",
+    "netlify-cli": "^2.15.0",
     "proptypes": "^1.1.0",
     "react": "^16.8.6",
     "react-bootstrap": "^1.0.0-beta.9",
