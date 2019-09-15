@@ -1,17 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import avatar from '../../images/imgholdr-image.png';
+//import avatar from '../../images/imgholdr-image.png';
 import Config from '../../Config';
 import ProfileRecommendation from './ProfileRecs';
 import UserProfileInfo from './ProfileInfo';
 import ProfilePhotoModal from './ProfilePhotoModal';
 import { Container, Row, Col, Card, Button } from 'react-bootstrap';
-import {
-  Image,
-  Video,
-  Transformation,
-  CloudinaryContext,
-} from 'cloudinary-react';
+import { Image, CloudinaryContext } from 'cloudinary-react';
 import styled from 'styled-components';
 
 export const Profile = ({ context }) => {
@@ -115,10 +110,6 @@ const StyledContainer = styled(Container)`
 const StyledCard = styled(Card)`
   width: 18rem;
   margin-bottom: 20px;
-`;
-const StyledCardSubtitle = styled(Card.Subtitle)`
-  margin-top: 3px !important;
-  margin-bottom: 0px;
 `;
 const StyledCol = styled(Col)`
   height: 43rem;

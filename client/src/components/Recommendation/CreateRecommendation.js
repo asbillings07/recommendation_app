@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Forms from '../Forms';
-import { Form, Container, Row, Col, Button, Spinner } from 'react-bootstrap';
+import { Form, Container, Row, Col, Spinner } from 'react-bootstrap';
 import { notify } from 'react-notify-toast';
 import Axios from 'axios';
 import { RecommendationModal } from './RecommendationModal';

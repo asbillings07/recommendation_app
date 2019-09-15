@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { Container, Button, Row, Col } from 'react-bootstrap';
 import SearchBar from './SearchBar';

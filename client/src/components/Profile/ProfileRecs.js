@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { ListGroupItem, Card, Button } from 'react-bootstrap';
 import styled from 'styled-components';
 import ProfileModal from './ProfileModal';

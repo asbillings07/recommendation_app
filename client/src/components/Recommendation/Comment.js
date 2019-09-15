@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Card, Button, ListGroup, Form } from 'react-bootstrap';
 import { notify } from 'react-notify-toast';
 import axios from 'axios';
@@ -67,7 +67,6 @@ const HError = styled.h4`
   color: red;
 `;
 
-const Label = styled.h4``;
 const StyledCard = styled(Card)`
   width: 50%;
   text-align: center;

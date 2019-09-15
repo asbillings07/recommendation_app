@@ -52,15 +52,7 @@ export default class UpdateRecommendation extends Component {
   };
 
   render() {
-    const {
-      title,
-      description,
-      location,
-      userid,
-      rating,
-      errors,
-      confirmed,
-    } = this.state;
+    const { title, description, location, errors, confirmed } = this.state;
 
     return (
       <Container className="mt-3">

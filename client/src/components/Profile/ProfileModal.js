@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Button, Modal } from 'react-bootstrap';
 import { notify } from 'react-notify-toast';
 export default function ProfileModal({

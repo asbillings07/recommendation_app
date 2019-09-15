@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Modal, ListGroup } from 'react-bootstrap';
+import { Modal, ListGroup } from 'react-bootstrap';
 
 export const RecommendationModal = ({
   shouldShow,

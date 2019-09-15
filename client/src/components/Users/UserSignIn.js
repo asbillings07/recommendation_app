@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import Forms from '../Forms';
 import { Form, Container, Row, Col } from 'react-bootstrap';
-import notify from 'react-notify-toast';
+//import notify from 'react-notify-toast';
 
 // convert to hooks at somepoint
 export default class UserSignIn extends Component {

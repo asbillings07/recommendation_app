@@ -3,15 +3,8 @@ import Axios from 'axios';
 import Config from '../../Config';
 import Spinner from '../Spinner';
 import Comment from './Comment';
-import Rating from './Rating';
-import {
-  Container,
-  Row,
-  Card,
-  Col,
-  ListGroup,
-  ListGroupItem,
-} from 'react-bootstrap';
+//import Rating from './Rating';
+import { Row, Card, Col, ListGroup, ListGroupItem } from 'react-bootstrap';
 import AddRecommendation from './AddRecomendation';
 import MapContainer from '../Map/MapContainer';
 import styled from 'styled-components';
@@ -20,7 +13,6 @@ export default function RecDetail({ context, match, history }) {
   const [recs, setRecs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedRec, setSelectedRec] = useState({});
-  const [userid, setUserid] = useState('');
   const [catid, setCatid] = useState('');
 
   useEffect(() => {
