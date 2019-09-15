@@ -30,7 +30,7 @@ export default function Home({ context, history }) {
   return (
     <>
       <CarouselSlide authUser={context.authorizedUser} />
-      <SearchBar />
+      <SearchBar categories={data} />
 
       <CategoryList categories={data} loading={loading} />
     </>

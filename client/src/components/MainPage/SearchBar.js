@@ -2,7 +2,7 @@ import React from 'react';
 import { InputGroup, FormControl, Button } from 'react-bootstrap';
 import styled from 'styled-components';
 
-export default function SearchBar() {
+export default function SearchBar({ categories }) {
   return (
     <ContainerDiv aria-label="search bar">
       <InputGroup className="mb-3">
