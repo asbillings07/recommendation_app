@@ -49,7 +49,11 @@ const authenticateUser = passport.authenticate('jwt', { session: false });
 exports.authenticateUser = authenticateUser;
 
 /// whitelisting for Cors
-const whitelist = ['http://localhost:3000', 'https://recommendit.netlify.com'];
+const whitelist = [
+  'http://localhost:3000',
+  'https://recommendit.netlify.com',
+  'https://sentry.io',
+];
 const corsOptions = {
   origin: function(origin, callback) {
     if (whitelist.indexOf(origin) !== -1) {
