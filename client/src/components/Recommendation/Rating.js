@@ -9,14 +9,21 @@ export default function StarRating({ context, recid }) {
   const [userRating, setUserRating] = useState(0);
 
   const updateRating = async () => {
-    const res = await axios.post(
-      `${Config.apiBaseUrl}/rating/recs/${recid}`,
-      userRating,
-      {
-        headers: { Authorization: 'bearer ' + context.token },
-      }
-    );
-    console.log(res);
+    // const res = await axios.post(
+    //   `${Config.apiBaseUrl}/rating/recs/${recid}`,
+
+    //   {
+    //     headers: { Authorization: 'bearer ' + context.token },
+    //   }
+    // );
+    // console.log(res);
+
+    axios({
+      method: 'post',
+      url: `${Config.apiBaseUrl}/rating/recs/${recid}`,
+      headers: { Authorization: 'bearer ' + context.token },
+      data: { rate: userRating },
+    }).then(error => console.log(error.message));
   };
 
   const getUserRating = () => {};
