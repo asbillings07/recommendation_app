@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Data from './Data';
 import Cookies from 'js-cookie';
-const Context = React.createContext();
+export const Context = React.createContext();
 
 /**
  * Class that Provides context
