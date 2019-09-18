@@ -168,15 +168,6 @@ export function CreateRecommendation({ context, match, history }) {
                       onBlur={e => setDescription(e.target.value)}
                     />
                   </Form.Group>
-                  <Form.Group>
-                    <Form.Control
-                      type="text"
-                      name="lastVisted"
-                      placeholder="When did you last visit this place?"
-                      defaultValue={lastVisited}
-                      onBlur={e => setLastVisited(e.target.value)}
-                    />
-                  </Form.Group>
                   <p>{recommendation.title}</p>
                   <p>{recommendation.vicinity}</p>
                 </>
