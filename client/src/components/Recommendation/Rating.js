@@ -2,11 +2,17 @@ import React, { useState, useEffect } from 'react';
 import Star from './Star';
 import axios from 'axios';
 import Config from '../../Config';
+import { useStateWithCallback } from '../../CustomHooks/useStateWithCallback';
 
 export default function StarRating({ context, recid }) {
   // Initialize a 'rating' state
 
-  const [userRating, setUserRating] = useState(1);
+  const [userRating, setUserRating] = useStateWithCallback(0, userRating => {
+    if (userRating > 0) {
+      updateRating();
+    } else {
+    }
+  });
 
   const updateRating = async () => {
     const data = {
@@ -21,12 +27,6 @@ export default function StarRating({ context, recid }) {
     );
     console.log(res);
   };
-
-  const getUserRating = () => {};
-
-  useEffect(() => {
-    updateRating();
-  }, []);
 
   //function that returns 5 Star components
 
