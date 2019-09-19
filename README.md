@@ -1,18 +1,104 @@
 # RecommendIt!
 
+## About This Project
+
+Welcome to RecommendIt!
+
+This project was created with the thought of helping people new to an area find great places to go to recommended by their co-workers, friends or family.
+
+With this App user can:
+
+- SignUp for an account
+- Browse and locate exisiting recommendations on a Map
+- Create, Update and Delete recommendations they own
+- Comment on any recommendation
+- Locate any existing recommendation on a Map
+- Manage their profile Avatar and information
+- Reset Password if Forgotten
+
+In V2 of this App User will be able to:
+
+- Rate recommendations
+- Save Recommendations of other Users
+- Navigtate to a Recommendation via Maps
+
+A special thanks goes to Aylin Debrunye, an awesome developer. She helped create the mock ups for the website and was crucial to structuring the the flow of the App.
+
+You can view this site live at the link here: [RecommendIt! ](https://recommendit.netlify.com)
+
+## Languages Used
+
+- JavaScript
+- CSS
+- HTML
+
+## Front-End
+
+- React
+  - axios
+  - React-router-dom
+  - Styled-components
+  - js-cookie to maintain to persist users autenticated state
+  - JWT to authenticate and authorize users
+  - React Bootstrap
+  - GoogleMaps API
+  - Here Maps API
+  - Styled Components
+  - Jest & React Testing Library
+
+## Back-End
+
+- Node
+  - Express
+  - Express-validator
+  - bcryptjs
+  - basic-auth
+  - PostGreSQL
+  - Sequelize
+  - NodeMailer
+  - Google OAuth2
+  - Jest
+
+## Motivation and Lessons learned
+
+- Motivation:
+
+  - This project was created to help those who are new to the Atlanta area find cool and fun places around them. However, this app could be used anywhere.
+
+- Lessons Learned
+
+  - Using React Hooks
+  - Using React Router to set up routes
+  - Using Context API
+  - Understanding JWT and how to authenticate users with it
+  - PostGreSQL database structuring
+  - Node.js, and Express to create API routes
+  - Sequelize ORM for data modeling, validation, and persistence
+  - Using NodeMailer to send users emails
+  - Interacting with the Google Maps API and the Here Maps API
+  - Working with Styled Components and React Bootstrap
+  - Using Cloudinary to persist user avatars
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+## Getting Started
+
+If you want boot up a clone of this project you'll need to do it in two phases:
+
+- In the server directory, you can run:
+
+### `npm start` to start the server
+
+- This will start the server on localhost:5000
+
+The server is only running with Node. However, if you'd like to use nodemon you can run:
+
+### `npm run start:dev` to start the server with nodemon
 
 In the client directory, you can run:
 
 ### `npm start` to start the react app
 
-In the server directory, you can run:
-
-### `npm start` to start the server
-
-Runs the app in the development mode.<br>
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 The page will reload if you make edits.<br>

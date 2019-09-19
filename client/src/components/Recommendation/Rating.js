@@ -12,18 +12,14 @@ export default function StarRating({ context, recid }) {
     const data = {
       rate: userRating,
     };
-    try {
-      const res = await axios.put(
-        `${Config.apiBaseUrl}/rating/recs/${recid}`,
-        data,
-        {
-          headers: { Authorization: 'bearer ' + context.token },
-        }
-      );
-      console.log(res);
-    } catch (err) {
-      console.log(err.message);
-    }
+    const res = await axios.post(
+      `${Config.apiBaseUrl}/rating/recs/${recid}`,
+      data,
+      {
+        headers: { Authorization: 'bearer ' + context.token },
+      }
+    );
+    console.log(res);
   };
 
   const getUserRating = () => {};
