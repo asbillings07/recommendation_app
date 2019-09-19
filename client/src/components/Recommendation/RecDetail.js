@@ -5,6 +5,7 @@ import Spinner from '../Spinner';
 import Comment from './Comment';
 //import Rating from './Rating';
 import { Row, Card, Col, ListGroup, ListGroupItem } from 'react-bootstrap';
+import Rating from './Rating';
 import AddRecommendation from './AddRecomendation';
 import MapContainer from '../Map/MapContainer';
 import styled from 'styled-components';
@@ -21,7 +22,7 @@ export default function RecDetail({ context, match, history }) {
       setCatid(id);
       try {
         const data = await Axios.get(`${Config.apiBaseUrl}/category/${id}`);
-        console.log(data);
+
         if (data) {
           const recs = data.data.category[0].Recommendations;
 
@@ -46,7 +47,7 @@ export default function RecDetail({ context, match, history }) {
           {rec.location}
         </Card.Subtitle>
         <Card.Text>{rec.description}</Card.Text>
-        {/* <Rating /> */}
+        <Rating context={context} recid={rec.id} />
         <Card.Text>
           Recommended by: {`${rec.User.firstName} ${rec.User.lastName}`}
         </Card.Text>

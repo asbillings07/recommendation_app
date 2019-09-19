@@ -28,15 +28,8 @@ router.post(
     const user = req.user;
     const rating = await verifyUser(id);
     console.log(rating);
-    if (rating.userid !== user.id) {
-      await createRating(id, user, body);
-      res.status(201).end();
-    } else {
-      res.status(403).json({
-        message:
-          'You can not rate or comment on the same recommendation twice. Give someone else a turn.',
-      });
-    }
+    await createRating(id, user, body);
+    res.status(201).end();
   })
 );
 // PUT /rating/recs/:id - status: 204 - updates a rating for an existing recommendaion if the user owns the rating - returns no content.

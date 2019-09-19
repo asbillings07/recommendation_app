@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import Forms from '../Forms';
 import { Form, Container, Row, Col, Spinner } from 'react-bootstrap';
 import { notify } from 'react-notify-toast';
@@ -54,24 +54,24 @@ export function CreateRecommendation({ context, match, history }) {
   const [errors, setErrors] = useState('');
   const [confirmed] = useState(true);
 
-  useEffect(() => {
-    const getUserPosition = () => {
-      if ('geolocation' in navigator) {
-        navigator.geolocation.getCurrentPosition(position => {
-          const userPostion = {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
-          };
-          setPersonCoordinates({
-            lat: userPostion.lat,
-            lng: userPostion.lng,
-          });
+  const getUserPosition = () => {
+    if ('geolocation' in navigator) {
+      navigator.geolocation.getCurrentPosition(position => {
+        setPersonCoordinates({
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
         });
-      } else {
-      }
-    };
+      });
+    } else {
+      notify.show('Unable to get location', 'danger', 10000);
+    }
+  };
+
+  useEffect(() => {
     getUserPosition();
   }, []);
+
+  useMemo(() => getUserPosition(), [personCoordinates]);
 
   /** Helper Functions */
 

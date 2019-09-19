@@ -231,7 +231,7 @@ export default class Data {
       true,
       token
     );
-    if (response.status === 201) {
+    if (response.status === 201 || response.status === 200) {
       return [];
     } else if (response.status === 400 || response.status === 403) {
       return response
