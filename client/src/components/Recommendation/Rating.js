@@ -6,17 +6,24 @@ import Config from '../../Config';
 export default function StarRating({ context, recid }) {
   // Initialize a 'rating' state
 
-  const [userRating, setUserRating] = useState(0);
+  const [userRating, setUserRating] = useState(1);
 
   const updateRating = async () => {
-    const res = await axios.post(
-      `${Config.apiBaseUrl}/rating/recs/${recid}`,
-      userRating,
-      {
-        headers: { Authorization: 'bearer ' + context.token },
-      }
-    );
-    console.log(res);
+    const data = {
+      rate: userRating,
+    };
+    try {
+      const res = await axios.put(
+        `${Config.apiBaseUrl}/rating/recs/${recid}`,
+        data,
+        {
+          headers: { Authorization: 'bearer ' + context.token },
+        }
+      );
+      console.log(res);
+    } catch (err) {
+      console.log(err.message);
+    }
   };
 
   const getUserRating = () => {};
