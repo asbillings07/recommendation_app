@@ -43,7 +43,7 @@ const Comment = ({ comments, id, token, authedUser, catId, history }) => {
       <h4>Comments</h4>
       {comment()}
       {authedUser && comments ? (
-        <Form onSubmit={AddComment}>
+        <Form data-testid="comment-form" onSubmit={AddComment}>
           <Form.Control
             type="text"
             placeholder="Enter Comment"

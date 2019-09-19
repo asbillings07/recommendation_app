@@ -4,7 +4,11 @@ import styled from 'styled-components';
 
 const AddRecommendation = ({ id }) => {
   return (
-    <AddRecommendationLink action href={`/category/${id}/recs/create`}>
+    <AddRecommendationLink
+      aria-label="create-recommendation-button"
+      action
+      href={`/category/${id}/recs/create`}
+    >
       Create Recommendation
     </AddRecommendationLink>
   );
