@@ -43,6 +43,14 @@ describe('<Comment/>', () => {
     );
     expect(console.error).toHaveBeenCalled();
     expect(getByTestId('comment-form')).toBeTruthy();
-    debug();
+  });
+
+  it('should add a comment when button is pressed', () => {
+    const { getByLabelText } = render(<Comment />);
+
+    expect(getByLabelText('Add Comment')).toBeTruthy();
+    fireEvent.click(getByLabelText('Add Comment')).then(() => {
+      console.log('pressed');
+    });
   });
 });
