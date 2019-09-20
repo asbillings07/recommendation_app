@@ -63,15 +63,13 @@ export function CreateRecommendation({ context, match, history }) {
         });
       });
     } else {
-      notify.show('Unable to get location', 'danger', 10000);
+      console.log('unable to get location');
     }
   };
 
   useEffect(() => {
     getUserPosition();
   }, []);
-
-  useMemo(() => getUserPosition(), [personCoordinates]);
 
   /** Helper Functions */
 

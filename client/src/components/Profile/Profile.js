@@ -17,13 +17,17 @@ export const Profile = ({ context }) => {
   const [showModal, setShowModal] = useState(false);
 
   const fetchData = async () => {
-    const data = await axios.get(`${Config.apiBaseUrl}/users`, {
-      headers: { Authorization: 'bearer ' + context.token },
-    });
+    if (context.token) {
+      const data = await axios
+        .get(`${Config.apiBaseUrl}/users`, {
+          headers: { Authorization: 'bearer ' + context.token },
+        })
+        .catch(error => console.log(error));
 
-    if (data) {
-      setUser(data.data);
-      setRecommendation(data.data.Recommendations);
+      if (data) {
+        setUser(data.data);
+        setRecommendation(data.data.Recommendations);
+      }
     }
   };
 

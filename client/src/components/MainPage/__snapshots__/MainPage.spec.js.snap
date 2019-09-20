@@ -25,7 +25,7 @@ exports[`All components in on the Main(landing) page render correctly <Home/> 1`
     >
       <img
         alt="First slide"
-        class="sc-EHOje gVuyiO"
+        class="sc-bZQynM kDNndN"
         src="city5.jpg"
       />
       <div
@@ -42,7 +42,7 @@ exports[`All components in on the Main(landing) page render correctly <Home/> 1`
     >
       <img
         alt="Second slide"
-        class="sc-EHOje gVuyiO"
+        class="sc-bZQynM kDNndN"
         src="city3.jpg"
       />
       <div
@@ -59,7 +59,7 @@ exports[`All components in on the Main(landing) page render correctly <Home/> 1`
     >
       <img
         alt="Third slide"
-        class="sc-EHOje gVuyiO"
+        class="sc-bZQynM kDNndN"
         src="city4.jpg"
       />
       <div

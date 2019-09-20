@@ -54,7 +54,7 @@ describe('Profile with all of its children render correctly', () => {
   test('<Profile/>', () => {
     const { queryByLabelText } = render(
       <Provider>
-        <Profile />
+        <Profile context={context.token} />
       </Provider>
     );
     expect(queryByLabelText('profile description')).toBeTruthy();
@@ -115,3 +115,21 @@ describe('Profile with all of its children render correctly', () => {
     expect(container.firstChild).toMatchSnapshot();
   });
 });
+
+/**
+ *  it('handles unavailable calendar', async () => {
+    const fetchRemoteCalendarEvents = jest
+      .fn()
+      .mockRejectedValueOnce(new Error())
+      .mockResolvedValue({ data: [] })
+    const { queryByText } = renderWithThemeProvider(
+      <MainCalendarView {...getProps({ fetchRemoteCalendarEvents })} />
+    )
+
+    const error = await waitForElement(() =>
+      queryByText(/Selected meeting owner has problems with their calendar/)
+    )
+
+    expect(error).toBeInTheDocument()
+  })
+ */

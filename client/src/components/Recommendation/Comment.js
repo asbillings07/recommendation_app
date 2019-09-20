@@ -13,7 +13,9 @@ const Comment = ({ comments, id, token, authedUser, catId, history }) => {
     if (!comments) return;
     return comments.map(comment => (
       <ListGroup variant="flush" key={comment.id}>
-        <ListGroup.Item>{comment.comment}</ListGroup.Item>
+        <ListGroup.Item aria-label="the comment is">
+          {comment.comment}
+        </ListGroup.Item>
       </ListGroup>
     ));
   };
@@ -39,7 +41,7 @@ const Comment = ({ comments, id, token, authedUser, catId, history }) => {
 
   return (
     <StyledCard>
-      <HError>{error}</HError>
+      <HError data-testid="comment-error">{error}</HError>
       <h4>Comments</h4>
       {comment()}
       {authedUser && comments ? (
