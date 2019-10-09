@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Star from './Star';
 import axios from 'axios';
 import Config from '../../Config';
@@ -10,22 +10,35 @@ export default function StarRating({ context, recid }) {
   const [userRating, setUserRating] = useStateWithCallback(0, userRating => {
     if (userRating > 0) {
       updateRating();
-    } else {
     }
   });
+
+  const getUserRating = async () => {
+    console.log(context.authorizedUser.id);
+    const res = await axios.get(`${Config.apiBaseUrl}/rating`, {
+      headers: { Authorization: 'bearer ' + context.token },
+    });
+    console.log(res.data);
+    return res.data;
+  };
+
+  useEffect(() => {
+    getUserRating();
+  }, []);
 
   const updateRating = async () => {
     const data = {
       rate: userRating,
     };
-    const res = await axios.post(
-      `${Config.apiBaseUrl}/rating/recs/${recid}`,
-      data,
-      {
+
+    if ((await getUserRating().length) > 0) {
+      await axios.put(`${Config.apiBaseUrl}/rating/recs/${recid}`, data, {
         headers: { Authorization: 'bearer ' + context.token },
-      }
-    );
-    console.log(res);
+      });
+    }
+    await axios.post(`${Config.apiBaseUrl}/rating/recs/${recid}`, data, {
+      headers: { Authorization: 'bearer ' + context.token },
+    });
   };
 
   //function that returns 5 Star components

@@ -41,13 +41,23 @@ export default function RecDetail({ context, match, history }) {
 
   const showAllRecs = () => {
     return recs.map(rec => (
-      <ListGroupItem key={rec.id} action onClick={() => setSelectedRec(rec)}>
+      <ListGroupItem
+        style={{ height: '12em' }}
+        key={rec.id}
+        action
+        onClick={() => setSelectedRec(rec)}
+      >
         <Card.Title>{rec.title}</Card.Title>
         <Card.Subtitle className="mt-2 text-muted">
           {rec.location}
         </Card.Subtitle>
         <Card.Text>{rec.description}</Card.Text>
-        <Rating context={context} recid={rec.id} />
+
+        {context.authorizedUser ? (
+          <Rating context={context} recid={rec.id} />
+        ) : (
+          ''
+        )}
         <Card.Text>
           Recommended by: {`${rec.User.firstName} ${rec.User.lastName}`}
         </Card.Text>
