@@ -8,9 +8,8 @@ import { notify } from 'react-notify-toast';
 export default function UpdateRecommendation({ context, match, history }) {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [lastVisted, setLastVisited] = useState('');
+  const [setLastVisited] = useState('');
   const [location, setLocation] = useState('');
-  const [rating, setRating] = useState('');
   const [userid, setUserid] = useState('');
   const [errors, setErrors] = useState([]);
   const [confirmed] = useState(true);
@@ -28,7 +27,6 @@ export default function UpdateRecommendation({ context, match, history }) {
           setDescription(rec.description);
           setLastVisited(rec.lastVisted);
           setLocation(rec.location);
-          setRating(rec.rating);
           setUserid(rec.userid);
         } else {
           throw new Error('Issue getting data');
@@ -46,7 +44,7 @@ export default function UpdateRecommendation({ context, match, history }) {
     };
 
     getData();
-  }, [context, history, match.params]);
+  }, [context, history, match.params, userid, setLastVisited]);
 
   const submit = () => {
     const { id } = match.params;

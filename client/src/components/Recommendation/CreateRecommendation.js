@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import Forms from '../Forms';
 import { Form, Container, Row, Col, Spinner } from 'react-bootstrap';
 import { notify } from 'react-notify-toast';
@@ -46,7 +46,7 @@ export function CreateRecommendation({ context, match, history }) {
   /** State & Effect Hooks */
 
   const [description, setDescription] = useState();
-  const [lastVisited, setLastVisited] = useState('');
+  const [lastVisited] = useState('');
   const [recommendation, setRecommendation] = useState({});
   const [shouldShow, setShouldShow] = useState(false);
   const [personCoordinates, setPersonCoordinates] = useState(null);
@@ -171,15 +171,6 @@ export function CreateRecommendation({ context, match, history }) {
                 </>
               )}
             />
-            {/* <ButtonDiv>
-              <StyledButton onClick={submit}>
-                Create Recommendation
-              </StyledButton>
-              <StyledButton secondary="true" onClick={cancel}>
-                Cancel
-              </StyledButton>
-            </ButtonDiv> */}
-
             <RecommendationModal
               shouldShow={shouldShow}
               setShow={setShouldShow}
