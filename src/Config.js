@@ -1,3 +1,3 @@
 export default {
-  apiBaseUrl: 'https://recommenditserver.herokuapp.com/api',
+  apiBaseUrl: process.env.REACT_APP_SERVER,
 };
