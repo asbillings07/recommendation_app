@@ -1,9 +1,9 @@
-import React from 'react';
-import { Carousel } from 'react-bootstrap';
-import city3 from '../../images/city3.jpg';
-import city4 from '../../images/city4.jpg';
-import city5 from '../../images/city5.jpg';
-import styled from 'styled-components';
+import React from "react";
+import { Carousel } from "react-bootstrap";
+import city3 from "../../images/city3.jpg";
+import city4 from "../../images/city4.jpg";
+import city5 from "../../images/city5.jpg";
+import styled from "styled-components";
 
 export default function CarouselSlide() {
   return (
@@ -35,6 +35,6 @@ export default function CarouselSlide() {
 const StyledImg = styled.img`
   display: block;
   width: 100vw;
-  max-height: 100vh;
+  max-height: 50vh;
   overflow: hidden;
 `;
