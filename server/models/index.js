@@ -1,4 +1,3 @@
-'use strict';
 // gives access to the node env
 require('dotenv').config();
 const fs = require('fs');
