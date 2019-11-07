@@ -63,7 +63,7 @@
     "start": "react-scripts start",
     "start:dev": "nodemon server/app.js",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "jest --watchAll",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
