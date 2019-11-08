@@ -84,7 +84,7 @@
   "devDependencies": {
     "@testing-library/react": "^8.0.7",
     "faker": "^4.1.0",
-    "jest": "^24.9.0",
+    "jest": "24.7.1",
     "jest-fetch-mock": "^2.1.2",
     "request": "^2.88.0",
     "sequelize-mock": "^0.10.2"
