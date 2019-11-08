@@ -1,7 +1,6 @@
-'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('SavedRecs', {
+    return queryInterface.createTable("SavedRecs", {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -11,15 +10,15 @@ module.exports = {
       userid: {
         type: Sequelize.INTEGER,
         references: {
-          model: 'Users',
-          key: 'id',
+          model: "Users",
+          key: "id",
         },
       },
       recid: {
         type: Sequelize.INTEGER,
         references: {
-          model: 'Recommendation',
-          key: 'id',
+          model: "Recommendation",
+          key: "id",
         },
       },
       createdAt: {
@@ -33,6 +32,6 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('SavedRecs');
+    return queryInterface.dropTable("SavedRecs");
   },
 };

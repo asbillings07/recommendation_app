@@ -26,6 +26,12 @@ const accessToken = oauth2Client.getAccessToken();
 exports.sendEmail = (mailOptions, successfulMessage) => {
   const creds = {
     service: 'gmail',
+    secure: true,
+    tls: {
+      // do not fail on invalid certs
+      rejectUnauthorized: false,
+    },
+    debug: true,
     auth: {
       type: 'OAuth2',
       user: `${process.env.EMAIL_ADDRESS}`,
