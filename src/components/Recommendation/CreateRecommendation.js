@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import Forms from '../Forms';
-import { Form, Container, Row, Col, Spinner } from 'react-bootstrap';
-import { notify } from 'react-notify-toast';
-import Axios from 'axios';
-import { RecommendationModal } from './RecommendationModal';
-import styled from 'styled-components';
-import city from '../../images/city.jpg';
+import React, { useState, useEffect } from "react";
+import Forms from "../Forms";
+import { Form, Container, Row, Col, Spinner } from "react-bootstrap";
+import { notify } from "react-notify-toast";
+import Axios from "axios";
+import { RecommendationModal } from "./RecommendationModal";
+import styled from "styled-components";
+import city from "../../images/city.jpg";
 
 export function CreateRecommendation({ context, match, history }) {
   /**Styled Components */
@@ -34,7 +34,7 @@ export function CreateRecommendation({ context, match, history }) {
     color: #0b438c;
   `;
   const StyledCol = styled(Col)`
-    background-color: ${props => (props.secondary ? '#F25C05' : 'white')};
+    background-color: ${props => (props.secondary ? "#F25C05" : "white")};
     opacity: 0.9;
     margin-top: 9px;
     padding-top: 25px;
@@ -46,16 +46,16 @@ export function CreateRecommendation({ context, match, history }) {
   /** State & Effect Hooks */
 
   const [description, setDescription] = useState();
-  const [lastVisited] = useState('');
+  const [lastVisited] = useState("");
   const [recommendation, setRecommendation] = useState({});
   const [shouldShow, setShouldShow] = useState(false);
   const [personCoordinates, setPersonCoordinates] = useState(null);
   const [recommendationListing, setRecommendationListing] = useState([]);
-  const [errors, setErrors] = useState('');
+  const [errors, setErrors] = useState("");
   const [confirmed] = useState(true);
 
   const getUserPosition = () => {
-    if ('geolocation' in navigator) {
+    if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(position => {
         setPersonCoordinates({
           lat: position.coords.latitude,
@@ -63,7 +63,7 @@ export function CreateRecommendation({ context, match, history }) {
         });
       });
     } else {
-      console.log('unable to get location');
+      console.log("unable to get location");
     }
   };
 
@@ -83,8 +83,8 @@ export function CreateRecommendation({ context, match, history }) {
           app_id: `${process.env.REACT_APP_ID}`,
           app_code: `${process.env.REACT_APP_CODE}`,
           q: `${place}`,
-          tf: 'plain',
-          size: '5',
+          tf: "plain",
+          size: "5",
         },
       }).then(response => {
         setRecommendationListing(response.data.results.items);
@@ -103,12 +103,11 @@ export function CreateRecommendation({ context, match, history }) {
       if (errors) {
         setErrors(errors);
       } else {
-        notify.show('Recommendation Created!', 'success', 10000);
+        notify.show("Recommendation Created!", "success", 10000);
         history.push(`/category/${id}/recs`);
       }
     });
   };
-  console.log(description);
   const cancel = () => {
     const { id } = match.params;
     history.push(`/category/${id}/recs`);
@@ -119,17 +118,21 @@ export function CreateRecommendation({ context, match, history }) {
       <Container className="mt-3">
         <Row className="justify-content-md-center">
           <StyledCol secondary="true" sm={4}>
-            <StyledH1>Create Your Recommendation!</StyledH1>
-            <StyledP>
+            <StyledH1 aria-label="create recommendation title">
+              Create Your Recommendation!
+            </StyledH1>
+            <StyledP aria-label="create recommendation description">
               Fill out the title field with the name of your recommended place,
               we will then search your location for that place. Then choose from
               the list in the modal. Then add why others should visit your
               recommendation. Once you're done hit 'Create Recommendation' and
-              we will add it to the list so others can view it!{' '}
+              we will add it to the list so others can view it!{" "}
             </StyledP>
           </StyledCol>
           <StyledCol sm={7}>
-            <StyledH4>Fill in the following information</StyledH4>
+            <StyledH4 aria-label="create recommendation instructions">
+              Fill in the following information
+            </StyledH4>
             <Forms
               cancel={cancel}
               errors={errors}
