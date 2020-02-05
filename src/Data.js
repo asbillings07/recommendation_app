@@ -10,31 +10,32 @@ export default class Data {
       headers: {
         'Content-Type': 'application/json; charset=utf-8'
       }
+      // withCredentials: true
     }
 
     if (body !== null) {
-      options.body = JSON.stringify(body)
+      options.data = JSON.stringify(body)
     }
 
     if (requiresAuth) {
       const token = creds
       // edit headers to include JWT Token
-      options.headers['Authorization'] = `Bearer ${token}`
+      options.headers.Authorization = `Bearer ${token}`
     }
 
-    return fetch(url, options)
+    return Axios(url, options)
   }
 
   /** USER METHODS */
 
-  //Login User, creates JWT Token and grabs user info
+  // Login User, creates JWT Token and grabs user info
   async login(creds) {
-    const response = await this.api('/login', 'POST', creds)
+    const res = await this.api('/login', 'POST', creds)
 
-    if (response.status === 200) {
-      return response.json().then(data => data)
-    } else if (response.status === 401) {
-      return response.json().then(data => data)
+    if (res.status === 200) {
+      return res.data
+    } else if (res.status === 401) {
+      return res
     } else {
       throw new Error()
     }
@@ -42,14 +43,11 @@ export default class Data {
 
   // create users
   async createUser(user) {
-    const response = await this.api('/users', 'POST', user)
-    if (response.status === 201 || response.status === 200) {
+    const res = await this.api('/users', 'POST', user)
+    if (res.status === 201 || res.status === 200) {
       return []
-    } else if (response.status === 400) {
-      return response
-        .json()
-        .then(data => data.errors)
-        .catch(err => console.log(err))
+    } else if (res.status === 400) {
+      return res.errors
     } else {
       throw new Error()
     }
@@ -57,14 +55,11 @@ export default class Data {
 
   // Update User
   async updateUser(token, user) {
-    const response = await this.api('/users', 'PUT', user, true, token)
-    if (response.status === 204 || response.status === 200) {
+    const res = await this.api('/users', 'PUT', user, true, token)
+    if (res.status === 204 || res.status === 200) {
       return []
-    } else if (response.status === 403 || response.status === 400) {
-      return response
-        .json()
-        .then(data => data.errors)
-        .catch(err => console.log(err))
+    } else if (res.status === 403 || res.status === 400) {
+      return res
     } else {
       throw new Error()
     }
@@ -73,20 +68,11 @@ export default class Data {
   // Update User Photo
 
   async updateUserPhoto(token, photoData) {
-    const response = await this.api(
-      '/userphoto',
-      'POST',
-      photoData,
-      true,
-      token
-    )
-    if (response.status === 204 || response.status === 201) {
+    const res = await this.api('/userphoto', 'POST', photoData, true, token)
+    if (res.status === 204 || res.status === 201) {
       return []
-    } else if (response.status === 400) {
-      return response
-        .json()
-        .then(data => data.errors)
-        .catch(err => console.log(err))
+    } else if (res.status === 400) {
+      return res
     } else {
       throw new Error('Something else went wrong')
     }
@@ -94,14 +80,11 @@ export default class Data {
 
   // Delete User
   async deleteUser(token) {
-    const response = await this.api('/users', 'DELETE', null, null, true, token)
-    if (response.status === 204) {
+    const res = await this.api('/users', 'DELETE', null, null, true, token)
+    if (res.status === 204) {
       return []
-    } else if (response.status === 400 || response.status === 403) {
-      return response
-        .json()
-        .then(data => data.errors)
-        .catch(err => console.log(err))
+    } else if (res.status === 400 || res.status === 403) {
+      return res
     } else {
       throw new Error()
     }
@@ -110,47 +93,70 @@ export default class Data {
   /** RESET PASSWORD METHODS */
 
   // sends user reset email password link via email
-  forgotUserPassword = email =>
-    Axios.post(`${Config.apiBaseUrl}/forgotpassword`, {
-      email
-    })
+  async forgotUserPassword(email) {
+    const res = await this.api('/forgotpassword', 'POST', email)
+    if (res.status === 200 || res.status === 201) {
+      return res
+    } else if (res.status === 400 || res.status === 403) {
+      return res
+    }
+  }
 
   /** Allows user to update their password */
 
   async updateUserPassword(user) {
-    const response = await this.api('/updatepasswordviaemail', 'PUT', user)
+    const res = await this.api('/updatepasswordviaemail', 'PUT', user)
 
-    if (response.status === 200) {
+    if (res.status === 200) {
       return []
-    } else if (response.status === 400 || response.status === 403) {
-      return response
-        .json()
-        .then(data => data.errors)
-        .catch(err => console.log(err))
+    } else if (res.status === 400 || res.status === 403) {
+      return res
     }
   }
   /** CONFIRM USER EMAIL METHODS */
 
   // sends conformation email to user
-  sendConfirmUserEmail = email =>
-    Axios.post(`${Config.apiBaseUrl}/email`, {
-      email
-    })
+  async sendConfirmUserEmail(email) {
+    const res = await Axios.post(`${Config[env].apiBaseUrl}/email`, email)
+    if (res.status === 200 || res.status === 201) {
+      return res
+    } else if (res.status === 400 || res.status === 403) {
+      return res
+    }
+  }
+
   // when user clicks on conformation email
-  confirmUserEmail = id => Axios.get(`${Config.apiBaseUrl}/email/confirm/${id}`)
+  async confirmUserEmail(id) {
+    const res = await this.api(`/email/confirm/${id}`)
+    if (res.status === 200 || res.status === 201) {
+      return res
+    } else if (res.status === 400 || res.status === 403) {
+      return res
+    }
+  }
 
   /** CATEGORY METHODS */
 
+  // get Category
+
+  async getCategoryById(id) {
+    const res = await this.api(`/category/${id}`)
+    if (res.status === 200) {
+      return res.data
+    } else if (res.status === 400) {
+      return res
+    } else {
+      throw new Error()
+    }
+  }
+
   // createCategory
   async createCategory(title) {
-    const response = await this.api('/category', 'POST', title)
-    if (response.status === 201) {
+    const res = await this.api('/category', 'POST', title)
+    if (res.status === 201) {
       return []
-    } else if (response.status === 400) {
-      return response
-        .json()
-        .then(data => data.errors)
-        .catch(err => console.log(err))
+    } else if (res.status === 400) {
+      return res
     } else {
       throw new Error()
     }
@@ -160,22 +166,11 @@ export default class Data {
 
   // create recommendation
   async createRecommendation(token, rec, id) {
-    const response = await this.api(
-      `/recs/category/${id}`,
-      'POST',
-      rec,
-      true,
-      token
-    )
-    if (response.status === 201) {
+    const res = await this.api(`/recs/category/${id}`, 'POST', rec, true, token)
+    if (res.status === 201) {
       return []
-    } else if (response.status === 401 || response.status === 400) {
-      return response
-        .json()
-        .then(data => data.errors)
-        .catch(err => {
-          console.log(err)
-        })
+    } else if (res.status === 401 || res.status === 400) {
+      return res
     } else {
       console.log('Something else went wrong')
     }
@@ -183,14 +178,11 @@ export default class Data {
 
   // Update Recommendation
   async updateRecommendation(token, rec, id) {
-    const response = await this.api(`/recs/${id}`, 'PUT', rec, true, token)
-    if (response.status === 204) {
+    const res = await this.api(`/recs/${id}`, 'PUT', rec, true, token)
+    if (res.status === 204) {
       return []
-    } else if (response.status === 400 || response.status === 403) {
-      return response
-        .json()
-        .then(data => data.errors)
-        .catch(err => console.log(err))
+    } else if (res.status === 400 || res.status === 403) {
+      return res
     } else {
       throw new Error()
     }
@@ -199,14 +191,11 @@ export default class Data {
   // Delete Recommendation
 
   async deleteRecommendation(token, id) {
-    const response = await this.api(`/recs/${id}`, 'DELETE', null, true, token)
-    if (response.status === 204) {
+    const res = await this.api(`/recs/${id}`, 'DELETE', null, true, token)
+    if (res.status === 204) {
       return []
-    } else if (response.status === 400 || response.status === 403) {
-      return response
-        .json()
-        .then(data => data.errors)
-        .catch(err => console.log(err))
+    } else if (res.status === 400 || res.status === 403) {
+      return res
     } else {
       throw new Error()
     }
@@ -217,20 +206,17 @@ export default class Data {
   // create rating
 
   async createRating(token, rating, id) {
-    const response = await this.api(
+    const res = await this.api(
       `/rating/recs/${id}`,
       'POST',
       rating,
       true,
       token
     )
-    if (response.status === 201 || response.status === 200) {
+    if (res.status === 201 || res.status === 200) {
       return []
-    } else if (response.status === 400 || response.status === 403) {
-      return response
-        .json()
-        .then(data => data.errors)
-        .catch(err => console.log(err))
+    } else if (res.status === 400 || res.status === 403) {
+      return res
     } else {
       throw new Error()
     }
@@ -238,102 +224,82 @@ export default class Data {
 
   // update rating
   async updateRating(token, rating, id) {
-    const response = await this.api(
-      `/rating/recs/${id}`,
-      'PUT',
-      rating,
-      true,
-      token
-    )
-    if (response.status === 204) {
+    const res = await this.api(`/rating/recs/${id}`, 'PUT', rating, true, token)
+    if (res.status === 204) {
       return []
-    } else if (response.status === 400 || response.status === 403) {
-      return response
-        .json()
-        .then(data => data.errors)
-        .catch(err => console.log(err))
+    } else if (res.status === 400 || res.status === 403) {
+      return res
     } else {
       throw new Error()
     }
   }
   // delete rating
+
   async deleteRating(token, id) {
-    const response = await this.api(
+    const res = await this.api(
       `/rating/recs/${id}`,
       'DELETE',
       null,
       true,
       token
     )
-    if (response.status === 204) {
+    if (res.status === 204) {
       return []
-    } else if (response.status === 400 || response.status === 403) {
-      return response
-        .json()
-        .then(data => data.errors)
-        .catch(err => console.log(err))
+    } else if (res.status === 400 || res.status === 403) {
+      return res
     } else {
       throw new Error()
     }
   }
 
-  /**Comment Methods */
+  /** Comment Methods */
 
   async createComment(token, id, comment) {
-    const response = await this.api(
+    const res = await this.api(
       `/rec/${id}/comment`,
       'POST',
       comment,
       true,
       token
     )
-    if (response.status === 201) {
+    if (res.status === 201) {
       return []
-    } else if (response.status === 400 || response.status === 403) {
-      return response
-        .json()
-        .then(data => data.errors)
-        .catch(err => console.log(err))
+    } else if (res.status === 400 || res.status === 403) {
+      return res
     } else {
       throw new Error()
     }
   }
 
   async updateComment(token, id, comment) {
-    const response = await this.api(
+    const res = await this.api(
       `/rec/${id}/comment`,
       'PUT',
       comment,
       true,
       token
     )
-    if (response.status === 201) {
+    if (res.status === 201) {
       return []
-    } else if (response.status === 400 || response.status === 403) {
-      return response
-        .json()
-        .then(data => data.errors)
-        .catch(err => console.log(err))
+    } else if (res.status === 400 || res.status === 403) {
+      return res
     } else {
       throw new Error()
     }
   }
 
   async deleteComment(token, id) {
-    const response = await this.api(
+    const res = await this.api(
       `/rec/${id}/comment`,
       'DELETE',
       null,
       true,
       token
     )
-    if (response.status === 204) {
+    if (res.status === 204) {
       return []
-    } else if (response.status === 400 || response.status === 403) {
-      return response
-        .json()
-        .then(data => data.errors)
-        .catch(err => console.log(err))
+    } else if (res.status === 400 || res.status === 403) {
+      return res
     } else {
       throw new Error()
     }

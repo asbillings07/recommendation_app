@@ -1,33 +1,33 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useEffect } from 'react';
-import CategoryList from './CategoryList';
-import Axios from 'axios';
-import Config from '../../Config';
-import CarouselSlide from './CarouselSlide';
+import React, { useState, useEffect } from 'react'
+import CategoryList from './CategoryList'
+import Axios from 'axios'
+import Config from '../../Config'
+import CarouselSlide from './CarouselSlide'
 
 export default function Home({ context, history }) {
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [categories, setCategories] = useState([]);
-
+  const [data, setData] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [categories, setCategories] = useState([])
+  const env = Config.env
   const getAllCategories = async () => {
     try {
-      const categories = await Axios.get(`${Config.apiBaseUrl}/category`).catch(
-        err => console.log(err)
-      );
+      const categories = await Axios.get(
+        `${Config[env].apiBaseUrl}/category`
+      ).catch(err => console.log(err))
       if (categories) {
-        setData(categories.data.category);
-        setLoading(false);
+        setData(categories.data.category)
+        setLoading(false)
       }
     } catch (err) {
-      console.log(err);
-      history.push('/notfound');
+      console.log(err)
+      history.push('/notfound')
     }
-  };
+  }
 
   useEffect(() => {
-    getAllCategories();
-  }, [context, history]);
+    getAllCategories()
+  }, [context, history])
 
   return (
     <>
@@ -39,5 +39,5 @@ export default function Home({ context, history }) {
         loading={loading}
       />
     </>
-  );
+  )
 }
