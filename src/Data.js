@@ -1,16 +1,17 @@
 import Config from './Config'
 import Axios from 'axios'
+import Cookies from 'js-cookie'
 const env = Config.env
 export default class Data {
-  api(path, method = 'GET', body = null, requiresAuth = false, creds = null) {
+  api (path, method = 'GET', body = null, requiresAuth = false, creds = null) {
     const url = `${Config[env].apiBaseUrl}${path}`
 
     const options = {
       method,
       headers: {
         'Content-Type': 'application/json; charset=utf-8'
-      }
-      // withCredentials: true
+      },
+      withCredentials: true
     }
 
     if (body !== null) {
@@ -18,8 +19,8 @@ export default class Data {
     }
 
     if (requiresAuth) {
-      const token = creds
-      // edit headers to include JWT Token
+      const token = Cookies.getJSON('token')
+
       options.headers.Authorization = `Bearer ${token}`
     }
 
@@ -29,20 +30,29 @@ export default class Data {
   /** USER METHODS */
 
   // Login User, creates JWT Token and grabs user info
-  async login(creds) {
+  async login (creds) {
     const res = await this.api('/login', 'POST', creds)
 
     if (res.status === 200) {
       return res.data
-    } else if (res.status === 401) {
+    } else if (res.status === 401 || res.status === 400) {
       return res
-    } else {
-      throw new Error()
+    }
+  }
+
+  // get Users
+
+  async getUserById () {
+    const res = await this.api('/users', 'GET', null, true, null)
+    if (res.status === 200) {
+      return res.data
+    } else if (res.status === 401 || res.status === 400) {
+      return res
     }
   }
 
   // create users
-  async createUser(user) {
+  async createUser (user) {
     const res = await this.api('/users', 'POST', user)
     if (res.status === 201 || res.status === 200) {
       return []
@@ -54,7 +64,7 @@ export default class Data {
   }
 
   // Update User
-  async updateUser(token, user) {
+  async updateUser (token, user) {
     const res = await this.api('/users', 'PUT', user, true, token)
     if (res.status === 204 || res.status === 200) {
       return []
@@ -67,7 +77,7 @@ export default class Data {
 
   // Update User Photo
 
-  async updateUserPhoto(token, photoData) {
+  async updateUserPhoto (token, photoData) {
     const res = await this.api('/userphoto', 'POST', photoData, true, token)
     if (res.status === 204 || res.status === 201) {
       return []
@@ -79,7 +89,7 @@ export default class Data {
   }
 
   // Delete User
-  async deleteUser(token) {
+  async deleteUser (token) {
     const res = await this.api('/users', 'DELETE', null, null, true, token)
     if (res.status === 204) {
       return []
@@ -93,7 +103,7 @@ export default class Data {
   /** RESET PASSWORD METHODS */
 
   // sends user reset email password link via email
-  async forgotUserPassword(email) {
+  async forgotUserPassword (email) {
     const res = await this.api('/forgotpassword', 'POST', email)
     if (res.status === 200 || res.status === 201) {
       return res
@@ -104,7 +114,7 @@ export default class Data {
 
   /** Allows user to update their password */
 
-  async updateUserPassword(user) {
+  async updateUserPassword (user) {
     const res = await this.api('/updatepasswordviaemail', 'PUT', user)
 
     if (res.status === 200) {
@@ -116,7 +126,7 @@ export default class Data {
   /** CONFIRM USER EMAIL METHODS */
 
   // sends conformation email to user
-  async sendConfirmUserEmail(email) {
+  async sendConfirmUserEmail (email) {
     const res = await Axios.post(`${Config[env].apiBaseUrl}/email`, email)
     if (res.status === 200 || res.status === 201) {
       return res
@@ -126,7 +136,7 @@ export default class Data {
   }
 
   // when user clicks on conformation email
-  async confirmUserEmail(id) {
+  async confirmUserEmail (id) {
     const res = await this.api(`/email/confirm/${id}`)
     if (res.status === 200 || res.status === 201) {
       return res
@@ -139,7 +149,7 @@ export default class Data {
 
   // get Category
 
-  async getCategoryById(id) {
+  async getCategoryById (id) {
     const res = await this.api(`/category/${id}`)
     if (res.status === 200) {
       return res.data
@@ -151,7 +161,7 @@ export default class Data {
   }
 
   // createCategory
-  async createCategory(title) {
+  async createCategory (title) {
     const res = await this.api('/category', 'POST', title)
     if (res.status === 201) {
       return []
@@ -165,7 +175,7 @@ export default class Data {
   /** RECOMMENDATION METHODS */
 
   // create recommendation
-  async createRecommendation(token, rec, id) {
+  async createRecommendation (token, rec, id) {
     const res = await this.api(`/recs/category/${id}`, 'POST', rec, true, token)
     if (res.status === 201) {
       return []
@@ -177,7 +187,7 @@ export default class Data {
   }
 
   // Update Recommendation
-  async updateRecommendation(token, rec, id) {
+  async updateRecommendation (token, rec, id) {
     const res = await this.api(`/recs/${id}`, 'PUT', rec, true, token)
     if (res.status === 204) {
       return []
@@ -190,7 +200,7 @@ export default class Data {
 
   // Delete Recommendation
 
-  async deleteRecommendation(token, id) {
+  async deleteRecommendation (token, id) {
     const res = await this.api(`/recs/${id}`, 'DELETE', null, true, token)
     if (res.status === 204) {
       return []
@@ -205,7 +215,7 @@ export default class Data {
 
   // create rating
 
-  async createRating(token, rating, id) {
+  async createRating (token, rating, id) {
     const res = await this.api(
       `/rating/recs/${id}`,
       'POST',
@@ -223,7 +233,7 @@ export default class Data {
   }
 
   // update rating
-  async updateRating(token, rating, id) {
+  async updateRating (token, rating, id) {
     const res = await this.api(`/rating/recs/${id}`, 'PUT', rating, true, token)
     if (res.status === 204) {
       return []
@@ -235,7 +245,7 @@ export default class Data {
   }
   // delete rating
 
-  async deleteRating(token, id) {
+  async deleteRating (token, id) {
     const res = await this.api(
       `/rating/recs/${id}`,
       'DELETE',
@@ -254,7 +264,7 @@ export default class Data {
 
   /** Comment Methods */
 
-  async createComment(token, id, comment) {
+  async createComment (token, id, comment) {
     const res = await this.api(
       `/rec/${id}/comment`,
       'POST',
@@ -271,7 +281,7 @@ export default class Data {
     }
   }
 
-  async updateComment(token, id, comment) {
+  async updateComment (token, id, comment) {
     const res = await this.api(
       `/rec/${id}/comment`,
       'PUT',
@@ -288,7 +298,7 @@ export default class Data {
     }
   }
 
-  async deleteComment(token, id) {
+  async deleteComment (token, id) {
     const res = await this.api(
       `/rec/${id}/comment`,
       'DELETE',

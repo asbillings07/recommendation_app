@@ -1,74 +1,69 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-//import avatar from '../../images/imgholdr-image.png';
-import Config from '../../Config';
-import ProfileRecommendation from './ProfileRecs';
-import UserProfileInfo from './ProfileInfo';
-import ProfilePhotoModal from './ProfilePhotoModal';
-import { Container, Row, Col, Card, Button } from 'react-bootstrap';
-import { Image, CloudinaryContext } from 'cloudinary-react';
-import styled from 'styled-components';
+import React, { useEffect, useState, useCallback } from 'react'
+// import avatar from '../../images/imgholdr-image.png';
+import ProfileRecommendation from './ProfileRecs'
+import UserProfileInfo from './ProfileInfo'
+import ProfilePhotoModal from './ProfilePhotoModal'
+import { Container, Row, Col, Card, Button } from 'react-bootstrap'
+import { Image, CloudinaryContext } from 'cloudinary-react'
+import styled from 'styled-components'
 
 export const Profile = ({ context }) => {
-  const [user, setUser] = useState({});
-  const [recommendation, setRecommendation] = useState([]);
-  //const [selectedFile, setSelectedFile] = useState('');
-  const [photo, setPhoto] = useState('sample');
-  const [showModal, setShowModal] = useState(false);
+  const [user, setUser] = useState({})
+  const [recommendation, setRecommendation] = useState([])
+  // const [selectedFile, setSelectedFile] = useState('');
+  const [photo, setPhoto] = useState('sample')
+  const [showModal, setShowModal] = useState(false)
 
-  const fetchData = async () => {
-    if (context.token) {
-      const data = await axios
-        .get(`${Config.apiBaseUrl}/users`, {
-          headers: { Authorization: 'bearer ' + context.token },
-        })
-        .catch(error => console.log(error));
-
-      if (data) {
-        setUser(data.data);
-        setRecommendation(data.data.Recommendations);
+  const fetchData = useCallback(async () => {
+    try {
+      const user = await context.data.getUserById()
+      console.log(user)
+      if (user) {
+        setUser(user)
+        setRecommendation(user.Recommendations)
       }
+    } catch (err) {
+      console.log(err.response)
     }
-  };
+  }, [context])
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    fetchData()
+  }, [fetchData])
 
   const profilePhotos = [
     {
       photoName: 'Ninja Turtle Avatar',
       photoUrl:
-        'https://res.cloudinary.com/hw8mbm47q/image/upload/v1568401759/ninja-turtle.png',
+        'https://res.cloudinary.com/hw8mbm47q/image/upload/v1568401759/ninja-turtle.png'
     },
     {
       photoName: 'Penguin Avatar',
       photoUrl:
-        'https://res.cloudinary.com/hw8mbm47q/image/upload/v1568401755/penguin-avatar.png',
+        'https://res.cloudinary.com/hw8mbm47q/image/upload/v1568401755/penguin-avatar.png'
     },
     {
       photoName: 'Fox Avatar',
       photoUrl:
-        'https://res.cloudinary.com/hw8mbm47q/image/upload/v1568401753/fox-avatar.png',
+        'https://res.cloudinary.com/hw8mbm47q/image/upload/v1568401753/fox-avatar.png'
     },
     {
       photoName: 'Ninja Avatar',
       photoUrl:
-        'https://res.cloudinary.com/hw8mbm47q/image/upload/v1568401753/ninja-avatar.png',
-    },
-  ];
+        'https://res.cloudinary.com/hw8mbm47q/image/upload/v1568401753/ninja-avatar.png'
+    }
+  ]
 
   return (
-    <CloudinaryContext cloudName="demo">
+    <CloudinaryContext cloudName='demo'>
       <StyledContainer>
         <Row>
           <Col sm={4}>
-            <StyledCard aria-label="profile description">
+            <StyledCard aria-label='profile description'>
               <StyledImage
                 publicId={user.imageId ? user.imageId : photo}
-                width="286"
-                crop="scale"
+                width='286'
+                crop='scale'
               />
               <Card.Body>
                 <Card.Text>
@@ -77,7 +72,7 @@ export const Profile = ({ context }) => {
                   a profile Avatar
                 </Card.Text>
 
-                <Button onClick={() => setShowModal(true)} variant="primary">
+                <Button onClick={() => setShowModal(true)} variant='primary'>
                   Update Profile Avatar
                 </Button>
               </Card.Body>
@@ -104,28 +99,28 @@ export const Profile = ({ context }) => {
         refresh={fetchData}
       />
     </CloudinaryContext>
-  );
-};
+  )
+}
 
 const StyledContainer = styled(Container)`
   position: relative;
   margin-top: 10px;
-`;
+`
 
 const StyledCard = styled(Card)`
   width: 18rem;
   margin-bottom: 20px;
-`;
+`
 const StyledCol = styled(Col)`
   height: 43rem;
   width: 33rem;
   overflow: scroll;
-`;
+`
 const StyledImage = styled(Image)`
   padding-left: 5px;
   padding-right: 5px;
   padding-top: 5px;
-`;
+`
 
 // const addProfilePhoto = () => {
 //   const data = new FormData();
