@@ -77,7 +77,7 @@ export const Profile = ({ context }) => {
                 </Button>
               </Card.Body>
             </StyledCard>
-            <UserProfileInfo user={user} />
+            <UserProfileInfo user={user} context={context} />
           </Col>
 
           <StyledCol sm={8}>

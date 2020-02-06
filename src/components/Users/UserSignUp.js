@@ -63,6 +63,7 @@ const UserSignUp = ({ context, location, history }) => {
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
+  const [signUpErrors, setSignUpErrors] = useState([])
 
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword)
@@ -76,29 +77,37 @@ const UserSignUp = ({ context, location, history }) => {
   const submitForm = async data => {
     console.log(data)
     const { from } = location.state || { from: { pathname: '/' } }
-
-    const res = await context.data.createUser(data)
-    if (res) {
-      setTimeout(() => {
-        context.data.sendConfirmUserEmail(email).then(data => {
-          swal({
-            title: 'Confirmation Email sent to your inbox',
-            icon: 'success'
-          })
-          if (data.status === 200) {
-            setTimeout(() => {
-              context.actions
-                .signIn(email, password)
-                .then(() => history.push(from))
-            }, 2000)
-          }
+    try {
+      const res = await context.data.createUser(data)
+      if (res) {
+        swal({
+          title: 'Confirmation Email',
+          text:
+            'conformation email sent to your inbox. Please wait as you will be redirected to the sign in page shortly.',
+          icon: 'success',
+          timer: 2000
         })
-      }, 1000)
+        context.data.sendConfirmUserEmail(email).then(() => {
+          setTimeout(() => {
+            context.actions
+              .signIn(email, password)
+              .then(() => history.push(from))
+          }, 2000)
+        })
+      }
+    } catch (e) {
+      setSignUpErrors(e.response.data.errors)
     }
   }
 
   return (
     <Container>
+      <br />
+      {signUpErrors.map((err, i) => (
+        <p className={classes.p} key={i}>
+          ⚠ {err}
+        </p>
+      ))}
       <form onSubmit={handleSubmit(submitForm)}>
         <Typography className={classes.h3} variant='h3'>
           Sign Up

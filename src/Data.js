@@ -15,7 +15,8 @@ export default class Data {
     }
 
     if (body !== null) {
-      options.data = JSON.stringify(body)
+      options.data = body
+      console.log(options.data)
     }
 
     if (requiresAuth) {
@@ -126,8 +127,8 @@ export default class Data {
   /** CONFIRM USER EMAIL METHODS */
 
   // sends conformation email to user
-  async sendConfirmUserEmail (email) {
-    const res = await Axios.post(`${Config[env].apiBaseUrl}/email`, email)
+  async sendConfirmUserEmail () {
+    const res = await this.api('/email')
     if (res.status === 200 || res.status === 201) {
       return res
     } else if (res.status === 400 || res.status === 403) {
