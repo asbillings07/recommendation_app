@@ -92,7 +92,7 @@ const UserSignUp = ({ context, location, history }) => {
             context.actions
               .signIn(email, password)
               .then(() => history.push(from))
-          }, 2000)
+          }, 4000)
         })
       }
     } catch (e) {

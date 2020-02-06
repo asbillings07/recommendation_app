@@ -2,7 +2,7 @@ import React from 'react'
 import { Card, Button } from 'react-bootstrap'
 import styled from 'styled-components'
 
-export default function ProfileInfo ({ user, context }) {
+export default function ProfileInfo({ user, context }) {
   const resendConfEmail = async () => {
     try {
       const res = await context.data.sendConfirmUserEmail()
@@ -36,9 +36,13 @@ export default function ProfileInfo ({ user, context }) {
         >
           Email Status: {user.confirmed ? 'CONFIRMED' : 'NOT CONFIRMED'}{' '}
         </ConfirmedSubtitle>
-        <Button onClick={() => resendConfEmail()}>
-          Resend Conformation Email
-        </Button>
+        {user.confirmed ? (
+          ''
+        ) : (
+          <Button onClick={() => resendConfEmail()}>
+            Resend Conformation Email
+          </Button>
+        )}
         <Button
           data-testid='profile-edit'
           variant='outline-info'

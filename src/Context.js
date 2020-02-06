@@ -36,6 +36,7 @@ export const Provider = ({ children }) => {
     setState({ authorizedUser: null, token: null })
     Cookies.remove('authorizedUser')
     Cookies.remove('token')
+    Cookies.remove('user')
     console.log('SignOut Successful')
   }
 
@@ -60,8 +61,8 @@ export const Consumer = Context.Consumer
  * @returns {function} A higher-order component.
  */
 
-export default function withContext(Component) {
-  return function ContextComponent(props) {
+export default function withContext (Component) {
+  return function ContextComponent (props) {
     return (
       <Context.Consumer>
         {context => <Component {...props} context={context} />}
