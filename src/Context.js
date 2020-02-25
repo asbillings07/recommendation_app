@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import Data from './Data'
 import Cookies from 'js-cookie'
+import { Email } from '@material-ui/icons'
 export const Context = React.createContext()
 
 /**
@@ -19,9 +20,9 @@ export const Provider = ({ children }) => {
     token: initalTokenState
   })
 
-  const signIn = async (email, password) => {
-    const creds = { email, password }
+  const signIn = async creds => {
     const user = await data.login(creds)
+
     if (user) {
       setState({ authorizedUser: user.user, token: user.token })
       Cookies.set('authorizedUser', JSON.stringify(user.user), { expires: 1 })
@@ -61,12 +62,10 @@ export const Consumer = Context.Consumer
  * @returns {function} A higher-order component.
  */
 
-export default function withContext (Component) {
-  return function ContextComponent (props) {
+export default function withContext(Component) {
+  return function ContextComponent(props) {
     return (
-      <Context.Consumer>
-        {context => <Component {...props} context={context} />}
-      </Context.Consumer>
+      <Context.Consumer>{context => <Component {...props} context={context} />}</Context.Consumer>
     )
   }
 }

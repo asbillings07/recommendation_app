@@ -1,9 +1,8 @@
 import React from 'react'
-import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
-import styled from 'styled-components'
+import { useForm } from 'react-hook-form'
 
-const UserForm = ({
+export const CustomForm = ({
   cancel,
   errors,
   submit,
@@ -78,5 +77,3 @@ const ValidationLabel = styled.h2`
   color: #0069c0;
   font-size: 28px;
 `
-
-export default UserForm

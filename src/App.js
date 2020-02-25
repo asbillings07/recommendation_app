@@ -1,6 +1,8 @@
 import React from 'react'
+
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import withContext from './Context'
+import { withSnackbar } from 'notistack'
 import Home from './components/MainPage/Home'
 import Navigation from './components/MainPage/Navigation'
 import UserSignIn from './components/Users/UserSignIn'
@@ -21,19 +23,19 @@ import { Profile } from './components/Profile/Profile'
 import ProfileEdit from './components/Profile/ProfileEdit'
 
 const App = () => {
-  const NavigationWithContext = withContext(Navigation)
-  const HomeWithContext = withContext(Home)
-  const SignInWithContext = withContext(UserSignIn)
-  const SignUpWithContext = withContext(UserSignUp)
-  const SignOutWithContext = withContext(UserSignOut)
-  const ForgotPasswordWithContext = withContext(ForgotPassword)
-  const ResetPasswordWithContext = withContext(ResetPassword)
+  const NavigationWithContext = withContext(withSnackbar(Navigation))
+  const HomeWithContext = withContext(withSnackbar(Home))
+  const SignInWithContext = withContext(withSnackbar(UserSignIn))
+  const SignUpWithContext = withContext(withSnackbar(UserSignUp))
+  const SignOutWithContext = withContext(withSnackbar(UserSignOut))
+  const ForgotPasswordWithContext = withContext(withSnackbar(ForgotPassword))
+  const ResetPasswordWithContext = withContext(withSnackbar(ResetPassword))
   const ConfirmWithContext = withContext(Confirm)
-  const UpdateRecommendationWithContext = withContext(UpdateRecommendation)
-  const CreateRecommendationWithContext = withContext(CreateRecommendation)
-  const RecDetailWithContext = withContext(RecDetail)
-  const ProfileWithContext = withContext(Profile)
-  const ProfileEditWithContext = withContext(ProfileEdit)
+  const UpdateRecommendationWithContext = withContext(withSnackbar(UpdateRecommendation))
+  const CreateRecommendationWithContext = withContext(withSnackbar(CreateRecommendation))
+  const RecDetailWithContext = withContext(withSnackbar(RecDetail))
+  const ProfileWithContext = withContext(withSnackbar(Profile))
+  const ProfileEditWithContext = withContext(withSnackbar(ProfileEdit))
 
   return (
     <Router>
@@ -49,11 +51,7 @@ const App = () => {
         <Route path='/reset/:token' component={ResetPasswordWithContext} />
         <PrivateRoute exact path='/profile' component={ProfileWithContext} />
         <PrivateRoute path='/profile/edit' component={ProfileEditWithContext} />
-        <Route
-          exact
-          path='/category/:id/recs'
-          component={RecDetailWithContext}
-        />
+        <Route exact path='/category/:id/recs' component={RecDetailWithContext} />
         <PrivateRoute
           exact
           path='/category/:id/recs/update'

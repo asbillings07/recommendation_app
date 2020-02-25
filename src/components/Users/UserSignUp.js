@@ -25,10 +25,7 @@ const useStyles = makeStyles(theme => ({
   spacerLeft9: { marginLeft: theme.spacing(9) },
   spacerLeft: { marginLeft: theme.spacing(1) },
   fontWeightBold: { fontWeight: 'bold' },
-  formControl: {
-    margin: theme.spacing(1),
-    minWidth: 120
-  },
+  formControl: { margin: theme.spacing(1), minWidth: 120 },
   p: {
     color: '#bf1650'
   },
@@ -89,9 +86,7 @@ const UserSignUp = ({ context, location, history }) => {
         })
         context.data.sendConfirmUserEmail(email).then(() => {
           setTimeout(() => {
-            context.actions
-              .signIn(email, password)
-              .then(() => history.push(from))
+            context.actions.signIn(email, password).then(() => history.push(from))
           }, 4000)
         })
       }
@@ -129,9 +124,7 @@ const UserSignUp = ({ context, location, history }) => {
           error={!!errors.firstName}
           inputRef={register({ pattern: /^[A-Za-z]+$/i })}
         />
-        <p className={classes.p}>
-          {errors.firstName && '⚠ First Name Required'}
-        </p>
+        <p className={classes.p}>{errors.firstName && '⚠ First Name Required'}</p>
         <TextField
           fullWidth
           placeholder='Last name'
@@ -156,13 +149,14 @@ const UserSignUp = ({ context, location, history }) => {
           className={classes.selectEmpty}
           id='email'
           name='email'
+          type='email'
           value={email}
           variant='outlined'
           onChange={e => {
             triggerValidation('email')
             setEmail(e.target.value)
           }}
-          inputRef={register({ pattern: /^[A-Za-z]+$/i })}
+          inputRef={register({ required: true })}
           error={!!errors.email}
         />
         <p className={classes.p}>{errors.email && '⚠ Email Required'}</p>
@@ -186,16 +180,22 @@ const UserSignUp = ({ context, location, history }) => {
                 aria-label='toggle password visibility'
                 onClick={handleClickShowPassword}
                 onMouseDown={handleMouseDownPassword}
-                edge='end'
-              >
+                edge='end'>
                 {showPassword ? <Visibility /> : <VisibilityOff />}
               </IconButton>
             </InputAdornment>
           }
-          inputRef={register({ pattern: /^[A-Za-z]+$/i })}
+          inputRef={register({ required: true, maxLength: 8 })}
           error={!!errors.password}
         />
-        <p className={classes.p}>{errors.password && '⚠ Password Required'}</p>
+        <p className={classes.p}>
+          {errors.password &&
+            errors.password.type === 'maxLength' &&
+            '⚠ Password must be at least 8 characters long'}
+        </p>
+        <p className={classes.p}>
+          {errors.password && errors.password.type === 'required' && '⚠ Password Required'}
+        </p>
         <OutlinedInput
           fullWidth
           placeholder='Confirm password'
@@ -216,8 +216,7 @@ const UserSignUp = ({ context, location, history }) => {
                 aria-label='toggle password visibility'
                 onClick={handleClickShowPassword}
                 onMouseDown={handleMouseDownPassword}
-                edge='end'
-              >
+                edge='end'>
                 {showPassword ? <Visibility /> : <VisibilityOff />}
               </IconButton>
             </InputAdornment>
@@ -226,8 +225,7 @@ const UserSignUp = ({ context, location, history }) => {
           error={confirmPassword !== password}
         />
         <p className={classes.p}>
-          {confirmPassword !== password &&
-            '⚠ password & confirm password must match'}
+          {confirmPassword !== password && '⚠ password & confirm password must match'}
         </p>
 
         <Typography variant='body1'>
@@ -237,10 +235,7 @@ const UserSignUp = ({ context, location, history }) => {
         <Button className={(classes.button, classes.spacer)} type='submit'>
           Submit
         </Button>
-        <Button
-          className={(classes.button, classes.spacer)}
-          onClick={() => cancel()}
-        >
+        <Button className={(classes.button, classes.spacer)} onClick={() => cancel()}>
           Cancel
         </Button>
       </form>
