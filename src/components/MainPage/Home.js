@@ -12,9 +12,9 @@ export default function Home({ context, history }) {
   const env = Config.env
   const getAllCategories = async () => {
     try {
-      const categories = await Axios.get(
-        `${Config[env].apiBaseUrl}/category`
-      ).catch(err => console.log(err))
+      const categories = await Axios.get(`${Config[env].apiBaseUrl}/category`).catch(err =>
+        console.log(err)
+      )
       if (categories) {
         setData(categories.data.category)
         setLoading(false)

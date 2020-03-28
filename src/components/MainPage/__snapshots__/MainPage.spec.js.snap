@@ -11,17 +11,14 @@ exports[`All components in on the Main(landing) page render correctly <Home/> 1`
     <li
       class="active"
     />
-     
     <li />
-     
     <li />
-     
   </ol>
   <div
     class="carousel-inner"
   >
     <div
-      class="carousel-item active carousel-item"
+      class="active carousel-item"
     >
       <img
         alt="First slide"
@@ -38,7 +35,7 @@ exports[`All components in on the Main(landing) page render correctly <Home/> 1`
       </div>
     </div>
     <div
-      class="carousel-item carousel-item"
+      class="carousel-item"
     >
       <img
         alt="Second slide"
@@ -55,7 +52,7 @@ exports[`All components in on the Main(landing) page render correctly <Home/> 1`
       </div>
     </div>
     <div
-      class="carousel-item carousel-item"
+      class="carousel-item"
     >
       <img
         alt="Third slide"

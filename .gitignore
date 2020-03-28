@@ -10,3 +10,4 @@ env.js
 .DS_Store
 newrelic_agent.log
 build
+yarn.lock

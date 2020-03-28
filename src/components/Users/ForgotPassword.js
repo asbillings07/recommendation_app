@@ -1,13 +1,12 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import Forms from '../Forms';
-import { Alert, Form, Container, Row, Col } from 'react-bootstrap';
-
+import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
+import { Container, Row, Col, Form, Alert } from 'react-bootstrap'
+import Forms from '../Forms'
 export default function ForgotPassword({ context, history }) {
-  const [email, setEmail] = useState('');
-  const [success, setSuccess] = useState(false);
-  const [messageFromServer, setMessageFromServer] = useState('');
-  const [confirmed] = useState(true);
+  const [email, setEmail] = useState('')
+  const [success, setSuccess] = useState(false)
+  const [messageFromServer, setMessageFromServer] = useState('')
+  const [confirmed] = useState(true)
 
   const submit = () => {
     context.data
@@ -16,37 +15,37 @@ export default function ForgotPassword({ context, history }) {
       .catch(err => {
         if (err) {
           setMessageFromServer([
-            'Email does not exist in our Database, check your email and try again',
-          ]);
+            'Email does not exist in our Database, check your email and try again'
+          ])
         }
-        console.log(err);
-      });
-  };
+        console.log(err)
+      })
+  }
 
   const cancel = () => {
-    history.push('/');
-  };
+    history.push('/')
+  }
 
   if (!success) {
     return (
-      <Container className="mt-3">
-        <Row className="justify-content-md-center">
-          <Col xs md lg="auto">
+      <Container className='mt-3'>
+        <Row className='justify-content-md-center'>
+          <Col xs md lg='auto'>
             <h1>Forgot Password?</h1>
             <Forms
               cancel={cancel}
               errors={messageFromServer}
               submit={submit}
               passwordErrors={confirmed}
-              submitButtonText="Reset Password"
+              submitButtonText='Reset Password'
               elements={() => (
                 <React.Fragment>
-                  <Form.Group controlId="formBasicEmail">
+                  <Form.Group controlId='formBasicEmail'>
                     <Form.Control
-                      type="email"
-                      name="email"
+                      type='email'
+                      name='email'
                       value={email}
-                      placeholder="Email Address"
+                      placeholder='Email Address'
                       onChange={e => setEmail(e.target.value)}
                     />
                   </Form.Group>
@@ -54,29 +53,27 @@ export default function ForgotPassword({ context, history }) {
               )}
             />
             <p>
-              Remember your password? <Link to="/signin">Sign In</Link>
+              Remember your password? <Link to='/signin'>Sign In</Link>
             </p>
           </Col>
         </Row>
       </Container>
-    );
+    )
   } else {
     return (
-      <Container className="mt-3">
-        <Row className="justify-content-md-center">
-          <Col xs md lg="auto">
-            <Alert variant="success">
-              <Alert.Heading>
-                Reset Password Link Successfully Sent
-              </Alert.Heading>
+      <Container className='mt-3'>
+        <Row className='justify-content-md-center'>
+          <Col xs md lg='auto'>
+            <Alert variant='success'>
+              <Alert.Heading>Reset Password Link Successfully Sent</Alert.Heading>
               <p>
-                YAY! Your password reset link is heading to your inbox. Make
-                sure you click the link with 24 hours or it will expire.
+                YAY! Your password reset link is heading to your inbox. Make sure you click the link
+                with 24 hours or it will expire.
               </p>
             </Alert>
           </Col>
         </Row>
       </Container>
-    );
+    )
   }
 }
