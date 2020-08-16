@@ -16,7 +16,7 @@ import { string as yupstring, object as yupobject } from 'yup'
 import { makeStyles } from '@material-ui/core/styles'
 import swal from '@sweetalert/with-react'
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   selectEmpty: {
     marginTop: 8,
     marginBottom: 20
@@ -67,29 +67,28 @@ const UserSignUp = ({ context, location, history }) => {
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword)
   }
-  const handleMouseDownPassword = event => {
+  const handleMouseDownPassword = (event) => {
     event.preventDefault()
   }
   const cancel = () => {
     this.props.history.push('/')
   }
-  const submitForm = async data => {
+  const submitForm = async (data) => {
     console.log(data)
     const { from } = location.state || { from: { pathname: '/' } }
 
     const res = await context.data.createUser(data)
+    console.log(res)
     if (res) {
       setTimeout(() => {
-        context.data.sendConfirmUserEmail(email).then(data => {
+        context.data.sendConfirmUserEmail(email).then((data) => {
           swal({
             title: 'Confirmation Email sent to your inbox',
             icon: 'success'
           })
           if (data.status === 200) {
             setTimeout(() => {
-              context.actions
-                .signIn(email, password)
-                .then(() => history.push(from))
+              context.actions.signIn(email, password).then(() => history.push(from))
             }, 2000)
           }
         })
@@ -113,16 +112,14 @@ const UserSignUp = ({ context, location, history }) => {
           name='firstName'
           value={firstName}
           variant='outlined'
-          onChange={e => {
+          onChange={(e) => {
             triggerValidation('firstName')
             setFirstName(e.target.value)
           }}
           error={!!errors.firstName}
           inputRef={register({ pattern: /^[A-Za-z]+$/i })}
         />
-        <p className={classes.p}>
-          {errors.firstName && '⚠ First Name Required'}
-        </p>
+        <p className={classes.p}>{errors.firstName && '⚠ First Name Required'}</p>
         <TextField
           fullWidth
           placeholder='Last name'
@@ -132,7 +129,7 @@ const UserSignUp = ({ context, location, history }) => {
           name='lastName'
           value={lastName}
           variant='outlined'
-          onChange={e => {
+          onChange={(e) => {
             triggerValidation('lastName')
             setLastName(e.target.value)
           }}
@@ -149,7 +146,7 @@ const UserSignUp = ({ context, location, history }) => {
           name='email'
           value={email}
           variant='outlined'
-          onChange={e => {
+          onChange={(e) => {
             triggerValidation('email')
             setEmail(e.target.value)
           }}
@@ -167,7 +164,7 @@ const UserSignUp = ({ context, location, history }) => {
           name='password'
           value={password}
           variant='outlined'
-          onChange={e => {
+          onChange={(e) => {
             triggerValidation('password')
             setPassword(e.target.value)
           }}
@@ -197,7 +194,7 @@ const UserSignUp = ({ context, location, history }) => {
           name='confirmPassword'
           value={confirmPassword}
           variant='outlined'
-          onChange={e => {
+          onChange={(e) => {
             triggerValidation('confirmPassword')
             setConfirmPassword(e.target.value)
           }}
@@ -217,8 +214,7 @@ const UserSignUp = ({ context, location, history }) => {
           error={confirmPassword !== password}
         />
         <p className={classes.p}>
-          {confirmPassword !== password &&
-            '⚠ password & confirm password must match'}
+          {confirmPassword !== password && '⚠ password & confirm password must match'}
         </p>
 
         <Typography variant='body1'>
@@ -228,10 +224,7 @@ const UserSignUp = ({ context, location, history }) => {
         <Button className={(classes.button, classes.spacer)} type='submit'>
           Submit
         </Button>
-        <Button
-          className={(classes.button, classes.spacer)}
-          onClick={() => cancel()}
-        >
+        <Button className={(classes.button, classes.spacer)} onClick={() => cancel()}>
           Cancel
         </Button>
       </form>

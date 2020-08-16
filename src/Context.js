@@ -22,6 +22,7 @@ export const Provider = ({ children }) => {
   const signIn = async (email, password) => {
     const creds = { email, password }
     const user = await data.login(creds)
+    // console.log(user)
     if (user) {
       setState({ authorizedUser: user.user, token: user.token })
       Cookies.set('authorizedUser', JSON.stringify(user.user), { expires: 1 })
@@ -63,9 +64,7 @@ export const Consumer = Context.Consumer
 export default function withContext(Component) {
   return function ContextComponent(props) {
     return (
-      <Context.Consumer>
-        {context => <Component {...props} context={context} />}
-      </Context.Consumer>
+      <Context.Consumer>{(context) => <Component {...props} context={context} />}</Context.Consumer>
     )
   }
 }
