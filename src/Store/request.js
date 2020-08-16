@@ -1,4 +1,4 @@
-import Config from '../App'
+import Config from '../Config'
 import Axios from 'axios'
 import Cookies from 'js-cookie'
 const env = Config.env

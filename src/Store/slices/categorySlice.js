@@ -5,7 +5,9 @@ const initialState = {
   loading: false,
   cateErrorStatus: null,
   cateErrorMessage: null,
-  categories: []
+  category: [],
+  categories: [],
+  categoryId: null
 }
 
 const categorySlice = createSlice({
@@ -15,8 +17,14 @@ const categorySlice = createSlice({
     toggleLoading: (state) => {
       state.loading = true
     },
-    gotCategoryById: (state, action) => {
+    gotAllCategories: (state, action) => {
       state.categories = action.payload
+      state.loading = false
+    },
+    gotCategoryById: (state, action) => {
+      const { category } = action.payload
+      state.category = category[0].Recommendations
+      state.categoryId = category[0].id
       state.loading = false
     },
     categoryError: (state, action) => {
@@ -27,10 +35,27 @@ const categorySlice = createSlice({
   }
 })
 
-export const { toggleLoading, categoryError, gotCategoryById } = categorySlice.actions
+export const {
+  toggleLoading,
+  categoryError,
+  gotCategoryById,
+  gotAllCategories
+} = categorySlice.actions
 export default categorySlice.reducer
 
 // get Category
+
+export const getAllCategories = () => {
+  return async (dispatch) => {
+    try {
+      const res = await requestApi('/category')
+      console.log(res)
+      dispatch(gotAllCategories(res.data.category))
+    } catch (error) {
+      dispatch(categoryError(error))
+    }
+  }
+}
 
 export const getCategoryById = (id) => {
   return async (dispatch) => {
