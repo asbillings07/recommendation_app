@@ -3,29 +3,34 @@ import React, { useEffect, useState, useCallback } from 'react'
 import ProfileRecommendation from './ProfileRecs'
 import UserProfileInfo from './ProfileInfo'
 import ProfilePhotoModal from './ProfilePhotoModal'
+import { getUserById } from '../../Store/slices/userSlice'
+import { useDispatch, useSelector } from 'react-redux'
 import { Container, Row, Col, Card, Button } from 'react-bootstrap'
 import { Image, CloudinaryContext } from 'cloudinary-react'
 import styled from 'styled-components'
 
-export const Profile = ({ context }) => {
-  const [user, setUser] = useState({})
+export const Profile = () => {
+  const dispatch = useDispatch()
+  const { user } = useSelector((state) => state.users)
+  // const [user, setUser] = useState({})
   const [recommendation, setRecommendation] = useState([])
   // const [selectedFile, setSelectedFile] = useState('');
   const [photo, setPhoto] = useState('sample')
   const [showModal, setShowModal] = useState(false)
 
-  const fetchData = useCallback(async () => {
-    try {
-      const user = await context.data.getUserById()
-      console.log(user)
-      if (user) {
-        setUser(user)
-        setRecommendation(user.Recommendations)
-      }
-    } catch (err) {
-      console.log(err.response)
-    }
-  }, [context])
+  const fetchData = useCallback(() => {
+    dispatch(getUserById())
+    // try {
+    //   const user = await context.data.getUserById()
+    //   console.log(user)
+    //   if (user) {
+    //     setUser(user)
+    //     setRecommendation(user.Recommendations)
+    //   }
+    // } catch (err) {
+    //   console.log(err.response)
+    // }
+  }, [dispatch])
 
   useEffect(() => {
     fetchData()
@@ -34,23 +39,19 @@ export const Profile = ({ context }) => {
   const profilePhotos = [
     {
       photoName: 'Ninja Turtle Avatar',
-      photoUrl:
-        'https://res.cloudinary.com/hw8mbm47q/image/upload/v1568401759/ninja-turtle.png'
+      photoUrl: 'https://res.cloudinary.com/hw8mbm47q/image/upload/v1568401759/ninja-turtle.png'
     },
     {
       photoName: 'Penguin Avatar',
-      photoUrl:
-        'https://res.cloudinary.com/hw8mbm47q/image/upload/v1568401755/penguin-avatar.png'
+      photoUrl: 'https://res.cloudinary.com/hw8mbm47q/image/upload/v1568401755/penguin-avatar.png'
     },
     {
       photoName: 'Fox Avatar',
-      photoUrl:
-        'https://res.cloudinary.com/hw8mbm47q/image/upload/v1568401753/fox-avatar.png'
+      photoUrl: 'https://res.cloudinary.com/hw8mbm47q/image/upload/v1568401753/fox-avatar.png'
     },
     {
       photoName: 'Ninja Avatar',
-      photoUrl:
-        'https://res.cloudinary.com/hw8mbm47q/image/upload/v1568401753/ninja-avatar.png'
+      photoUrl: 'https://res.cloudinary.com/hw8mbm47q/image/upload/v1568401753/ninja-avatar.png'
     }
   ]
 
@@ -67,9 +68,8 @@ export const Profile = ({ context }) => {
               />
               <Card.Body>
                 <Card.Text>
-                  This is your profile. You can reset your password, view and
-                  manage all of the recommendations you have created and choose
-                  a profile Avatar
+                  This is your profile. You can reset your password, view and manage all of the
+                  recommendations you have created and choose a profile Avatar
                 </Card.Text>
 
                 <Button onClick={() => setShowModal(true)} variant='primary'>
@@ -84,7 +84,7 @@ export const Profile = ({ context }) => {
             <h1>Manage Recommendations</h1>
             <ProfileRecommendation
               recommendations={recommendation}
-              context={context}
+              // context={context}
               onRefresh={fetchData}
             />
           </StyledCol>
@@ -95,7 +95,7 @@ export const Profile = ({ context }) => {
         setModal={setShowModal}
         showModal={showModal}
         setPhoto={setPhoto}
-        context={context}
+        // context={context}
         refresh={fetchData}
       />
     </CloudinaryContext>
