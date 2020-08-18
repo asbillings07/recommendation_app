@@ -1,13 +1,9 @@
-import React from 'react';
-import { Modal, ListGroup } from 'react-bootstrap';
+import PropTypes from 'prop-types'
+import React from 'react'
+import { Modal, ListGroup } from 'react-bootstrap'
 
-export const RecommendationModal = ({
-  shouldShow,
-  setShow,
-  recList,
-  setRec,
-}) => {
-  const handleClose = () => setShow(false);
+export const RecommendationModal = ({ shouldShow, setShow, recList, setRec }) => {
+  const handleClose = () => setShow(false)
 
   //maps through list of nearby recommendations
   const recommendationListing = () => {
@@ -15,15 +11,15 @@ export const RecommendationModal = ({
       <ListGroup.Item
         action
         onClick={() => {
-          setRec(rec);
-          handleClose();
+          setRec(rec)
+          handleClose()
         }}
         key={rec.id ? rec.id : i}
       >
         {rec.title}, {rec.vicinity}
       </ListGroup.Item>
-    ));
-  };
+    ))
+  }
 
   return (
     <>
@@ -44,5 +40,14 @@ export const RecommendationModal = ({
         </Modal.Footer> */}
       </Modal>
     </>
-  );
-};
+  )
+}
+
+RecommendationModal.propTypes = {
+  recList: PropTypes.shape({
+    map: PropTypes.func
+  }),
+  setRec: PropTypes.func,
+  setShow: PropTypes.func,
+  shouldShow: PropTypes.any
+}

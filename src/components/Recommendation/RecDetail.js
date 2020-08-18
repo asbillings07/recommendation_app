@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect } from 'react'
 
-import Spinner from '../Spinner'
+import { Spinner } from '../Spinner'
 import Comment from './Comment'
 import { getCategoryById } from '../../Store/slices/categorySlice'
 import { useDispatch, useSelector } from 'react-redux'
@@ -16,29 +16,11 @@ export default function RecDetail({ match }) {
   const { category, loading } = useSelector((state) => state.categories)
   const { authorizedUser, token } = useSelector((state) => state.users)
   const [selectedRec, setSelectedRec] = useState({})
-  const [catid, setCatid] = useState('')
+  const [catId, setCatId] = useState('')
 
-  // const getRecById = useCallback(async () => {
-  //   const { id } = match.params
-  //   setCatid(id)
-  //   try {
-  //     const data = await context.data.getCategoryById(id)
-  //     console.log(data)
-  //     if (data) {
-  //       const recs = data.category[0].Recommendations
-  //       setRecs(recs)
-  //       setLoading(false)
-  //     } else {
-  //       history.push('/notfound')
-  //     }
-  //   } catch (err) {
-  //     console.log(err)
-  //     history.push('/notfound')
-  //   }
-  // }, [])
   useEffect(() => {
     const { id } = match.params
-    setCatid(id)
+    setCatId(id)
     dispatch(getCategoryById(id))
   }, [dispatch, match])
 
@@ -60,7 +42,7 @@ export default function RecDetail({ match }) {
     ))
   }
 
-  if (loading) return <Spinner size='8x' spinning='spinning' />
+  if (loading) return <Spinner size='8x' />
 
   return (
     <StyledContainer>
@@ -74,7 +56,7 @@ export default function RecDetail({ match }) {
             comments={selectedRec.Comments}
             token={token}
             id={selectedRec.id}
-            catId={catid}
+            catId={catId}
             authedUser={authorizedUser}
           />
         </StyledCol>
