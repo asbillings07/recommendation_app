@@ -8,7 +8,8 @@ export const requestApi = (
   method = 'GET',
   body = null,
   requiresAuth = false,
-  creds = null
+  creds = null,
+  query = null
 ) => {
   const url = `${Config[env].apiBaseUrl}${path}`
 
@@ -28,6 +29,10 @@ export const requestApi = (
     const token = Cookies.getJSON('token')
 
     options.headers.Authorization = `Bearer ${token}`
+  }
+
+  if (query !== null) {
+    options.params = query
   }
 
   return Axios(url, options)
