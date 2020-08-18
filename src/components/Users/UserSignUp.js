@@ -1,7 +1,10 @@
-import React, { useState } from 'react'
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import PropTypes from 'prop-types'
+import { createUser, sendConfirmUserEmail, userLogin } from '../../Store/slices/userSlice'
+import { useDispatch, useSelector } from 'react-redux'
 import {
   Container,
   TextField,
@@ -14,7 +17,6 @@ import {
 import { Visibility, VisibilityOff } from '@material-ui/icons'
 import { string as yupstring, object as yupobject } from 'yup'
 import { makeStyles } from '@material-ui/core/styles'
-import swal from '@sweetalert/with-react'
 
 const useStyles = makeStyles((theme) => ({
   selectEmpty: {
@@ -46,11 +48,15 @@ const SignUpFormSchema = yupobject().shape({
   firstName: yupstring().required('Required'),
   lastName: yupstring().required('Required'),
   email: yupstring().required('Required'),
-  password: yupstring().required('Required'),
+  password: yupstring().min(8),
   confirmPassword: yupstring().required('Required')
 })
 
-const UserSignUp = ({ context, location, history }) => {
+const UserSignUp = ({ location, history }) => {
+  const dispatch = useDispatch()
+  const { userSignedIn, errorMessage, userCreated, sentConfEmail } = useSelector(
+    (state) => state.users
+  )
   const classes = useStyles()
   const { register, triggerValidation, errors, handleSubmit } = useForm({
     validationSchema: SignUpFormSchema,
@@ -73,28 +79,34 @@ const UserSignUp = ({ context, location, history }) => {
   const cancel = () => {
     this.props.history.push('/')
   }
-  const submitForm = async (data) => {
-    console.log(data)
-    const { from } = location.state || { from: { pathname: '/' } }
-
-    const res = await context.data.createUser(data)
-    console.log(res)
-    if (res) {
-      setTimeout(() => {
-        context.data.sendConfirmUserEmail(email).then((data) => {
-          swal({
-            title: 'Confirmation Email sent to your inbox',
-            icon: 'success'
-          })
-          if (data.status === 200) {
-            setTimeout(() => {
-              context.actions.signIn(email, password).then(() => history.push(from))
-            }, 2000)
-          }
-        })
-      }, 1000)
-    }
+  const capitalize = (s) => {
+    if (typeof s !== 'string') return ''
+    return s.charAt(0).toUpperCase() + s.slice(1)
   }
+  const submitForm = (data) => {
+    const fName = capitalize(data.firstName)
+    const lName = capitalize(data.lastName)
+    const user = {
+      ...data,
+      firstName: fName,
+      lastName: lName
+    }
+    dispatch(createUser(user))
+  }
+  useEffect(() => {
+    if (userCreated) dispatch(sendConfirmUserEmail())
+  }, [userCreated])
+
+  useEffect(() => {
+    if (sentConfEmail) dispatch(userLogin({ email, password }))
+  }, [sentConfEmail])
+
+  useEffect(() => {
+    const { from } = location.state || { from: { pathname: '/' } }
+    if (userSignedIn) history.push(from)
+  }, [userSignedIn])
+
+  console.log({ userCreated, userSignedIn, sentConfEmail })
 
   return (
     <Container>
@@ -103,6 +115,7 @@ const UserSignUp = ({ context, location, history }) => {
           Sign Up
         </Typography>
         <br />
+        <p className={classes.p}>{errorMessage}</p>
         <TextField
           fullWidth
           placeholder='First name'
@@ -183,7 +196,10 @@ const UserSignUp = ({ context, location, history }) => {
           inputRef={register({ pattern: /^[A-Za-z]+$/i })}
           error={!!errors.password}
         />
-        <p className={classes.p}>{errors.password && '⚠ Password Required'}</p>
+        <p className={classes.p}>
+          {console.log(errors.password)}
+          {errors.password?.type === 'min' && errors.password.message}
+        </p>
         <OutlinedInput
           fullWidth
           placeholder='Confirm password'
@@ -233,7 +249,6 @@ const UserSignUp = ({ context, location, history }) => {
 }
 
 UserSignUp.propTypes = {
-  context: PropTypes.any,
   history: PropTypes.any,
   location: PropTypes.any
 }
