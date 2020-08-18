@@ -59,7 +59,7 @@
     "react-redux": "^7.2.1",
     "react-router": "^5.0.1",
     "react-router-dom": "^5.0.1",
-    "react-scripts": "3.0.1",
+    "react-scripts": "3.4.3",
     "redux": "^4.0.5",
     "redux-logger": "^3.0.6",
     "redux-persist": "^6.0.0",
@@ -95,7 +95,7 @@
   "devDependencies": {
     "@testing-library/react": "^8.0.7",
     "faker": "^4.1.0",
-    "jest": "24.7.1",
+    "jest": "24.9.0",
     "jest-fetch-mock": "^2.1.2",
     "request": "^2.88.0",
     "sequelize-mock": "^0.10.2"
