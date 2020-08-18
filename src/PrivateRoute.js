@@ -1,29 +1,34 @@
-import React from 'react';
-import { Route, Redirect } from 'react-router-dom';
-import { Consumer } from './Context';
+import React, { useEffect } from 'react'
+import { Route, Redirect } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+import { notify } from 'react-notify-toast'
 
 /**
  * A component that checks if user is Authorized if not redirects them to signin.
  *
  */
 
-export default ({ component: Component, ...rest }) => {
+export const PrivateRoute = ({ component: Component, ...rest }) => {
+  const { authorizedUser } = useSelector((state) => state.users)
+  useEffect(() => {
+    if (!authorizedUser) {
+      notify.show('You need to sign in before you can access that page', 'warning', 2000)
+    }
+  }, [authorizedUser])
   return (
-    <Consumer>
-      {context => (
+    <>
+      {
         <Route
           {...rest}
-          render={props =>
-            context.authorizedUser ? (
+          render={(props) =>
+            authorizedUser ? (
               <Component {...props} />
             ) : (
-              <Redirect
-                to={{ pathname: '/signin', state: { from: props.location } }}
-              />
+              <Redirect to={{ pathname: '/signin', state: { from: props.location } }} />
             )
           }
         />
-      )}
-    </Consumer>
-  );
-};
+      }
+    </>
+  )
+}
