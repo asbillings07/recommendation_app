@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { Container, Button, Row, Col } from 'react-bootstrap'
 import SearchBar from './SearchBar'
 import styled from 'styled-components'
-import Spinner from '../Spinner'
+import { Spinner } from '../Spinner'
 
 export default function CategoryList({ data, categories, setCategories, loading }) {
   const showCategories = () => {
@@ -24,7 +24,7 @@ export default function CategoryList({ data, categories, setCategories, loading 
   }
 
   if (loading) {
-    return <Spinner size='4x' spinning='spinning' />
+    return <Spinner size='4x' />
   } else {
     return (
       <>
