@@ -49,7 +49,6 @@ export const getAllCategories = () => {
   return async (dispatch) => {
     try {
       const res = await requestApi('/category')
-      console.log(res)
       dispatch(gotAllCategories(res.data.category))
     } catch (error) {
       dispatch(categoryError(error))

@@ -1,16 +1,24 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { requestApi } from '../request'
 import Cookies from 'js-cookie'
+import swal from '@sweetalert/with-react'
 
 const initialState = {
   users: [],
+  user: null,
+  userRecs: [],
   loading: false,
   authorizedUser: null,
+  userEmail: null,
   token: null,
   errorStatus: false,
-  errorMessage: null,
+  errorMessage: [],
   userSignedIn: false,
-  userSignedOut: true
+  userSignedOut: false,
+  resetSuccess: false,
+  forgotEmailSent: false,
+  sentConfEmail: false,
+  userCreated: false
 }
 
 const userSlice = createSlice({
@@ -20,56 +28,99 @@ const userSlice = createSlice({
     toggleLoading: (state) => {
       state.loading = true
     },
+    setUserCreated: (state, action) => {
+      state.userCreated = action.payload
+    },
+    setSentConfirmEmail: (state, action) => {
+      state.sentConfEmail = action.payload
+    },
+    setResetSuccess: (state, action) => {
+      state.resetSuccess = action.payload
+    },
+    setForgotEmailSent: (state, action) => {
+      state.forgotEmailSent = action.payload
+      state.loading = false
+    },
     userLogIn: (state, action) => {
       const { user, token } = action.payload
       state.authorizedUser = user
       Cookies.set('authorizedUser', JSON.stringify(user), { expires: 1 })
       Cookies.set('token', JSON.stringify(token), { expires: 1 })
       state.loading = false
+      state.errorMessage = []
       state.userSignedIn = true
+      state.userSignedOut = false
     },
-    userLogOut: (state, action) => {
+    userLogOut: (state) => {
       Cookies.remove('authorizedUser')
       Cookies.remove('token')
       state.loading = false
       state.userSignedOut = true
+      state.userSignedIn = false
+      state.errorMessage = []
       console.log('SignOut Successful')
     },
     createdUser: (state, action) => {
       console.log(action.payload)
       state.loading = false
+      state.userCreated = true
+      state.errorMessage = []
     },
     gotUsers: (state, action) => {
       state.users = action.payload
       state.loading = false
+      state.errorMessage = []
     },
     gotUserById: (state, action) => {
+      console.log(action.payload)
+      state.user = action.payload
       state.loading = false
+      state.errorMessage = []
     },
     updatedUser: (state, action) => {
       state.loading = false
+      state.errorMessage = []
     },
     deletedUser: (state, action) => {
       state.loading = false
+      state.errorMessage = []
     },
     updatedUserPhoto: (state, action) => {
       state.loading = false
+      state.errorMessage = []
     },
     forgotPassword: (state, action) => {
+      state.forgotEmailSent = true
       state.loading = false
+      state.errorMessage = []
+    },
+    resetPassword: (state, action) => {
+      state.loading = false
+      state.userEmail = action.payload
     },
     updatedUserPassword: (state, action) => {
+      console.log(action.payload)
       state.loading = false
+      state.resetSuccess = true
+      state.errorMessage = []
     },
     sentConfirmEmail: (state, action) => {
       state.loading = false
+      state.errorMessage = []
+      state.sentConfEmail = true
+      swal({
+        title: 'Confirmation Email sent to your inbox',
+        icon: 'success'
+      })
     },
     confirmedUserEmail: (state, action) => {
       state.loading = false
+      state.errorMessage = []
     },
     userError: (state, action) => {
+      const { message, errors } = action.payload
       state.errorStatus = true
-      console.log(action.payload)
+      state.errorMessage = [message]
       state.loading = false
     }
   }
@@ -83,12 +134,17 @@ export const {
   updatedUserPassword,
   updatedUserPhoto,
   gotUsers,
+  setResetSuccess,
   gotUserById,
   deletedUser,
+  resetPassword,
+  setUserCreated,
+  setSentConfirmEmail,
   forgotPassword,
   sentConfirmEmail,
   confirmedUserEmail,
   userError,
+  setForgotEmailSent,
   toggleLoading
 } = userSlice.actions
 export default userSlice.reducer
@@ -105,11 +161,17 @@ export const userLogin = (creds) => {
       if (error) {
         dispatch(userError(error))
       } else {
-        dispatch(userLogIn(res.data))
+        dispatch(userLogIn({ user, token }))
       }
     } catch (error) {
-      dispatch(userError(error))
+      dispatch(userError(error.response.data.message))
     }
+  }
+}
+
+export const userLogout = () => {
+  return (dispatch) => {
+    dispatch(userLogOut())
   }
 }
 
@@ -119,10 +181,10 @@ export const getUserById = () => {
   return async (dispatch) => {
     dispatch(toggleLoading())
     try {
-      const res = await requestApi('/users', 'GET', null, true, null)
+      const res = await requestApi('/users', 'GET', null, true)
       dispatch(gotUserById(res.data))
     } catch (error) {
-      dispatch(userError(error))
+      dispatch(userError(error.response.data.message))
     }
   }
 }
@@ -133,9 +195,15 @@ export const createUser = (user) => {
     dispatch(toggleLoading())
     try {
       const res = await requestApi('/users', 'POST', user)
-      dispatch(createdUser(res.data))
+      const { message } = res.data
+      console.log(res)
+      if (message.includes('Created Successfully')) {
+        dispatch(createdUser(res.data))
+        dispatch(setUserCreated(false))
+      }
     } catch (error) {
-      dispatch(userError(error))
+      console.log('User Error', error)
+      dispatch(userError(error.response.data))
     }
   }
 }
@@ -148,7 +216,7 @@ export const updateUser = (token, user) => {
       const res = await requestApi('/users', 'PUT', user, true, token)
       dispatch(updatedUser(res.data))
     } catch (error) {
-      dispatch(userError(error))
+      dispatch(userError(error.response.data.message))
     }
   }
 }
@@ -162,7 +230,7 @@ export const updateUserPhoto = (token, photoData) => {
       const res = await requestApi('/userphoto', 'POST', photoData, true, token)
       dispatch(updatedUserPhoto(res.data))
     } catch (error) {
-      dispatch(userError(error))
+      dispatch(userError(error.response.data.message))
     }
   }
 }
@@ -175,22 +243,43 @@ export const deleteUser = (token) => {
       const res = await requestApi('/users', 'DELETE', null, null, true, token)
       dispatch(deletedUser(res.data))
     } catch (error) {
-      dispatch(userError(error))
+      dispatch(userError(error.response.data.message))
     }
   }
 }
 
 /** RESET PASSWORD METHODS */
 
+export const resetUserPassword = (token) => {
+  const resetPassToken = {
+    resetPasswordToken: token
+  }
+  return async (dispatch) => {
+    try {
+      const res = requestApi('/reset', 'GET', null, false, null, resetPassToken)
+      const { email, message } = res.data
+      if (message === 'successful') {
+        dispatch(resetPassword(email))
+      } else {
+        console.log(res)
+        dispatch(userError('Password Token Expired'))
+      }
+    } catch (error) {
+      dispatch(userError(error.response.data.message))
+    }
+  }
+}
+
 // sends user reset email password link via email
 export const forgotUserPassword = (email) => {
   return async (dispatch) => {
     dispatch(toggleLoading())
     try {
-      const res = await requestApi('/forgotpassword', 'POST', email)
+      const res = await requestApi('/forgotpassword', 'POST', { email })
       dispatch(forgotPassword(res.data))
+      dispatch(setForgotEmailSent(false))
     } catch (error) {
-      dispatch(userError(error))
+      dispatch(userError(error.response.data.message))
     }
   }
 }
@@ -202,21 +291,23 @@ export const updateUserPassword = (user) => {
     dispatch(toggleLoading())
     try {
       const res = await requestApi('/updatepasswordviaemail', 'PUT', user)
-      dispatch(updatedUserPassword(res.data))
+      dispatch(updatedUserPassword(res))
+      dispatch(setResetSuccess(false))
     } catch (error) {
-      dispatch(userError(error))
+      dispatch(userError(error.response.data.message))
     }
   }
 }
 /** CONFIRM USER EMAIL METHODS */
 
 // sends conformation email to user
-export const sendConfirmUserEmail = (email) => {
+export const sendConfirmUserEmail = () => {
   return async (dispatch) => {
     dispatch(toggleLoading())
     try {
-      const res = await requestApi(`/email`, email)
+      const res = await requestApi('/email')
       dispatch(sentConfirmEmail(res.data))
+      dispatch(setSentConfirmEmail(false))
     } catch (error) {
       dispatch(userError(error))
     }
@@ -231,7 +322,7 @@ export const confirmUserEmail = (id) => {
       const res = await requestApi(`/email/confirm/${id}`)
       dispatch(confirmedUserEmail(res.data))
     } catch (error) {
-      dispatch(userError(error))
+      dispatch(userError(error.response.data.message))
     }
   }
 }
