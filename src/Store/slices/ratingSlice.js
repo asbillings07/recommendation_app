@@ -84,8 +84,8 @@ export const createRating = (token, rating, id) => {
     try {
       const res = await requestApi(`/rating/recs/${id}`, 'POST', rating, true, token)
       console.log('CreateRating', res)
-      // dispatch(createdUserRating(res.data))
-      // dispatch(toggleCreateRatingSuccess(false))
+      dispatch(createdUserRating(res.data))
+      dispatch(toggleCreateRatingSuccess(false))
     } catch (error) {
       console.log('CreateUserRatingError', error)
     }

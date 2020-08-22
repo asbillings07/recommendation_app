@@ -5,7 +5,7 @@ import swal from '@sweetalert/with-react'
 
 const initialState = {
   users: [],
-  user: null,
+  user: {},
   userRecs: [],
   loading: false,
   authorizedUser: null,
@@ -74,6 +74,7 @@ const userSlice = createSlice({
     gotUserById: (state, action) => {
       console.log(action.payload)
       state.user = action.payload
+      state.userRecs = action.payload.Recommendations
       state.loading = false
       state.errorMessage = []
     },

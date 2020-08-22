@@ -3,7 +3,7 @@ import { requestApi } from '../request'
 
 const initialState = {
   loading: false,
-  recs: [],
+  rec: null,
   recErrorStatus: false,
   recErrorMessage: [],
   recCreated: false,
@@ -33,6 +33,9 @@ const recSlice = createSlice({
       state.recErrorMessage = action.payload.errors
       state.recErrorStatus = true
     },
+    gotRec: (state, action) => {
+      state.rec = action.payload
+    },
     createRec: (state, action) => {
       state.recCreated = true
     },
@@ -51,6 +54,7 @@ const {
   deleteRec,
   updateRec,
   createRec,
+  gotRec,
   toggleRecCreated,
   toggleRecDeleted,
   toggleRecUpdated
@@ -58,7 +62,17 @@ const {
 export default recSlice.reducer
 
 /** RECOMMENDATION METHODS */
-
+export const getRecById = (id) => {
+  return async (dispatch) => {
+    try {
+      const res = await requestApi(`/recs/${id}`)
+      const { data } = res
+      dispatch(gotRec(data))
+    } catch (error) {
+      dispatch(recError(error.response.data))
+    }
+  }
+}
 // create recommendation
 export const createRecommendation = (token, rec, id) => {
   return async (dispatch) => {
@@ -78,10 +92,9 @@ export const updateRecommendation = (token, rec, id) => {
   return async (dispatch) => {
     dispatch(toggleLoading())
     try {
-      const res = await requestApi(`/recs/${id}`, 'PUT', rec, true, token)
-      console.log('updateRec', res)
-      // dispatch(updateRec())
-      // dispatch(toggleRecUpdated())
+      await requestApi(`/recs/${id}`, 'PUT', rec, true, token)
+      dispatch(updateRec())
+      dispatch(toggleRecUpdated())
     } catch (error) {
       dispatch(recError(error))
     }
