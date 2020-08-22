@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { Container, Button, Row, Col } from 'react-bootstrap'
 import SearchBar from './SearchBar'
 import styled from 'styled-components'
-import { Spinner } from '../Spinner'
+import { Spinner } from '../reusableComponents'
 
 export default function CategoryList({ data, categories, setCategories, loading }) {
   const showCategories = () => {

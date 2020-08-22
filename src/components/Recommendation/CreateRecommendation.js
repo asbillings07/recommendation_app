@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import Forms from '../Forms'
+import { Forms } from '../reusableComponents'
 import { createRecommendation } from '../../Store/slices/recommendationSlice'
 import { Form, Container, Row, Col, Spinner } from 'react-bootstrap'
 import { notify } from 'react-notify-toast'

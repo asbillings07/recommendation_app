@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react'
-import { Spinner } from '../Spinner'
+import { Spinner } from '../reusableComponents'
 import { Alert, Container, Row, Col } from 'react-bootstrap'
 import axios from 'axios'
 import Config from '../../Config'

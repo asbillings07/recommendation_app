@@ -2,10 +2,10 @@
 import React, { useState, useEffect } from 'react'
 import { resetUserPassword, updatedUserPassword } from '../../Store/slices/userSlice'
 import { useDispatch, useSelector } from 'react-redux'
-import Forms from '../Forms'
+import { Forms } from '../reusableComponents'
 import { Form, Container, Row, Col } from 'react-bootstrap'
-import { Spinner } from '../Spinner.js'
-import { AlertUser } from '../AlertUser'
+import { Spinner } from '../reusableComponents'
+import { AlertUser } from '../reusableComponents'
 
 export default function ResetPassword({ match, history }) {
   const dispatch = useDispatch()

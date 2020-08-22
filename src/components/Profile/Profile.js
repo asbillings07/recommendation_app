@@ -11,7 +11,7 @@ import styled from 'styled-components'
 
 export const Profile = () => {
   const dispatch = useDispatch()
-  const { user } = useSelector((state) => state.users)
+  const { user, userRecs } = useSelector((state) => state.users)
   // const [user, setUser] = useState({})
   const [recommendation, setRecommendation] = useState([])
   // const [selectedFile, setSelectedFile] = useState('');
@@ -62,7 +62,7 @@ export const Profile = () => {
           <Col sm={4}>
             <StyledCard aria-label='profile description'>
               <StyledImage
-                publicId={user.imageId ? user.imageId : photo}
+                publicId={user?.imageId ? user.imageId : photo}
                 width='286'
                 crop='scale'
               />
@@ -83,7 +83,7 @@ export const Profile = () => {
           <StyledCol sm={8}>
             <h1>Manage Recommendations</h1>
             <ProfileRecommendation
-              recommendations={recommendation}
+              recommendations={userRecs}
               // context={context}
               onRefresh={fetchData}
             />

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 
-import { Spinner } from '../Spinner'
+import { Spinner } from '../reusableComponents'
 import Comment from './Comment'
 import { getCategoryById } from '../../Store/slices/categorySlice'
 import { useDispatch, useSelector } from 'react-redux'
@@ -36,7 +36,7 @@ export default function RecDetail({ match }) {
         <Card.Subtitle className='mt-2 text-muted'>{rec.location}</Card.Subtitle>
         <Card.Text>{rec.description}</Card.Text>
 
-        {authorizedUser ? <Rating recid={rec.id} /> : ''}
+        {authorizedUser ? <Rating recid={selectedRec.id} /> : ''}
         <Card.Text>Recommended by: {`${rec.User.firstName} ${rec.User.lastName}`}</Card.Text>
       </ListGroupItem>
     ))

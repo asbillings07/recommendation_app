@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import Forms from '../Forms'
+import { Forms } from '../reusableComponents'
 import { userLogin } from '../../Store/slices/userSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import PropTypes from 'prop-types'
