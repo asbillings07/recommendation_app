@@ -109,8 +109,8 @@ export const deleteRecommendation = (token, id) => {
     try {
       const res = await requestApi(`/recs/${id}`, 'DELETE', null, true, token)
       console.log('Delete Rec', res)
-      // dispatch(deleteRec())
-      // dispatch(toggleRecDeleted())
+      dispatch(deleteRec())
+      dispatch(toggleRecDeleted())
     } catch (error) {
       dispatch(recError(error))
     }
