@@ -12,24 +12,11 @@ import styled from 'styled-components'
 export const Profile = () => {
   const dispatch = useDispatch()
   const { user, userRecs } = useSelector((state) => state.users)
-  // const [user, setUser] = useState({})
-  const [recommendation, setRecommendation] = useState([])
-  // const [selectedFile, setSelectedFile] = useState('');
   const [photo, setPhoto] = useState('sample')
   const [showModal, setShowModal] = useState(false)
 
   const fetchData = useCallback(() => {
     dispatch(getUserById())
-    // try {
-    //   const user = await context.data.getUserById()
-    //   console.log(user)
-    //   if (user) {
-    //     setUser(user)
-    //     setRecommendation(user.Recommendations)
-    //   }
-    // } catch (err) {
-    //   console.log(err.response)
-    // }
   }, [dispatch])
 
   useEffect(() => {
@@ -95,7 +82,6 @@ export const Profile = () => {
         setModal={setShowModal}
         showModal={showModal}
         setPhoto={setPhoto}
-        // context={context}
         refresh={fetchData}
       />
     </CloudinaryContext>

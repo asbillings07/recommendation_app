@@ -1,23 +1,21 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Button, Modal } from 'react-bootstrap'
+import { deleteRecommendation } from '../../Store/slices/recommendationSlice'
 import { notify } from 'react-notify-toast'
 import { useDispatch, useSelector } from 'react-redux'
-export default function ProfileModal({ showModal, setModal, context, recId, refresh }) {
+export default function ProfileModal({ showModal, setModal, recId, refresh }) {
   const dispatch = useDispatch()
   const { token } = useSelector((state) => state.users)
+  const { recDeleted } = useSelector((state) => state.recs)
   const handleClose = () => setModal(false)
 
-  // Deletes recommendation
-  const deleteRecommendation = (id) => {
-    context.data.deleteRecommendation(context.token, id).then((error) => {
-      if (error.length) {
-        console.log(error)
-      } else {
-        notify.show('Recommendation Deleted!', 'danger', 10000)
-        refresh()
-      }
-    })
-  }
+  useEffect(() => {
+    if (recDeleted) {
+      notify.show('Recommendation Deleted!', 'danger', 10000)
+      refresh()
+    }
+  }, [recDeleted, refresh])
+
   return (
     <>
       <Modal show={showModal} onHide={handleClose}>
@@ -36,7 +34,7 @@ export default function ProfileModal({ showModal, setModal, context, recId, refr
             variant='danger'
             onClick={() => {
               handleClose()
-              deleteRecommendation(recId)
+              dispatch(deleteRecommendation(token, recId))
             }}
           >
             Yes, do it
