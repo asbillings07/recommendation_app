@@ -9,13 +9,15 @@ const initialState = {
   userRecs: [],
   loading: false,
   authorizedUser: null,
+  emailConfirmed: false,
   userEmail: null,
   token: null,
+  confirmMessage: '',
   errorStatus: false,
+  userSuccess: false,
   errorMessage: [],
   userSignedIn: false,
   userSignedOut: false,
-  resetSuccess: false,
   forgotEmailSent: false,
   sentConfEmail: false,
   userCreated: false
@@ -28,18 +30,24 @@ const userSlice = createSlice({
     toggleLoading: (state) => {
       state.loading = true
     },
+    toggleUserSuccess: (state, action) => {
+      state.userSuccess = action.payload
+    },
     setUserCreated: (state, action) => {
       state.userCreated = action.payload
+      state.userSuccess = true
     },
     setSentConfirmEmail: (state, action) => {
       state.sentConfEmail = action.payload
-    },
-    setResetSuccess: (state, action) => {
-      state.resetSuccess = action.payload
+      state.userSuccess = true
     },
     setForgotEmailSent: (state, action) => {
       state.forgotEmailSent = action.payload
       state.loading = false
+      swal({
+        title: 'Forgotten password Email sent to your inbox',
+        icon: 'success'
+      })
     },
     userLogIn: (state, action) => {
       const { user, token } = action.payload
@@ -64,6 +72,7 @@ const userSlice = createSlice({
       console.log(action.payload)
       state.loading = false
       state.userCreated = true
+      state.userSuccess = true
       state.errorMessage = []
     },
     gotUsers: (state, action) => {
@@ -75,37 +84,51 @@ const userSlice = createSlice({
       console.log(action.payload)
       state.user = action.payload
       state.userRecs = action.payload.Recommendations
+      state.emailConfirmed = action.payload.confirmed
       state.loading = false
       state.errorMessage = []
     },
     updatedUser: (state, action) => {
       state.loading = false
       state.errorMessage = []
+      state.userSuccess = true
     },
     deletedUser: (state, action) => {
       state.loading = false
       state.errorMessage = []
+      state.userSuccess = true
     },
     updatedUserPhoto: (state, action) => {
       state.loading = false
       state.errorMessage = []
+      swal({
+        title: 'Your photo has been successfully updated',
+        icon: 'success'
+      })
     },
     forgotPassword: (state, action) => {
-      state.forgotEmailSent = true
+      state.forgotEmailSent = action.payload.success
       state.loading = false
       state.errorMessage = []
+      swal({
+        title: 'Reset Password link successfully sent!',
+        text: `A password reset link is heading to your inbox. Make sure you click the link with 24 hours or it will expire.`,
+        icon: 'success'
+      })
     },
     resetPassword: (state, action) => {
-      state.loading = false
-      state.userEmail = action.payload
-    },
-    updatedUserPassword: (state, action) => {
       console.log(action.payload)
       state.loading = false
-      state.resetSuccess = true
+      state.userEmail = action.payload.email
+    },
+    updatedUserPassword: (state, action) => {
+      console.log(action.payload.message)
+      state.loading = false
+      state.userSuccess = true
       state.errorMessage = []
     },
     sentConfirmEmail: (state, action) => {
+      state.confirmMessage = action.payload.message
       state.loading = false
       state.errorMessage = []
       state.sentConfEmail = true
@@ -115,13 +138,16 @@ const userSlice = createSlice({
       })
     },
     confirmedUserEmail: (state, action) => {
+      const { message } = action.payload
+      state.confirmMessage = message
       state.loading = false
       state.errorMessage = []
     },
     userError: (state, action) => {
-      const { message, errors } = action.payload
+      console.log('ERROR', action.payload)
+      const { message, error } = action.payload
       state.errorStatus = true
-      state.errorMessage = [message]
+      state.errorMessage = [message || error || action.payload]
       state.loading = false
     }
   }
@@ -146,7 +172,8 @@ export const {
   confirmedUserEmail,
   userError,
   setForgotEmailSent,
-  toggleLoading
+  toggleLoading,
+  toggleUserSuccess
 } = userSlice.actions
 export default userSlice.reducer
 
@@ -172,17 +199,18 @@ export const userLogin = (creds) => {
 
 export const userLogout = () => {
   return (dispatch) => {
+    dispatch(toggleLoading())
     dispatch(userLogOut())
   }
 }
 
 // get Users
 
-export const getUserById = () => {
+export const getUserById = (token) => {
   return async (dispatch) => {
     dispatch(toggleLoading())
     try {
-      const res = await requestApi('/users', 'GET', null, true)
+      const res = await requestApi('/users', 'GET', null, true, token)
       dispatch(gotUserById(res.data))
     } catch (error) {
       dispatch(userError(error.response.data.message))
@@ -216,6 +244,7 @@ export const updateUser = (token, user) => {
     try {
       const res = await requestApi('/users', 'PUT', user, true, token)
       dispatch(updatedUser(res.data))
+      dispatch(toggleUserSuccess(false))
     } catch (error) {
       dispatch(userError(error.response.data.message))
     }
@@ -230,6 +259,7 @@ export const updateUserPhoto = (token, photoData) => {
     try {
       const res = await requestApi('/userphoto', 'POST', photoData, true, token)
       dispatch(updatedUserPhoto(res.data))
+      dispatch(toggleUserSuccess(false))
     } catch (error) {
       dispatch(userError(error.response.data.message))
     }
@@ -256,17 +286,12 @@ export const resetUserPassword = (token) => {
     resetPasswordToken: token
   }
   return async (dispatch) => {
+    dispatch(toggleLoading())
     try {
-      const res = requestApi('/reset', 'GET', null, false, null, resetPassToken)
-      const { email, message } = res.data
-      if (message === 'successful') {
-        dispatch(resetPassword(email))
-      } else {
-        console.log(res)
-        dispatch(userError('Password Token Expired'))
-      }
+      const res = await requestApi('/reset', 'GET', null, false, null, resetPassToken)
+      dispatch(resetPassword(res.data))
     } catch (error) {
-      dispatch(userError(error.response.data.message))
+      dispatch(userError(error.response.data))
     }
   }
 }
@@ -291,8 +316,8 @@ export const updateUserPassword = (user) => {
   return async (dispatch) => {
     dispatch(toggleLoading())
     try {
-      const res = await requestApi('/updatepasswordviaemail', 'PUT', user)
-      dispatch(updatedUserPassword(res))
+      const res = await requestApi('/updatepassword', 'PUT', user)
+      dispatch(updatedUserPassword(res.data))
       dispatch(setResetSuccess(false))
     } catch (error) {
       dispatch(userError(error.response.data.message))
@@ -316,11 +341,12 @@ export const sendConfirmUserEmail = () => {
 }
 
 // when user clicks on conformation email
-export const confirmUserEmail = (id) => {
+export const confirmUserEmail = (token) => {
   return async (dispatch) => {
     dispatch(toggleLoading())
     try {
-      const res = await requestApi(`/email/confirm/${id}`)
+      const res = await requestApi(`/email/confirm`, 'GET', null, true, token)
+      console.log(res.data)
       dispatch(confirmedUserEmail(res.data))
     } catch (error) {
       dispatch(userError(error.response.data.message))
