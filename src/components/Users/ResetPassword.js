@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react'
-import { resetUserPassword, updatedUserPassword } from '../../Store/slices/userSlice'
+import { resetUserPassword, updateUserPassword } from '../../Store/slices/userSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import { Forms } from '../reusableComponents'
 import { Form, Container, Row, Col } from 'react-bootstrap'
@@ -9,15 +9,14 @@ import { AlertUser } from '../reusableComponents'
 
 export default function ResetPassword({ match, history }) {
   const dispatch = useDispatch()
-  const { userEmail, errorMessage, loading, errorStatus, resetSuccess } = useSelector(
+  const { userEmail, errorMessage, loading, errorStatus, userSuccess } = useSelector(
     (state) => state.users
   )
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
-  const [error, setError] = useState(false)
   const [errors, setErrors] = useState('')
   const [updated, setUpdated] = useState(false)
-  const [confirmed] = useState(true)
+  const [passwordErrors, setPasswordErrors] = useState(true)
 
   // const resetUserPassword = async () => {
   //   const { token } = match.params;
@@ -42,26 +41,18 @@ export default function ResetPassword({ match, history }) {
   // run our function as soon as the browser loads
   useEffect(() => {
     const { token } = match.params
-    console.log(token)
     dispatch(resetUserPassword(token))
   }, [])
 
-  useEffect(() => {
-    if (resetSuccess) setUpdated(true)
-  }, [resetSuccess])
-
   // helper functions
 
-  const submit = () => {
-    const user = {
-      userEmail,
-      password
-    }
-
+  const handleSubmit = () => {
+    console.log('BEFORE ERHEHREHHER')
     if (confirmPassword === password) {
-      dispatch(updatedUserPassword(user))
+      console.log('HEREHHEHEHEH')
+      dispatch(updateUserPassword({ email: userEmail, password }))
     } else {
-      setErrors({ errors: ['Passwords must match'] })
+      setPasswordErrors(false)
     }
   }
 
@@ -69,7 +60,9 @@ export default function ResetPassword({ match, history }) {
     history.push('/')
   }
 
-  if (errorStatus) {
+  if (loading) {
+    return <Spinner size='4x' />
+  } else if (errorStatus) {
     return (
       <>
         <AlertUser
@@ -85,9 +78,7 @@ export default function ResetPassword({ match, history }) {
         />
       </>
     )
-  } else if (loading) {
-    return <Spinner size='4x' />
-  } else if (updated) {
+  } else if (userSuccess) {
     return (
       <>
         <AlertUser
@@ -108,11 +99,14 @@ export default function ResetPassword({ match, history }) {
             <Forms
               cancel={cancel}
               errors={errors}
-              passwordErrors={confirmed}
-              submit={submit}
+              passwordErrors={passwordErrors}
+              submit={() => handleSubmit()}
               submitButtonText='Update Password'
               elements={() => (
                 <React.Fragment>
+                  <Form.Group>
+                    <Form.Control type='email' name='email' readOnly defaultValue={userEmail} />
+                  </Form.Group>
                   <Form.Group controlId='formBasicPassword'>
                     <Form.Control
                       type='password'
@@ -122,7 +116,7 @@ export default function ResetPassword({ match, history }) {
                       onChange={(e) => setPassword(e.target.value)}
                     />
                   </Form.Group>
-                  <Form.Group controlId='formBasicPassword'>
+                  <Form.Group>
                     <Form.Control
                       type='password'
                       name='confirmPassword'
