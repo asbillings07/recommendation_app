@@ -27,7 +27,7 @@ const App = () => {
       <Switch>
         <Route exact path='/' component={Home} />
         <Route path='/signup' component={UserSignUp} />
-        <Route path='/confirm/:id' component={Confirm} />
+        <PrivateRoute path='/confirm' component={Confirm} />
         <Route path='/signin' component={UserSignIn} />
         <Route path='/signout' component={UserSignOut} />
         <Route path='/forgotpassword' component={ForgotPassword} />
