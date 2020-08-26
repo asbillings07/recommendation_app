@@ -54,7 +54,7 @@ const SignUpFormSchema = yupobject().shape({
 
 const UserSignUp = ({ location, history }) => {
   const dispatch = useDispatch()
-  const { userSignedIn, errorMessage, userCreated, sentConfEmail } = useSelector(
+  const { userSignedIn, errorMessage, userCreated, sentConfEmail, token } = useSelector(
     (state) => state.users
   )
   const classes = useStyles()
@@ -94,7 +94,7 @@ const UserSignUp = ({ location, history }) => {
     dispatch(createUser(user))
   }
   useEffect(() => {
-    if (userCreated) dispatch(sendConfirmUserEmail())
+    if (userCreated) dispatch(sendConfirmUserEmail(email))
   }, [userCreated])
 
   useEffect(() => {

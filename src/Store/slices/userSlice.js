@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 import { requestApi } from '../request'
 import Cookies from 'js-cookie'
 import swal from '@sweetalert/with-react'
+import { PURGE } from 'redux-persist'
 
 const initialState = {
   users: [],
@@ -145,9 +146,9 @@ const userSlice = createSlice({
     },
     userError: (state, action) => {
       console.log('ERROR', action.payload)
-      const { message, error } = action.payload
+      const { message, errors } = action.payload
       state.errorStatus = true
-      state.errorMessage = [message || error || action.payload]
+      state.errorMessage = [message || errors || action.payload]
       state.loading = false
     }
   }
@@ -327,11 +328,11 @@ export const updateUserPassword = (user) => {
 /** CONFIRM USER EMAIL METHODS */
 
 // sends conformation email to user
-export const sendConfirmUserEmail = () => {
+export const sendConfirmUserEmail = (email) => {
   return async (dispatch) => {
     dispatch(toggleLoading())
     try {
-      const res = await requestApi('/email')
+      const res = await requestApi('/email', 'POST', { email })
       dispatch(sentConfirmEmail(res.data))
       dispatch(setSentConfirmEmail(false))
     } catch (error) {
