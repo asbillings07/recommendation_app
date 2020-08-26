@@ -17,6 +17,10 @@ Sentry.init({
 
 const [store, persistor] = createStore()
 
+if (window.location.pathname === '/signout') {
+  persistor.purge()
+}
+
 ReactDOM.render(
   <Provider store={store}>
     <PersistGate persistor={persistor}>
