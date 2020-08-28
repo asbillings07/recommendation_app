@@ -9,22 +9,7 @@ export default function Home() {
   const dispatch = useDispatch()
   const { authorizedUser, loading } = useSelector((state) => state.users)
   const { categories } = useSelector((state) => state.categories)
-  const [data, setData] = useState([])
   const [category, setCateory] = useState([])
-  // const getAllCategories = async () => {
-  //   try {
-  //     const categories = await Axios.get(
-  //       `${Config[env].apiBaseUrl}/category`
-  //     ).catch(err => console.log(err))
-  //     if (categories) {
-  //       setData(categories.data.category)
-  //       setLoading(false)
-  //     }
-  //   } catch (err) {
-  //     console.log(err)
-  //     history.push('/notfound')
-  //   }
-  // }
 
   useEffect(() => {
     dispatch(getAllCategories())
@@ -32,7 +17,7 @@ export default function Home() {
 
   return (
     <>
-      <CarouselSlide authUser={authorizedUser} />
+      {/* <CarouselSlide authUser={authorizedUser} /> */}
       <CategoryList
         data={categories}
         categories={category}

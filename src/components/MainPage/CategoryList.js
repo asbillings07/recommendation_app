@@ -4,6 +4,45 @@ import { Container, Button, Row, Col } from 'react-bootstrap'
 import SearchBar from './SearchBar'
 import styled from 'styled-components'
 import { Spinner } from '../reusableComponents'
+import bgPic from '../../images/recommend-it-bg.png'
+import {
+  faUtensils,
+  faShoppingCart,
+  faDog,
+  faHotel,
+  faShoePrints,
+  faSign,
+  faHiking,
+  faUniversity,
+  faCalendarAlt,
+  faPlaneDeparture,
+  faOilCan,
+  faGlassCheers,
+  faSpa,
+  faTicketAlt,
+  faPeopleCarry,
+  faChild
+} from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
+const buttonImgs = {
+  Restaurants: faUtensils,
+  Shopping: faShoppingCart,
+  Pets: faDog,
+  Hotels: faHotel,
+  Fitness: faShoePrints,
+  Daycare: faChild,
+  'Real Estate': faSign,
+  'Outdoor Activities': faHiking,
+  Education: faUniversity,
+  Events: faCalendarAlt,
+  Travel: faPlaneDeparture,
+  Automotive: faOilCan,
+  Nightlife: faGlassCheers,
+  Wellness: faSpa,
+  Entertainment: faTicketAlt,
+  'Home Services': faPeopleCarry
+}
 
 export default function CategoryList({ data, categories, setCategories, loading }) {
   const showCategories = () => {
@@ -16,7 +55,7 @@ export default function CategoryList({ data, categories, setCategories, loading 
             size='lg'
             block
           >
-            {category.title}
+            <FontAwesomeIcon icon={buttonImgs[category.title]} />
           </CategoryButton>
         </StyledLink>
       </Col>
@@ -27,20 +66,29 @@ export default function CategoryList({ data, categories, setCategories, loading 
     return <Spinner size='4x' />
   } else {
     return (
-      <>
+      <BgContainer>
         <SearchBar categories={data} setCategories={setCategories} />
         <H2 aria-label='Browse Categories'>Browse Categories</H2>
         <CategoryContainer>
           <Row>{showCategories()}</Row>
         </CategoryContainer>
-      </>
+      </BgContainer>
     )
   }
 }
 
+const BgContainer = styled.div`
+  background-image: url(${bgPic}); /* The image used */
+  background-color: #cccccc; /* Used if the image is unavailable */
+  height: 500px; /* You must set a specified height */
+  background-position: center; /* Center the image */
+  background-repeat: no-repeat; /* Do not repeat the image */
+  background-size: cover; /* Resize the background image to cover the entire container */
+`
 const H2 = styled.h2`
   display: flex;
   justify-content: center;
+  color: #ffffff;
   font-family: 'Oswald', sans-serif;
 `
 const CategoryContainer = styled(Container)`
