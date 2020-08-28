@@ -1,7 +1,11 @@
-import React, { useState } from 'react'
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import { useSetState } from '../../CustomHooks'
 import { useForm } from 'react-hook-form'
 import PropTypes from 'prop-types'
+import { createUser, sendConfirmUserEmail, userLogin } from '../../Store/slices/userSlice'
+import { useDispatch, useSelector } from 'react-redux'
 import {
   Container,
   TextField,
@@ -14,9 +18,8 @@ import {
 import { Visibility, VisibilityOff } from '@material-ui/icons'
 import { string as yupstring, object as yupobject } from 'yup'
 import { makeStyles } from '@material-ui/core/styles'
-import swal from '@sweetalert/with-react'
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   selectEmpty: {
     marginTop: 8,
     marginBottom: 20
@@ -46,56 +49,74 @@ const SignUpFormSchema = yupobject().shape({
   firstName: yupstring().required('Required'),
   lastName: yupstring().required('Required'),
   email: yupstring().required('Required'),
-  password: yupstring().required('Required'),
+  password: yupstring().min(8),
   confirmPassword: yupstring().required('Required')
 })
 
-const UserSignUp = ({ context, location, history }) => {
+const UserSignUp = ({ location, history }) => {
+  const dispatch = useDispatch()
+  const { userSignedIn, errorMessage, userCreated, sentConfEmail, token } = useSelector(
+    (state) => state.users
+  )
   const classes = useStyles()
   const { register, triggerValidation, errors, handleSubmit } = useForm({
     validationSchema: SignUpFormSchema,
     submitFocusError: true
   })
+  const initialState = {
+    firstName: '',
+    lastName: '',
+    email: '',
+    password: '',
+    confirmPassword: ''
+  }
 
-  const [firstName, setFirstName] = useState('')
-  const [lastName, setLastName] = useState('')
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [confirmPassword, setConfirmPassword] = useState('')
+  const [state, setState] = useSetState(initialState)
   const [showPassword, setShowPassword] = useState(false)
 
+  const handleChange = (e) => {
+    setState({
+      [e.target.name]: e.target.value
+    })
+  }
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword)
   }
-  const handleMouseDownPassword = event => {
+  const handleMouseDownPassword = (event) => {
     event.preventDefault()
   }
   const cancel = () => {
     this.props.history.push('/')
   }
-  const submitForm = async data => {
-    console.log(data)
-    const { from } = location.state || { from: { pathname: '/' } }
-
-    const res = await context.data.createUser(data)
-    if (res) {
-      setTimeout(() => {
-        context.data.sendConfirmUserEmail(email).then(data => {
-          swal({
-            title: 'Confirmation Email sent to your inbox',
-            icon: 'success'
-          })
-          if (data.status === 200) {
-            setTimeout(() => {
-              context.actions
-                .signIn(email, password)
-                .then(() => history.push(from))
-            }, 2000)
-          }
-        })
-      }, 1000)
-    }
+  const capitalize = (s) => {
+    if (typeof s !== 'string') return ''
+    return s.charAt(0).toUpperCase() + s.slice(1)
   }
+  const submitForm = (data) => {
+    const fName = capitalize(data.firstName)
+    const lName = capitalize(data.lastName)
+    const user = {
+      ...data,
+      firstName: fName,
+      lastName: lName
+    }
+    dispatch(createUser(user))
+  }
+  useEffect(() => {
+    if (userCreated) dispatch(sendConfirmUserEmail(state.email))
+  }, [userCreated])
+
+  useEffect(() => {
+    const { email, password } = state
+    if (sentConfEmail) dispatch(userLogin({ email, password }))
+  }, [sentConfEmail])
+
+  useEffect(() => {
+    const { from } = location.state || { from: { pathname: '/' } }
+    if (userSignedIn) history.push(from)
+  }, [userSignedIn])
+
+  console.log({ userCreated, userSignedIn, sentConfEmail })
 
   return (
     <Container>
@@ -104,6 +125,7 @@ const UserSignUp = ({ context, location, history }) => {
           Sign Up
         </Typography>
         <br />
+        <p className={classes.p}>{errorMessage}</p>
         <TextField
           fullWidth
           placeholder='First name'
@@ -111,18 +133,16 @@ const UserSignUp = ({ context, location, history }) => {
           className={classes.selectEmpty}
           id='firstName'
           name='firstName'
-          value={firstName}
+          value={state.firstName}
           variant='outlined'
-          onChange={e => {
+          onChange={(e) => {
             triggerValidation('firstName')
-            setFirstName(e.target.value)
+            handleChange(e)
           }}
           error={!!errors.firstName}
           inputRef={register({ pattern: /^[A-Za-z]+$/i })}
         />
-        <p className={classes.p}>
-          {errors.firstName && '⚠ First Name Required'}
-        </p>
+        <p className={classes.p}>{errors.firstName && '⚠ First Name Required'}</p>
         <TextField
           fullWidth
           placeholder='Last name'
@@ -130,11 +150,11 @@ const UserSignUp = ({ context, location, history }) => {
           className={classes.selectEmpty}
           id='lastName'
           name='lastName'
-          value={lastName}
+          value={state.lastName}
           variant='outlined'
-          onChange={e => {
+          onChange={(e) => {
             triggerValidation('lastName')
-            setLastName(e.target.value)
+            handleChange(e)
           }}
           inputRef={register({ pattern: /^[A-Za-z]+$/i })}
           error={!!errors.lastName}
@@ -147,11 +167,11 @@ const UserSignUp = ({ context, location, history }) => {
           className={classes.selectEmpty}
           id='email'
           name='email'
-          value={email}
+          value={state.email}
           variant='outlined'
-          onChange={e => {
+          onChange={(e) => {
             triggerValidation('email')
-            setEmail(e.target.value)
+            handleChange(e)
           }}
           inputRef={register({ pattern: /^[A-Za-z]+$/i })}
           error={!!errors.email}
@@ -165,11 +185,11 @@ const UserSignUp = ({ context, location, history }) => {
           className={classes.selectEmpty}
           id='password'
           name='password'
-          value={password}
+          value={state.password}
           variant='outlined'
-          onChange={e => {
+          onChange={(e) => {
             triggerValidation('password')
-            setPassword(e.target.value)
+            handleChange(e)
           }}
           endAdornment={
             <InputAdornment position='end'>
@@ -186,7 +206,10 @@ const UserSignUp = ({ context, location, history }) => {
           inputRef={register({ pattern: /^[A-Za-z]+$/i })}
           error={!!errors.password}
         />
-        <p className={classes.p}>{errors.password && '⚠ Password Required'}</p>
+        <p className={classes.p}>
+          {console.log(errors.password)}
+          {errors.password?.type === 'min' && errors.password.message}
+        </p>
         <OutlinedInput
           fullWidth
           placeholder='Confirm password'
@@ -195,11 +218,11 @@ const UserSignUp = ({ context, location, history }) => {
           className={classes.selectEmpty}
           id='confirmPassword'
           name='confirmPassword'
-          value={confirmPassword}
+          value={state.confirmPassword}
           variant='outlined'
-          onChange={e => {
+          onChange={(e) => {
             triggerValidation('confirmPassword')
-            setConfirmPassword(e.target.value)
+            handleChange(e)
           }}
           endAdornment={
             <InputAdornment position='end'>
@@ -214,11 +237,10 @@ const UserSignUp = ({ context, location, history }) => {
             </InputAdornment>
           }
           inputRef={register({ pattern: /^[A-Za-z]+$/i })}
-          error={confirmPassword !== password}
+          error={state.confirmPassword !== state.password}
         />
         <p className={classes.p}>
-          {confirmPassword !== password &&
-            '⚠ password & confirm password must match'}
+          {state.confirmPassword !== state.password && '⚠ password & confirm password must match'}
         </p>
 
         <Typography variant='body1'>
@@ -228,10 +250,7 @@ const UserSignUp = ({ context, location, history }) => {
         <Button className={(classes.button, classes.spacer)} type='submit'>
           Submit
         </Button>
-        <Button
-          className={(classes.button, classes.spacer)}
-          onClick={() => cancel()}
-        >
+        <Button className={(classes.button, classes.spacer)} onClick={() => cancel()}>
           Cancel
         </Button>
       </form>
@@ -240,7 +259,6 @@ const UserSignUp = ({ context, location, history }) => {
 }
 
 UserSignUp.propTypes = {
-  context: PropTypes.any,
   history: PropTypes.any,
   location: PropTypes.any
 }

@@ -1,5 +1,5 @@
 export default {
-  env: process.env.REACT_APP_ENV,
+  env: process.env.REACT_APP_ENV || 'development',
   local: {
     apiBaseUrl: process.env.REACT_APP_LOCAL_SERVER,
     mapsApiKey: process.env.REACT_APP_MAPS_API_KEY,

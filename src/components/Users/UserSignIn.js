@@ -1,29 +1,30 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import Forms from '../Forms'
+import { Forms } from '../reusableComponents'
+import { userLogin } from '../../Store/slices/userSlice'
+import { useDispatch, useSelector } from 'react-redux'
 import PropTypes from 'prop-types'
 import { Form, Container, Row, Col } from 'react-bootstrap'
 
-export default function UserSignIn ({ context, history, location }) {
+export default function UserSignIn({ context, history, location }) {
+  const dispatch = useDispatch()
+  const { errorMessage, userSignedIn } = useSelector((state) => state.users)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [errors, setErrors] = useState('')
   const [confirmed] = useState(true)
 
   const submit = async () => {
-    const { from } = location.state || { from: { pathname: '/' } }
-
-    try {
-      const res = await context.actions.signIn(email, password)
-      if (res) history.push(from)
-    } catch (error) {
-      setErrors([error.response.data.message])
-    }
+    dispatch(userLogin({ email, password }))
   }
 
   const cancel = () => {
     history.push('/')
   }
+
+  useEffect(() => {
+    const { from } = location.state || { from: { pathname: '/' } }
+    if (userSignedIn) history.push(from)
+  }, [userSignedIn, history, location.state])
 
   return (
     <Container className='mt-3'>
@@ -33,7 +34,7 @@ export default function UserSignIn ({ context, history, location }) {
 
           <Forms
             cancel={cancel}
-            errors={errors}
+            errors={errorMessage}
             submit={submit}
             passwordErrors={confirmed}
             submitButtonText='Sign In'
@@ -45,7 +46,7 @@ export default function UserSignIn ({ context, history, location }) {
                     name='email'
                     value={email}
                     placeholder='name@example.com'
-                    onChange={e => setEmail(e.target.value)}
+                    onChange={(e) => setEmail(e.target.value)}
                   />
                 </Form.Group>
 
@@ -55,7 +56,7 @@ export default function UserSignIn ({ context, history, location }) {
                     name='password'
                     value={password}
                     placeholder='password'
-                    onChange={e => setPassword(e.target.value)}
+                    onChange={(e) => setPassword(e.target.value)}
                   />
                 </Form.Group>
                 <Form.Text className='text-muted mb-2'>

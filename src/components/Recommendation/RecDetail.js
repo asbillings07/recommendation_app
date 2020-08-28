@@ -1,7 +1,9 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect } from 'react'
 
-import Spinner from '../Spinner'
+import { Spinner } from '../reusableComponents'
 import Comment from './Comment'
+import { getCategoryById } from '../../Store/slices/categorySlice'
+import { useDispatch, useSelector } from 'react-redux'
 // import Rating from './Rating'
 import { Row, Card, Col, ListGroup, ListGroupItem } from 'react-bootstrap'
 import Rating from './Rating'
@@ -9,36 +11,21 @@ import AddRecommendation from './AddRecomendation'
 import MapContainer from '../Map/MapContainer'
 import styled from 'styled-components'
 
-export default function RecDetail({ context, match, history }) {
-  const [recs, setRecs] = useState([])
-  const [loading, setLoading] = useState(true)
+export default function RecDetail({ match }) {
+  const dispatch = useDispatch()
+  const { category, loading } = useSelector((state) => state.categories)
+  const { authorizedUser, token } = useSelector((state) => state.users)
   const [selectedRec, setSelectedRec] = useState({})
-  const [catid, setCatid] = useState('')
+  const [catId, setCatId] = useState('')
 
-  const getRecById = useCallback(async () => {
-    const { id } = match.params
-    setCatid(id)
-    try {
-      const data = await context.data.getCategoryById(id)
-      console.log(data)
-      if (data) {
-        const recs = data.category[0].Recommendations
-        setRecs(recs)
-        setLoading(false)
-      } else {
-        history.push('/notfound')
-      }
-    } catch (err) {
-      console.log(err)
-      history.push('/notfound')
-    }
-  }, [context.data, history, match.params])
   useEffect(() => {
-    getRecById()
-  }, [context.data, getRecById, history, match.params])
+    const { id } = match.params
+    setCatId(id)
+    dispatch(getCategoryById(id))
+  }, [dispatch, match])
 
   const showAllRecs = () => {
-    return recs.map(rec => (
+    return category.map((rec) => (
       <ListGroupItem
         style={{ height: '12em' }}
         key={rec.id}
@@ -46,24 +33,16 @@ export default function RecDetail({ context, match, history }) {
         onClick={() => setSelectedRec(rec)}
       >
         <Card.Title>{rec.title}</Card.Title>
-        <Card.Subtitle className='mt-2 text-muted'>
-          {rec.location}
-        </Card.Subtitle>
+        <Card.Subtitle className='mt-2 text-muted'>{rec.location}</Card.Subtitle>
         <Card.Text>{rec.description}</Card.Text>
 
-        {context.authorizedUser ? (
-          <Rating context={context} recid={rec.id} />
-        ) : (
-          ''
-        )}
-        <Card.Text>
-          Recommended by: {`${rec.User.firstName} ${rec.User.lastName}`}
-        </Card.Text>
+        {authorizedUser ? <Rating recid={selectedRec.id} /> : ''}
+        <Card.Text>Recommended by: {`${rec.User.firstName} ${rec.User.lastName}`}</Card.Text>
       </ListGroupItem>
     ))
   }
 
-  if (loading) return <Spinner size='8x' spinning='spinning' />
+  if (loading) return <Spinner size='8x' />
 
   return (
     <StyledContainer>
@@ -75,10 +54,10 @@ export default function RecDetail({ context, match, history }) {
           </Card>
           <Comment
             comments={selectedRec.Comments}
-            token={context.token}
+            token={token}
             id={selectedRec.id}
-            catId={catid}
-            authedUser={context.authorizedUser}
+            catId={catId}
+            authedUser={authorizedUser}
           />
         </StyledCol>
         <Col sm={6} xs={12}>

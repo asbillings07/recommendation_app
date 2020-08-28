@@ -1,114 +1,107 @@
-import React, { useState, useEffect } from 'react';
-import Axios from 'axios';
-import Config from '../../Config';
-import Forms from '../Forms';
-import { Form, Container, Row, Col } from 'react-bootstrap';
-import { notify } from 'react-notify-toast';
+import React, { useState, useEffect } from 'react'
+import { Forms } from '../reusableComponents'
+import { getRecById, updateRecommendation } from '../../Store/slices/recommendationSlice'
+import { useDispatch, useSelector } from 'react-redux'
+import { Form, Container, Row, Col } from 'react-bootstrap'
+import { notify } from 'react-notify-toast'
 
 export default function UpdateRecommendation({ context, match, history }) {
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [setLastVisited] = useState('');
-  const [location, setLocation] = useState('');
-  const [userid, setUserid] = useState('');
-  const [errors, setErrors] = useState([]);
-  const [confirmed] = useState(true);
+  const dispatch = useDispatch()
+  const { token } = useSelector((state) => state.users)
+  const { recErrorMessage, rec, recUpdated } = useSelector((state) => state.recs)
+  const [inputs, setInputs] = useState({
+    title: '',
+    description: '',
+    lastVisited: '',
+    location: ''
+  })
+  const [confirmed] = useState(true)
+  const { id } = match.params
 
   useEffect(() => {
-    const getData = async () => {
-      const { id } = match.params;
-      const { authorizedUser } = context;
-      try {
-        const data = await Axios.get(`${Config.apiBaseUrl}/recs/${id}`);
+    dispatch(getRecById(id))
+  }, [dispatch, id])
 
-        if (data) {
-          const rec = data.data;
-          setTitle(rec.title);
-          setDescription(rec.description);
-          setLastVisited(rec.lastVisted);
-          setLocation(rec.location);
-          setUserid(rec.userid);
-        } else {
-          throw new Error('Issue getting data');
-        }
-        console.log(authorizedUser.id);
-        console.log(userid);
-        if (authorizedUser) {
-        } else {
-          history.push('/forbidden');
-        }
-      } catch (err) {
-        console.log(err);
-        history.push('/error');
-      }
-    };
-
-    getData();
-  }, [context, history, match.params, userid, setLastVisited]);
-
-  const submit = () => {
-    const { id } = match.params;
-    const { token, data } = context;
-    const rec = { title, description, location };
-    data
-      .updateRecommendation(token, rec, id)
-      .then(errors => {
-        if (errors.length) {
-          setErrors([errors]);
-        } else {
-          notify.show('Recommendation Updated!', 'success', 10000);
-          history.push(`/profile`);
-        }
+  useEffect(() => {
+    if (rec) {
+      setInputs({
+        title: rec.title,
+        description: rec.description,
+        lastVisited: rec.lastVisited,
+        location: rec.location
       })
-      .catch(error => console.log(error.message));
-  };
+    }
+  }, [rec])
+
+  useEffect(() => {
+    if (recUpdated) {
+      notify.show('Recommendation Updated!', 'success', 10000)
+      history.push(`/profile`)
+    }
+  }, [recUpdated, history])
+
+  const handleInputs = (e) => {
+    setInputs({
+      ...inputs,
+      [e.target.name]: e.target.value
+    })
+  }
+  const submit = () => {
+    const rec = { ...inputs }
+    dispatch(updateRecommendation(token, rec, id))
+
+    // .then((errors) => {
+    //   if (errors.length) {
+    //     setErrors([errors])
+    //   } else {
+    //
+    //   }
+    // })
+  }
 
   const cancel = () => {
-    history.push(`/profile`);
-  };
+    history.push(`/profile`)
+  }
 
   return (
-    <Container className="mt-3">
-      <Row className="justify-content-md-center">
-        <Col xs md lg="auto">
+    <Container className='mt-3'>
+      <Row className='justify-content-md-center'>
+        <Col xs md lg='auto'>
           <>
-            <h1 className="mb-4">Update Your Recommendation</h1>
+            <h1 className='mb-4'>Update Your Recommendation</h1>
             <Forms
               cancel={cancel}
-              errors={errors}
+              errors={recErrorMessage}
               submit={submit}
               passwordErrors={confirmed}
-              submitButtonText="Update Recommendation"
+              submitButtonText='Update Recommendation'
               elements={() => (
                 <React.Fragment>
                   <Form.Group>
                     <Form.Control
-                      aria-label="input the title of your recommendation here"
-                      type="text"
-                      name="title"
-                      placeholder=""
-                      value={title}
-                      onChange={e => setTitle(e.target.value)}
+                      aria-label='input the title of your recommendation here'
+                      type='text'
+                      name='title'
+                      value={inputs.title}
+                      onChange={(e) => handleInputs(e)}
                     />
                   </Form.Group>
                   <Form.Group>
                     <Form.Control
-                      aria-label="input the description of your recommendation here"
-                      type="text"
-                      name="description"
-                      placeholder=""
-                      value={description}
-                      onChange={e => setDescription(e.target.value)}
+                      aria-label='input the description of your recommendation here'
+                      type='text'
+                      name='description'
+                      value={inputs.description}
+                      onChange={(e) => handleInputs(e)}
                     />
                   </Form.Group>
                   <Form.Group>
                     <Form.Control
-                      aria-label="input the location of your recommendation here"
-                      type="text"
-                      name="location"
-                      value={location}
-                      placeholder=""
-                      onChange={e => setLocation(e.target.value)}
+                      aria-label='input the location of your recommendation here'
+                      type='text'
+                      name='location'
+                      value={inputs.location}
+                      onChange={(e) => handleInputs(e)}
                     />
                   </Form.Group>
                 </React.Fragment>
@@ -118,5 +111,5 @@ export default function UpdateRecommendation({ context, match, history }) {
         </Col>
       </Row>
     </Container>
-  );
+  )
 }
