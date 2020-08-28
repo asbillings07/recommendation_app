@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import { useSetState } from '../../CustomHooks'
 import { useForm } from 'react-hook-form'
 import PropTypes from 'prop-types'
 import { createUser, sendConfirmUserEmail, userLogin } from '../../Store/slices/userSlice'
@@ -62,14 +63,22 @@ const UserSignUp = ({ location, history }) => {
     validationSchema: SignUpFormSchema,
     submitFocusError: true
   })
+  const initialState = {
+    firstName: '',
+    lastName: '',
+    email: '',
+    password: '',
+    confirmPassword: ''
+  }
 
-  const [firstName, setFirstName] = useState('')
-  const [lastName, setLastName] = useState('')
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [confirmPassword, setConfirmPassword] = useState('')
+  const [state, setState] = useSetState(initialState)
   const [showPassword, setShowPassword] = useState(false)
 
+  const handleChange = (e) => {
+    setState({
+      [e.target.name]: e.target.value
+    })
+  }
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword)
   }
@@ -94,10 +103,11 @@ const UserSignUp = ({ location, history }) => {
     dispatch(createUser(user))
   }
   useEffect(() => {
-    if (userCreated) dispatch(sendConfirmUserEmail(email))
+    if (userCreated) dispatch(sendConfirmUserEmail(state.email))
   }, [userCreated])
 
   useEffect(() => {
+    const { email, password } = state
     if (sentConfEmail) dispatch(userLogin({ email, password }))
   }, [sentConfEmail])
 
@@ -123,11 +133,11 @@ const UserSignUp = ({ location, history }) => {
           className={classes.selectEmpty}
           id='firstName'
           name='firstName'
-          value={firstName}
+          value={state.firstName}
           variant='outlined'
           onChange={(e) => {
             triggerValidation('firstName')
-            setFirstName(e.target.value)
+            handleChange(e)
           }}
           error={!!errors.firstName}
           inputRef={register({ pattern: /^[A-Za-z]+$/i })}
@@ -140,11 +150,11 @@ const UserSignUp = ({ location, history }) => {
           className={classes.selectEmpty}
           id='lastName'
           name='lastName'
-          value={lastName}
+          value={state.lastName}
           variant='outlined'
           onChange={(e) => {
             triggerValidation('lastName')
-            setLastName(e.target.value)
+            handleChange(e)
           }}
           inputRef={register({ pattern: /^[A-Za-z]+$/i })}
           error={!!errors.lastName}
@@ -157,11 +167,11 @@ const UserSignUp = ({ location, history }) => {
           className={classes.selectEmpty}
           id='email'
           name='email'
-          value={email}
+          value={state.email}
           variant='outlined'
           onChange={(e) => {
             triggerValidation('email')
-            setEmail(e.target.value)
+            handleChange(e)
           }}
           inputRef={register({ pattern: /^[A-Za-z]+$/i })}
           error={!!errors.email}
@@ -175,11 +185,11 @@ const UserSignUp = ({ location, history }) => {
           className={classes.selectEmpty}
           id='password'
           name='password'
-          value={password}
+          value={state.password}
           variant='outlined'
           onChange={(e) => {
             triggerValidation('password')
-            setPassword(e.target.value)
+            handleChange(e)
           }}
           endAdornment={
             <InputAdornment position='end'>
@@ -208,11 +218,11 @@ const UserSignUp = ({ location, history }) => {
           className={classes.selectEmpty}
           id='confirmPassword'
           name='confirmPassword'
-          value={confirmPassword}
+          value={state.confirmPassword}
           variant='outlined'
           onChange={(e) => {
             triggerValidation('confirmPassword')
-            setConfirmPassword(e.target.value)
+            handleChange(e)
           }}
           endAdornment={
             <InputAdornment position='end'>
@@ -227,10 +237,10 @@ const UserSignUp = ({ location, history }) => {
             </InputAdornment>
           }
           inputRef={register({ pattern: /^[A-Za-z]+$/i })}
-          error={confirmPassword !== password}
+          error={state.confirmPassword !== state.password}
         />
         <p className={classes.p}>
-          {confirmPassword !== password && '⚠ password & confirm password must match'}
+          {state.confirmPassword !== state.password && '⚠ password & confirm password must match'}
         </p>
 
         <Typography variant='body1'>
