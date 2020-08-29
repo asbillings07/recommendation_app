@@ -5,6 +5,7 @@ import SearchBar from './SearchBar'
 import styled from 'styled-components'
 import { Spinner } from '../reusableComponents'
 import bgPic from '../../images/recommend-it-bg.png'
+import { above, below } from '../../helperFunctions'
 import {
   faUtensils,
   faShoppingCart,
@@ -51,7 +52,7 @@ export default function CategoryList({ data, categories, setCategories, loading 
         <StyledLink data-testid='category-link' to={`/category/${category.id}/recs`}>
           <CategoryButton
             aria-label={`navigate to ${category.title}`}
-            variant='outline-primary'
+            variant='primary'
             size='lg'
             block
           >
@@ -78,12 +79,18 @@ export default function CategoryList({ data, categories, setCategories, loading 
 }
 
 const BgContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   background-image: url(${bgPic}); /* The image used */
   background-color: #cccccc; /* Used if the image is unavailable */
   height: 500px; /* You must set a specified height */
   background-position: center; /* Center the image */
   background-repeat: no-repeat; /* Do not repeat the image */
   background-size: cover; /* Resize the background image to cover the entire container */
+  ${below.small`
+    height: 1250px;
+  `}
 `
 const H2 = styled.h2`
   display: flex;
@@ -96,7 +103,7 @@ const CategoryContainer = styled(Container)`
   margin-top: 3px;
 `
 const CategoryButton = styled(Button)`
-  outline-color: #1168d9 !important;
+  outline-color: #38c8dd !important;
   margin-bottom: 0.25em;
 
   :hover {
