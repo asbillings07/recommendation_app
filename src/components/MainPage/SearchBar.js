@@ -33,7 +33,7 @@ export default function SearchBar({ categories, setCategories }) {
         <InputGroup onChange={handleChange} className='mb-3'>
           <FormControl placeholder='Search' />
           <InputGroup.Append>
-            <Button variant='outline-info'>Search</Button>
+            <Button variant='info'>Search</Button>
           </InputGroup.Append>
         </InputGroup>
       </ContainerDiv>
