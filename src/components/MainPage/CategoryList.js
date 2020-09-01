@@ -7,7 +7,7 @@ import { Spinner } from '../reusableComponents'
 export default function CategoryList({ data, categories, setCategories, loading }) {
   return (
     <>
-      {true ? (
+      {loading ? (
         <Spinner size='4x' />
       ) : (
         <BackgroundImgContainer>

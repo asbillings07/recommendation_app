@@ -1,4 +1,5 @@
 import React from 'react'
+import { GlobalStyle } from './Global'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import Home from './components/MainPage/Home'
 import Navigation from './components/MainPage/Navigation'
@@ -41,6 +42,7 @@ const App = () => {
         <Route path='/error' component={UnhandledError} />
         <Route component={NotFound} />
       </Switch>
+      <GlobalStyle />
     </Router>
   )
 }

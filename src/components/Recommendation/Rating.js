@@ -1,5 +1,6 @@
 import React, { useEffect, useCallback } from 'react'
 import Star from './Star'
+import { StarsIcon } from '../../elements'
 import { notify } from 'react-notify-toast'
 import { getUserRating, updateUserRating } from '../../Store/slices/ratingSlice'
 import { useSelector, useDispatch } from 'react-redux'
@@ -98,5 +99,5 @@ export default function StarRating({ recid }) {
 
   // Pass the function to a Star component via props
 
-  return <ul className='stars'>{renderStars()}</ul>
+  return <StarsIcon>{renderStars()}</StarsIcon>
 }

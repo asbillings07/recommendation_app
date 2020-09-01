@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import bgPic from '../images/recommend-it-bg.png'
 import { Container } from 'react-bootstrap'
 import { below } from '../utils'
+import { Nav } from 'react-bootstrap'
 
 export const BackgroundImgContainer = styled.div`
   display: flex;
@@ -26,4 +27,7 @@ export const SpinnerContainer = styled.div`
   flex-direction: column;
   margin-top: 20em;
   align-items: center;
+`
+export const NavContainer = styled(Nav)`
+  margin-left: auto;
 `
