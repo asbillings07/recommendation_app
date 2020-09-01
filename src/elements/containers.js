@@ -3,13 +3,15 @@ import bgPic from '../images/recommend-it-bg.png'
 import { Container } from 'react-bootstrap'
 import { below } from '../utils'
 import { Nav } from 'react-bootstrap'
+import { absolute } from '../utils'
 
 export const BackgroundImgContainer = styled.div`
   display: flex;
+  position: relative;
   flex-direction: column;
   justify-content: center;
   background-image: url(${bgPic}); /* The image used */
-  background-color: #cccccc; /* Used if the image is unavailable */
+  background-color: rgba(0, 0, 0, 0.5); /* Used if the image is unavailable */
   height: 93vh; /* You must set a specified height */
   background-position: center; /* Center the image */
   background-repeat: no-repeat; /* Do not repeat the image */
@@ -30,4 +32,9 @@ export const SpinnerContainer = styled.div`
 `
 export const NavContainer = styled(Nav)`
   margin-left: auto;
+`
+export const LayerContainer = styled.div`
+  background-color: rgba(0, 0, 0, 0.7);
+  ${absolute()};
+  height: 100%;
 `

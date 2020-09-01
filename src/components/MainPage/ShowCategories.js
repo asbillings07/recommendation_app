@@ -49,8 +49,8 @@ export const ShowCategories = ({ categories }) => {
           aria-label={`navigate to ${category.title}`}
           variant='primary'
           size='lg'
-          block
         >
+          <span>{category.title}</span>
           <FontAwesomeIcon icon={buttonImgs[category.title]} />
         </CategoryListButton>
       </CategoryListLink>
