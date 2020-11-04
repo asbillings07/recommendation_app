@@ -19,6 +19,7 @@ import Forbidden from './components/Errors/Forbidden'
 import RecDetail from './components/Recommendation/RecDetail'
 import { Profile } from './components/Profile/Profile'
 import ProfileEdit from './components/Profile/ProfileEdit'
+import { Footer } from './layouts/footer'
 
 const App = () => {
   return (
@@ -42,6 +43,7 @@ const App = () => {
         <Route path='/error' component={UnhandledError} />
         <Route component={NotFound} />
       </Switch>
+      <Footer />
       <GlobalStyle />
     </Router>
   )
