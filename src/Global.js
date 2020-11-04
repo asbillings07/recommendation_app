@@ -13,12 +13,17 @@ html {
 }
 
 body {
+ 
   height: 100vh;
   width: 100vw;
   padding: 0;
   margin: 0;
   font-family: Oswald, sans-serif;
   background-color: #cccccc;
+}
+
+#root {
+   margin-top: 3.5em;
 }
 
 
