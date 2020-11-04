@@ -28,6 +28,7 @@ function geoPositionReducer(state, action) {
       }
     }
     default: {
+      console.log(action)
       throw new Error(`Unhandled action type: ${action.type}`)
     }
   }
