@@ -6,16 +6,17 @@ import styled from 'styled-components'
 */
 
 export const Button = styled.button`
-  padding: 5px 15px;
+  padding: 15px 15px;
+  margin: 20px 0px;
   width: 100%;
   ${elevation[1]};
   display: flex;
   align-items: center;
   transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
     border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-  justify-content: center;
+  justify-content: space-around;
   border-radius: 5px;
-  font-size: 20px;
+  font-size: 19px;
   ${({ type }) => {
     switch (true) {
       case 'cancel': {
