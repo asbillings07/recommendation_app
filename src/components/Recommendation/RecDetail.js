@@ -46,7 +46,7 @@ export default function RecDetail({ match }) {
 
   return (
     <StyledContainer>
-      <Row>
+      {/* <Row>
         <StyledCol sm={6} xs={12}>
           <Card>
             <AddRecommendation id={match.params.id} />
@@ -63,19 +63,32 @@ export default function RecDetail({ match }) {
         <Col sm={6} xs={12}>
           <MapContainer selectedRec={selectedRec} />
         </Col>
-      </Row>
+      </Row> */}
+      <CardContainer>
+        <StyledCard>
+          <AddRecommendation id={match.params.id} />
+          <ListGroup>{showAllRecs()}</ListGroup>
+        </StyledCard>
+      </CardContainer>
+      <MapContainer selectedRec={selectedRec} />
     </StyledContainer>
   )
 }
 
-const StyledCol = styled(Col)`
-  width: 100vw;
-  height: 78vh;
-  padding-right: 0px !important;
-  overflow: scroll;
+const CardContainer = styled.div`
+  max-height: 35%;
+  overflow-y: auto;
 `
 const StyledContainer = styled.div`
   width: 100vw;
   margin-left: -1px !important;
   margin-top: 0.25rem;
+`
+const StyledCard = styled(Card)`
+  position: absolute !important;
+  margin-top: 5em;
+  z-index: 100;
+  max-height: 45%;
+  overflow-y: auto;
+  overflow-x: hidden;
 `
