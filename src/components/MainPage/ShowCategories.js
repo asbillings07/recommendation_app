@@ -42,9 +42,11 @@ const buttonImgs = {
 }
 
 export const ShowCategories = ({ categories }) => {
+
+  console.log('categories', categories)
   const showCategories = categories.map((category) => (
-    <Col className='mb-2' sm={4} key={category.id}>
-      <CategoryListLink data-testid='category-link' to={`/category/${category.id}/recs`}>
+    <Col className='mb-2' sm={4} key={category._id}>
+      <CategoryListLink data-testid='category-link' to={`/category/${category._id}/recs`}>
         <CategoryListButton
           aria-label={`navigate to ${category.title}`}
           variant='primary'

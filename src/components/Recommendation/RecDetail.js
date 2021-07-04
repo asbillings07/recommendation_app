@@ -11,7 +11,7 @@ import AddRecommendation from './AddRecomendation'
 import MapContainer from '../Map/MapContainer'
 import styled from 'styled-components'
 
-export default function RecDetail({ match }) {
+export default function RecDetail ({ match }) {
   const dispatch = useDispatch()
   const { category, loading } = useSelector((state) => state.categories)
   const { authorizedUser, token } = useSelector((state) => state.users)
@@ -25,6 +25,7 @@ export default function RecDetail({ match }) {
   }, [dispatch, match])
 
   const showAllRecs = () => {
+    console.log('CATEGor', category)
     return category.map((rec) => (
       <ListGroupItem
         style={{ height: '12em' }}
@@ -37,7 +38,7 @@ export default function RecDetail({ match }) {
         <Card.Text>{rec.description}</Card.Text>
 
         {authorizedUser ? <Rating recid={selectedRec.id} /> : ''}
-        <Card.Text>Recommended by: {`${rec.User.firstName} ${rec.User.lastName}`}</Card.Text>
+        <Card.Text>Recommended by: {`${rec?.user?.firstName ?? 'Unknown'} ${rec?.user?.lastName ?? 'User'}`}</Card.Text>
       </ListGroupItem>
     ))
   }
