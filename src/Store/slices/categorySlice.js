@@ -24,9 +24,8 @@ const categorySlice = createSlice({
     },
     gotCategoryById: (state, action) => {
       const { category } = action.payload
-      console.log(category)
       state.category = category.recommendations
-      state.categoryId = category?.id ?? category._id
+      state.categoryId = category._id
       state.loading = false
     },
     categoryError: (state, action) => {
