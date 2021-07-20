@@ -2,7 +2,6 @@ import { createSlice } from '@reduxjs/toolkit'
 import { requestApi } from '../request'
 import Cookies from 'js-cookie'
 import swal from '@sweetalert/with-react'
-import { PURGE } from 'redux-persist'
 
 const initialState = {
   users: [],
@@ -21,7 +20,8 @@ const initialState = {
   userSignedOut: false,
   forgotEmailSent: false,
   sentConfEmail: false,
-  userCreated: false
+  userCreated: false,
+  forgotSuccess: false
 }
 
 const userSlice = createSlice({
@@ -45,6 +45,7 @@ const userSlice = createSlice({
     setForgotEmailSent: (state, action) => {
       state.forgotEmailSent = action.payload
       state.loading = false
+      state.userSuccess = action.payload
       swal({
         title: 'Forgotten password Email sent to your inbox',
         icon: 'success'
@@ -111,6 +112,7 @@ const userSlice = createSlice({
       state.forgotEmailSent = action.payload.success
       state.loading = false
       state.errorMessage = []
+      state.userSuccess = true
       swal({
         title: 'Reset Password link successfully sent!',
         text: `A password reset link is heading to your inbox. Make sure you click the link with 24 hours or it will expire.`,
@@ -282,16 +284,19 @@ export const deleteUser = (token) => {
 
 /** RESET PASSWORD METHODS */
 
-export const resetUserPassword = (token) => {
+export const resetUserPassword = (token, id) => {
   const resetPassToken = {
-    resetPasswordToken: token
+    token,
+    id
   }
   return async (dispatch) => {
     dispatch(toggleLoading())
     try {
       const res = await requestApi('/reset', 'GET', null, false, null, resetPassToken)
+      console.log('res???', res)
       dispatch(resetPassword(res.data))
     } catch (error) {
+      console.log('ERROR??', error.response.data)
       dispatch(userError(error.response.data))
     }
   }
@@ -321,6 +326,7 @@ export const updateUserPassword = (user) => {
       dispatch(updatedUserPassword(res.data))
       dispatch(setResetSuccess(false))
     } catch (error) {
+      console.log('error', error)
       dispatch(userError(error.response.data.message))
     }
   }

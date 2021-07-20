@@ -1,13 +1,13 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Forms } from '../reusableComponents'
 import { forgotUserPassword } from '../../Store/slices/userSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import { Form, Container, Row, Col } from 'react-bootstrap'
 
-export default function ForgotPassword({ history }) {
+export default function ForgotPassword ({ history }) {
   const dispatch = useDispatch()
-  const { errorStatus, errorMessage } = useSelector((state) => state.users)
+  const { errorStatus, errorMessage, userSuccess } = useSelector((state) => state.users)
   const [email, setEmail] = useState('')
 
   const submit = () => {
@@ -17,6 +17,13 @@ export default function ForgotPassword({ history }) {
   const cancel = () => {
     history.push('/')
   }
+
+  useEffect(() => {
+    if (userSuccess) {
+      history.push('/')
+    }
+  }, [userSuccess, history])
+
   return (
     <Container className='mt-3'>
       <Row className='justify-content-md-center'>

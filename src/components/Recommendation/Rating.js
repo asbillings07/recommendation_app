@@ -6,12 +6,11 @@ import { getUserRating, updateUserRating } from '../../Store/slices/ratingSlice'
 import { useSelector, useDispatch } from 'react-redux'
 import { useStateWithCallback } from '../../CustomHooks/useStateWithCallback'
 
-export default function StarRating({ recid }) {
+export default function StarRating ({ recid }) {
   const dispatch = useDispatch()
   const { token } = useSelector((state) => state.users)
   const { ratingErrorStatus, ratingErrorMessage } = useSelector((state) => state.ratings)
   // Initialize a 'rating' state
-
   const [userRating, setUserRating] = useStateWithCallback(
     0,
     useCallback(
@@ -20,6 +19,7 @@ export default function StarRating({ recid }) {
           const rate = {
             rate: userRating
           }
+
           console.log('REC_ID', recid)
           dispatch(updateUserRating(token, rate, recid))
         }

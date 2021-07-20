@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { requestApi } from '../request'
+import swal from '@sweetalert/with-react'
 
 const initialState = {
   loading: false,
@@ -23,14 +24,19 @@ const categorySlice = createSlice({
     },
     gotCategoryById: (state, action) => {
       const { category } = action.payload
-      state.category = category[0].Recommendations
-      state.categoryId = category[0].id
+      console.log(category)
+      state.category = category.recommendations
+      state.categoryId = category?.id ?? category._id
       state.loading = false
     },
     categoryError: (state, action) => {
       state.loading = false
       state.cateErrorStatus = true
       console.log(action.payload)
+      // swal({
+      //   title: 'Forgotten password Email sent to your inbox',
+      //   icon: 'success'
+      // })
     }
   }
 })
@@ -51,7 +57,7 @@ export const getAllCategories = () => {
       const res = await requestApi('/category')
       dispatch(gotAllCategories(res.data.category))
     } catch (error) {
-      dispatch(categoryError(error))
+      dispatch(categoryError(error?.response?.data ?? error))
     }
   }
 }
@@ -62,7 +68,7 @@ export const getCategoryById = (id) => {
       const res = await requestApi(`/category/${id}`)
       dispatch(gotCategoryById(res.data))
     } catch (error) {
-      dispatch(categoryError(error))
+      dispatch(categoryError(error?.response?.data ?? error))
     }
   }
 }
@@ -73,7 +79,7 @@ export const createCategory = (title) => {
     try {
       // const res = await requestApi('/category', 'POST', title)
     } catch (error) {
-      dispatch(categoryError(error))
+      dispatch(categoryError(error?.response?.data ?? error))
     }
   }
 }

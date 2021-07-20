@@ -42,9 +42,9 @@ const buttonImgs = {
 }
 
 export const ShowCategories = ({ categories }) => {
-  const showCategories = categories.map((category) => (
+  const showCategories = React.Children.toArray(categories.map((category) => (
     <Col className='mb-2' sm={4} key={category.id}>
-      <CategoryListLink data-testid='category-link' to={`/category/${category.id}/recs`}>
+      <CategoryListLink data-testid='category-link' to={`/category/${category._id}/recs`}>
         <CategoryListButton
           aria-label={`navigate to ${category.title}`}
           variant='primary'
@@ -55,7 +55,7 @@ export const ShowCategories = ({ categories }) => {
         </CategoryListButton>
       </CategoryListLink>
     </Col>
-  ))
+  )))
 
   return <Row>{showCategories}</Row>
 }

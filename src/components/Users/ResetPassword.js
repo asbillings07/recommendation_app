@@ -7,7 +7,7 @@ import { Form, Container, Row, Col } from 'react-bootstrap'
 import { Spinner } from '../reusableComponents'
 import { AlertUser } from '../reusableComponents'
 
-export default function ResetPassword({ match, history }) {
+export default function ResetPassword ({ match, history, location }) {
   const dispatch = useDispatch()
   const { userEmail, errorMessage, loading, errorStatus, userSuccess } = useSelector(
     (state) => state.users
@@ -18,30 +18,21 @@ export default function ResetPassword({ match, history }) {
   const [updated, setUpdated] = useState(false)
   const [passwordErrors, setPasswordErrors] = useState(true)
 
-  // const resetUserPassword = async () => {
-  //   const { token } = match.params;
-  //   console.log(token);
-  //   await Axios.get(`${Config.apiBaseUrl}/reset`, {
-  //     params: {
-  //       resetPasswordToken: token,
-  //     },
-  //   }).then(res => {
-  //     console.log(res);
-  //     if (res.data.message === 'successful') {
-  //       setEmail(res.data.email);
-  //       setIsLoading(false);
-  //     } else {
-  //       setIsLoading(false);
-  //       setError(true);
-  //       setErrors('Password Token Expired');
-  //     }
-  //   });
-  // };
+  console.log({ errorMessage, errorStatus })
+
+  const parseQuery = (string) => {
+    const [, token, id] = string.split('=')
+    return {
+      token,
+      id
+    }
+  }
+
 
   // run our function as soon as the browser loads
   useEffect(() => {
-    const { token } = match.params
-    dispatch(resetUserPassword(token))
+    const { token, id } = parseQuery(location.search)
+    dispatch(resetUserPassword(token, id))
   }, [])
 
   // helper functions

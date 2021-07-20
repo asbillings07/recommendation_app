@@ -33,7 +33,7 @@ const App = () => {
         <Route path='/signin' component={UserSignIn} />
         <Route path='/signout' component={UserSignOut} />
         <Route path='/forgotpassword' component={ForgotPassword} />
-        <Route path='/reset/:token' component={ResetPassword} />
+        <Route path='/reset' component={ResetPassword} />
         <PrivateRoute exact path='/profile' component={Profile} />
         <PrivateRoute path='/profile/edit' component={ProfileEdit} />
         <Route exact path='/category/:id/recs' component={RecDetail} />

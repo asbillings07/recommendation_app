@@ -12,7 +12,7 @@ import ratingSlice from './slices/ratingSlice'
 const persistConfig = {
   key: 'root',
   storage,
-  blacklist: ['recs', 'comments', 'ratings']
+  blacklist: ['recs', 'comments', 'ratings', 'users']
 }
 
 const rootReducer = combineReducers({
